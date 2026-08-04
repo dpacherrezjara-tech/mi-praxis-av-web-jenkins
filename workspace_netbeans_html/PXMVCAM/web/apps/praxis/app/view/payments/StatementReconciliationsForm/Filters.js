@@ -29,19 +29,31 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                     },
                     items: [
                         {
-                            xtype: 'panel',
+                            xtype: 'fieldset',
+                            title: '<span style="color:#1a4d8f;font-weight:bold;">FILTERS</span>',
+                            style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
                             bodyStyle: 'background: transparent',
                             layout: {
-                                type: 'hbox',
-                                align: 'top'
+                                type: 'vbox',
+                                align: 'left'
                             },
-                            border: false,
                             items: [
                                 {
-                                    xtype: 'fieldset',
-                                    title: '<span style="color:#1a4d8f;font-weight:bold;">FILTER DATE</span>',
-                                    width: 380,
-                                    style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
+                                    // Fila 1: fecha + customer/country/toggle, siempre visible.
+                                    // filterDetailCash (Status/Type Source/Doc Sap Bank/Accounts)
+                                    // va aparte, debajo, para que arranque alineada a la izquierda.
+                                    xtype: 'panel',
+                                    bodyStyle: 'background: transparent',
+                                    border: false,
+                                    layout: {
+                                        type: 'hbox',
+                                        align: 'top'
+                                    },
+                                    items: [
+                                {
+                                    xtype: 'panel',
+                                    bodyStyle: 'background: transparent',
+                                    border: false,
                                     layout: 'hbox',
                                     items: [
                                         {
@@ -158,10 +170,9 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                     ]
                                 },
                                 {
-                                    xtype: 'fieldset',
-                                    title: '<span style="color:#1a4d8f;font-weight:bold;">FILTER COMBO</span>',
-                                    width: 540,
-                                    style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
+                                    xtype: 'panel',
+                                    bodyStyle: 'background: transparent',
+                                    border: false,
                                     layout: 'hbox',
                                     items: [
                                         {
@@ -260,18 +271,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                                     id: prototype.id + '-detailCash'
                                                 },
                                             ]
-                                        }
-                                    ]
-                                },
-                                {
-                                    xtype: 'fieldset',
-                                    title: '<span style="color:#1a4d8f;font-weight:bold;">FILTER DETAIL</span>',
-                                    id: prototype.id + '-filterDetailCash',
-                                    hidden: true,
-                                    width: 680,
-                                    style: 'border: 1px solid #1a4d8f; padding: 8px; margin: 5px;',
-                                    layout: 'hbox',
-                                    items: [
+                                        },
                                         {
                                             fieldLabel: 'Status',
                                             labelAlign: 'left',
@@ -279,6 +279,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             labelWidth: 40,
                                             xtype: 'combo',
                                             id: prototype.id + '-cmbStatusCash',
+                                            hidden: true,
                                             labelStyle: 'text-align: left; font-size: 12px;',
                                             fieldStyle: 'text-align: center; font-size: 12px;',
                                             store: new Ext.data.SimpleStore({
@@ -295,7 +296,36 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             autoSelect: true,
                                             editable: true,
                                             value: "",
-                                            hidden: false,
+                                            typeAhead: true,
+                                            valueField: 'value', displayField: 'description',
+                                            enableKeyEvents: true,
+                                            triggerAction: 'all',
+                                            margin: '0 10 0 0'
+                                        },
+                                        {
+                                            fieldLabel: 'Type Source',
+                                            labelAlign: 'left',
+                                            width: 200,
+                                            labelWidth: 75,
+                                            xtype: 'combo',
+                                            id: prototype.id + '-cmbTypeSourceCash',
+                                            hidden: true,
+                                            labelStyle: 'text-align: left; font-size: 12px;',
+                                            fieldStyle: 'text-align: center; font-size: 12px;',
+                                            store: new Ext.data.SimpleStore({
+                                                fields: ['value', 'description'],
+                                                data: [
+                                                    ["", "All"], ["00", "BSP"], ["01", "ICCS"], ["02", "ARC"], ["03", "Venta Directa"]
+                                                ]
+                                            }),
+                                            queryMode: 'local',
+                                            allowBlank: false,
+                                            forceSelection: true,
+                                            selectOnFocus: true,
+                                            caseSensitive: false,
+                                            autoSelect: true,
+                                            editable: true,
+                                            value: "",
                                             typeAhead: true,
                                             valueField: 'value', displayField: 'description',
                                             enableKeyEvents: true,
@@ -308,6 +338,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             fieldStyle: 'text-align: center; font-size: 12px;',
                                             xtype: 'textfield',
                                             id: prototype.id + '-txtBANDOCASH',
+                                            hidden: true,
                                             width: 170,
                                             labelWidth: 84,
                                             enableKeyEvents: true,
@@ -318,7 +349,22 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             listeners: {
                                                 keypress: 'eventKey_BANDOCASH'
                                             }
-                                        },
+                                        }
+                                    ]
+                                }
+                                    ]
+                                },
+                                {
+                                    // Fila 2: solo Accounts -- se oculta/muestra por su propio ID
+                                    // (no como bloque), pero visualmente necesita su propia fila
+                                    // porque no entra en la fila 1 junto a los demás filtros.
+                                    xtype: 'panel',
+                                    id: prototype.id + '-filterDetailCash',
+                                    margin: '15 0 0 0',
+                                    bodyStyle: 'background: transparent',
+                                    border: false,
+                                    layout: 'hbox',
+                                    items: [
                                         {
                                             xtype: 'combo',
                                             fieldLabel: 'Accounts',
@@ -327,6 +373,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             labelStyle: 'text-align: left; font-size: 12px;',
                                             fieldStyle: 'text-align: center; font-size: 12px;',
                                             id: prototype.id + '-typeSocietyCas22h',
+                                            hidden: true,
                                             queryMode: 'local',
                                             editable: false,
                                             multiSelect: true,

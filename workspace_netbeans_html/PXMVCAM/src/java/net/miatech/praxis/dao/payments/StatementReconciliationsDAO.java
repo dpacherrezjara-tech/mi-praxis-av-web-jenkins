@@ -5,6 +5,8 @@
  */
 package net.miatech.praxis.dao.payments;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,6 +23,8 @@ import net.miatech.beans.spring.implement.IServerSession;
 import static net.miatech.praxis.dao.payments.BankReconciliationDAO.pasarGarbageCollector;
 import net.miatech.praxis.payment.MPF101;
 import net.miatech.praxis.payment.MPF102Filter;
+import net.miatech.praxis.payment.MPF190;
+import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.filter.A2280Filter;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
@@ -3676,6 +3680,14 @@ public class StatementReconciliationsDAO {
                 beanTkt.DPERIOD = rst.getString("DPERIOD");
                 beanTkt.SFILE = rst.getString("SFILE");
                 beanTkt.NPAG = rst.getString("NPAG");
+                // SDATE solo existe en el branch CCUSTPRO='03' (MPF190) -- BSP/ICCS/ARC
+                // (MPF191/MPF199) no tienen esta columna, por eso el try/catch: no debe
+                // romper esos otros flujos si la columna no viene en el resultset.
+                try {
+                    beanTkt.SDATE = rst.getString("SDATE") != null ? rst.getString("SDATE").trim() : "";
+                } catch (SQLException e) {
+                    beanTkt.SDATE = "";
+                }
 
                 lstTkts.add(beanTkt);
             }
@@ -4800,17 +4812,17 @@ public class StatementReconciliationsDAO {
         CallableStatement cstmt = null;
         ResultSet rst = null;
 
-        String SQLCLL01 = "{CALL PRAXISMP.MPS561 (?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL PRAXISMP.MPS561 (?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(8, Types.INTEGER);
             cstmt.registerOutParameter(9, Types.INTEGER);
             cstmt.registerOutParameter(10, Types.INTEGER);
             cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_SOCIETY);
             cstmt.setString(2, filter.IN_FECHA_FROM);
@@ -4819,17 +4831,18 @@ public class StatementReconciliationsDAO {
             cstmt.setString(5, filter.IN_COUNTRY.trim());
             cstmt.setString(6, filter.IN_ACCOUNTS.trim());
             cstmt.setString(7, filter.IN_BANDOC.trim());
+            cstmt.setString(8, filter.IN_TYPE_SOURCE != null ? filter.IN_TYPE_SOURCE.trim() : "");
 
-            cstmt.setInt(8, filter.page.PAGNUM);
-            cstmt.setInt(9, filter.page.PAGROW);
-            cstmt.setInt(10, filter.page.TOTPAG);
-            cstmt.setInt(11, filter.page.TOTROW);
+            cstmt.setInt(9, filter.page.PAGNUM);
+            cstmt.setInt(10, filter.page.PAGROW);
+            cstmt.setInt(11, filter.page.TOTPAG);
+            cstmt.setInt(12, filter.page.TOTROW);
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(8);
-            filter.page.PAGROW = cstmt.getInt(9);
-            filter.page.TOTPAG = cstmt.getInt(10);
-            filter.page.TOTROW = cstmt.getInt(11);
+            filter.page.PAGNUM = cstmt.getInt(9);
+            filter.page.PAGROW = cstmt.getInt(10);
+            filter.page.TOTPAG = cstmt.getInt(11);
+            filter.page.TOTROW = cstmt.getInt(12);
 
             // Primera lista: Totales
             rst = cstmt.getResultSet();
@@ -5328,7 +5341,294 @@ public class StatementReconciliationsDAO {
             if (cstmt != null) { try { cstmt.close(); } catch (Exception e) {} }
             if (cnx != null) { session.getCNXIBMDB2().closeIBMDB2Connection(cnx); }
         }
-        
+
         return mensajeRetorno;
+    }
+
+    // Scan MPF190 usado desde el Data Entry de Cash: busca directo en MPF190 (sin
+    // paginado, siempre STVAL='3' del lado del SP) y trae los totales de NETO/PAYAMOU
+    // ya calculados por el programa (no se suman en el cliente).
+    public Map<String, Object> loadMPS778(MPF190Filter filter) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        List<MPF190> lstData = new ArrayList<MPF190>(0);
+        MPF190 bean;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS778(?,?,?,?,?,?)}";
+
+        double totalNeto = 0;
+        double totalPayamou = 0;
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_SEARCH);
+            cstmt.setString(3, filter.IN_DATE_FROM);
+            cstmt.setString(4, filter.IN_DATE_TO);
+            cstmt.setString(5, filter.IN_SCOUNTRY);
+            cstmt.setString(6, filter.IN_SAGENT);
+
+            cstmt.execute();
+
+            // 1er result set: totales
+            rst = cstmt.getResultSet();
+            if (rst.next()) {
+                totalNeto = rst.getDouble("TOTAL_NETO");
+                totalPayamou = rst.getDouble("TOTAL_PAYAMOU");
+            }
+            rst.close();
+
+            // 2do result set: detalle
+            if (cstmt.getMoreResults()) {
+                rst = cstmt.getResultSet();
+                while (rst.next()) {
+                    bean = new MPF190();
+
+                    bean.NBR = rst.getLong("NBR");
+                    bean.CCUST = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                    bean.TREG = rst.getString("TREG") != null ? rst.getString("TREG").trim() : "";
+                    bean.CBATCH = rst.getString("CBATCH") != null ? rst.getString("CBATCH").trim() : "";
+                    bean.SEQ = rst.getString("SEQ") != null ? rst.getString("SEQ").trim() : "";
+                    bean.SCOUNTRY = rst.getString("SCOUNTRY") != null ? rst.getString("SCOUNTRY").trim() : "";
+                    bean.SAGENT = rst.getString("SAGENT") != null ? rst.getString("SAGENT").trim() : "";
+                    bean.ADATE = rst.getString("ADATE") != null ? rst.getString("ADATE").trim() : "";
+                    bean.SDATE = rst.getString("SDATE") != null ? rst.getString("SDATE").trim() : "";
+                    bean.SCURRENCY = rst.getString("SCURRENCY") != null ? rst.getString("SCURRENCY").trim() : "";
+                    bean.NETO = rst.getDouble("NETO");
+                    bean.PAYAMOU = rst.getDouble("PAYAMOU");
+                    bean.REFERENCE = rst.getString("REFERENCE") != null ? rst.getString("REFERENCE").trim() : "";
+                    bean.SFILE = rst.getString("SFILE") != null ? rst.getString("SFILE").trim() : "";
+                    bean.NPAG = rst.getString("NPAG") != null ? rst.getString("NPAG").trim() : "";
+                    bean.COMMENTS = rst.getString("COMMENTS") != null ? rst.getString("COMMENTS").trim() : "";
+                    bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                    bean.ACCOUNT1 = rst.getString("ACCOUNT1") != null ? rst.getString("ACCOUNT1").trim() : "";
+                    bean.ACCOUNT2 = rst.getString("ACCOUNT2") != null ? rst.getString("ACCOUNT2").trim() : "";
+                    bean.ACCOUNT3 = rst.getString("ACCOUNT3") != null ? rst.getString("ACCOUNT3").trim() : "";
+
+                    lstData.add(bean);
+                }
+                rst.close();
+            }
+
+            result.put("data", lstData);
+            result.put("totalNeto", totalNeto);
+            result.put("totalPayamou", totalPayamou);
+
+        } catch (Exception e) {
+            logError.error("Exception -> " + e.getMessage(), e);
+            result.put("data", lstData);
+            result.put("totalNeto", 0.0);
+            result.put("totalPayamou", 0.0);
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
+    private String strVal(JsonObject m, String key) {
+        JsonElement v = m.get(key);
+        return (v != null && !v.isJsonNull()) ? v.getAsString().trim() : "";
+    }
+
+    private double dblVal(JsonObject m, String key) {
+        JsonElement v = m.get(key);
+        if (v == null || v.isJsonNull()) {
+            return 0;
+        }
+        try {
+            return v.getAsDouble();
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    // Concilia MANUALMENTE (STVAL='5') un MPF102 (extracto abierto en el Data
+    // Entry) contra un MPF190 (venta directa elegida en el scan MPS778), vía
+    // MPS779 -- no busca, valida el par ya identificado con las mismas reglas
+    // de canal/agente que usa MPS320 para el automático.
+    public Map<String, Object> conciliarManualScan(JsonObject bean, UserView user) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String ccust = strVal(bean, "CCUST");
+        String bandoc = strVal(bean, "BANDOC");
+        String dateci = strVal(bean, "DATECI");
+        String tranci = strVal(bean, "TRANCI");
+        String tdoc = strVal(bean, "TDOC");
+        double neto102 = dblVal(bean, "NETO_102");
+        String scurrency102 = strVal(bean, "SCURRENCY_102");
+
+        // CCUST propio de la MPF190 -- puede ser distinto al CCUST de la MPF102,
+        // ya que el scan (MPS778) busca mezclado en varios códigos de cliente
+        // (133/134/202/547).
+        String ccust190 = strVal(bean, "CCUST_190");
+        String treg = strVal(bean, "TREG");
+        String adate190 = strVal(bean, "ADATE_190");
+        String scountry = strVal(bean, "SCOUNTRY");
+        String sagent = strVal(bean, "SAGENT");
+        String scurrency190 = strVal(bean, "SCURRENCY_190");
+        String cbatch = strVal(bean, "CBATCH");
+        String seq = strVal(bean, "SEQ");
+        double neto190 = dblVal(bean, "NETO_190");
+
+        String usr = user.getUserInfo().USR;
+
+        // sout de TODOS los campos que se mandan al SP, para verificar rápido si
+        // falta alguno o llega vacío antes de siquiera pegarle a la base.
+        System.out.println("MPS779 -> MPF102: CCUST=[" + ccust + "] BANDOC=[" + bandoc + "] DATECI=[" + dateci + "] TRANCI=[" + tranci + "] TDOC=[" + tdoc + "]");
+        System.out.println("MPS779 -> MPF102: NETO_102=[" + neto102 + "] SCURRENCY_102=[" + scurrency102 + "]");
+        System.out.println("MPS779 -> MPF190: CCUST_190=[" + ccust190 + "] TREG=[" + treg + "] ADATE_190=[" + adate190 + "] SCOUNTRY=[" + scountry + "] SAGENT=[" + sagent + "] SCURRENCY_190=[" + scurrency190 + "] CBATCH=[" + cbatch + "] SEQ=[" + seq + "]");
+        System.out.println("MPS779 -> MPF190: NETO_190=[" + neto190 + "]");
+        System.out.println("MPS779 -> USR=[" + usr + "]");
+        System.out.println("MPS779 -> mainLibrary=[" + session.getMainLibrary() + "]");
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS779(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, ccust);
+            cstmt.setString(2, bandoc);
+            cstmt.setString(3, dateci);
+            cstmt.setString(4, tranci);
+            cstmt.setString(5, tdoc);
+            cstmt.setDouble(6, neto102);
+            cstmt.setString(7, scurrency102);
+
+            cstmt.setString(8, ccust190);
+            cstmt.setString(9, treg);
+            cstmt.setString(10, adate190);
+            cstmt.setString(11, scountry);
+            cstmt.setString(12, sagent);
+            cstmt.setString(13, scurrency190);
+            cstmt.setString(14, cbatch);
+            cstmt.setString(15, seq);
+            cstmt.setDouble(16, neto190);
+
+            cstmt.setString(17, usr);
+
+            cstmt.setInt(18, 0);
+            cstmt.registerOutParameter(18, Types.INTEGER);
+            cstmt.setString(19, "");
+            cstmt.registerOutParameter(19, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(18);
+            String message = cstmt.getString(19);
+
+            System.out.println("MPS779 -> resultado: sqlCode=[" + sqlCode + "] message=[" + message + "]");
+
+            result.put("success", sqlCode != 0);
+            result.put("message", message);
+
+        } catch (Exception e) {
+            logError.error("Exception -> " + e.getMessage(), e);
+            result.put("success", false);
+            result.put("message", "Error: " + e.getMessage());
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
+    // Reversa una conciliación manual hecha por MPS779 (STVAL=5, PGMUP=MPS779),
+    // identificando el par MPF102/MPF190 por BANDOC/DATECI/TRANCI (el "link" que
+    // dejó MPS779 al conciliar). El SP valida STVAL/PGMUP antes de tocar nada.
+    public Map<String, Object> reversarManualScan(String ccust, String bandoc, String dateci, String tranci, UserView user) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String usr = user.getUserInfo().USR;
+
+        System.out.println("MPS780 -> CCUST=[" + ccust + "] BANDOC=[" + bandoc + "] DATECI=[" + dateci + "] TRANCI=[" + tranci + "] USR=[" + usr + "]");
+        System.out.println("MPS780 -> mainLibrary=[" + session.getMainLibrary() + "]");
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS780(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, ccust);
+            cstmt.setString(2, bandoc);
+            cstmt.setString(3, dateci);
+            cstmt.setString(4, tranci);
+            cstmt.setString(5, usr);
+
+            cstmt.setInt(6, 0);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.setString(7, "");
+            cstmt.registerOutParameter(7, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(6);
+            String message = cstmt.getString(7);
+
+            System.out.println("MPS780 -> resultado: sqlCode=[" + sqlCode + "] message=[" + message + "]");
+
+            result.put("success", sqlCode != 0);
+            result.put("message", message);
+
+        } catch (Exception e) {
+            logError.error("Exception -> " + e.getMessage(), e);
+            result.put("success", false);
+            result.put("message", "Error: " + e.getMessage());
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
     }
 }

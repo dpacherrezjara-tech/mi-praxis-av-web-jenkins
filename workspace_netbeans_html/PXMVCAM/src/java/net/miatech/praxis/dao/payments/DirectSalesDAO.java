@@ -19,6 +19,7 @@ import net.miatech.praxis.payment.MPF190;
 import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
+import net.miatech.praxis.payment.MPF190Create;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -290,8 +291,8 @@ public class DirectSalesDAO {
             cstmt.setString(8, bean.SEQ);
 
             cstmt.setString(9, bean.ADATE);
-            cstmt.setDouble(10, Double.parseDouble(bean.NETO.trim()));
-            cstmt.setDouble(11, Double.parseDouble(bean.PAYAMOU.trim()));
+            cstmt.setString(10, bean.NETO);
+            cstmt.setString(11, bean.PAYAMOU);
             cstmt.setString(12, bean.SDATE);
             cstmt.setString(13, bean.REFERENCE);
             cstmt.setString(14, bean.SFILE);
@@ -299,6 +300,58 @@ public class DirectSalesDAO {
             cstmt.setString(16, bean.COMMENTS);
 
             cstmt.setString(17, session.getUserView().getUserInfo().USR);
+
+            cstmt.execute();
+
+        } catch (Exception e) {
+            strMsj = "Error: " + e.getMessage();
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return strMsj;
+    }
+
+    public String createMPS781(MPF190Create bean) throws SQLException, Exception {
+
+        String strMsj = "Operation was successful.";
+
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS781(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, bean.CCUST);
+            cstmt.setString(2, bean.TREG);
+            cstmt.setString(3, bean.ADATE);
+            cstmt.setString(4, bean.SCOUNTRY);
+            cstmt.setString(5, bean.SAGENT);
+            cstmt.setString(6, bean.SCURRENCY);
+
+            cstmt.setString(7, bean.NETO);
+            cstmt.setString(8, bean.PAYAMOU);
+            cstmt.setString(9, bean.SDATE);
+            cstmt.setString(10, bean.REFERENCE);
+            cstmt.setString(11, bean.SFILE);
+            cstmt.setString(12, bean.NPAG);
+            cstmt.setString(13, bean.COMMENTS);
+
+            cstmt.setString(14, session.getUserView().getUserInfo().USR);
 
             cstmt.execute();
 

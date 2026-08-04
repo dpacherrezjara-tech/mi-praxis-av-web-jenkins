@@ -330,6 +330,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 Ext.getCmp(prototype.id + '-cmbBank').setValue('');
 
                 var lstCountry = res.lstCountry;
+                me.lstCountry = lstCountry;
                 var storeDataCountry = Ext.create('Ext.data.Store', {
                     data: lstCountry,
                     autoLoad: true
@@ -464,7 +465,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 monthToCash.setValue(monthActual);
                 dayToCash.setValue(dayActual);  // Día actual
 
-                Ext.getCmp(prototype.id + '-filterDetailCash').setVisible(true);
+                Ext.getCmp(prototype.id + '-cmbStatusCash').setVisible(true);
+                Ext.getCmp(prototype.id + '-cmbTypeSourceCash').setVisible(true);
+                Ext.getCmp(prototype.id + '-txtBANDOCASH').setVisible(true);
+                Ext.getCmp(prototype.id + '-typeSocietyCas22h').setVisible(true);
                 dayFromCash.setDisabled(false);
                 dayToCash.setDisabled(false);
                 societyCash.setDisabled(false);
@@ -487,7 +491,10 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
                 monthToCash.setValue('12');
                 dayToCash.setValue('');
 
-                Ext.getCmp(prototype.id + '-filterDetailCash').setVisible(false);
+                Ext.getCmp(prototype.id + '-cmbStatusCash').setVisible(false);
+                Ext.getCmp(prototype.id + '-cmbTypeSourceCash').setVisible(false);
+                Ext.getCmp(prototype.id + '-txtBANDOCASH').setVisible(false);
+                Ext.getCmp(prototype.id + '-typeSocietyCas22h').setVisible(false);
                 dayFromCash.setDisabled(true);
                 dayToCash.setDisabled(true);
                 societyCash.setDisabled(true);
@@ -691,6 +698,7 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
         me.beanSecundary.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
         me.beanSecundary.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatusCash').getValue();
         me.beanSecundary.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBANDOCASH').getValue();
+        me.beanSecundary.IN_TYPE_SOURCE = Ext.getCmp(prototype.id + '-cmbTypeSourceCash').getValue();
         me.beanSecundary.IN_ACCOUNTS = selectedAccounts;
         console.log(me.beanSecundary, 'me.beanSecundary')
         var beanString = JSON.stringify(me.beanSecundary);

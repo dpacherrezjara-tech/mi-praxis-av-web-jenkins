@@ -18,6 +18,8 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     beanRefreshHeader: {},
     lstA1852: {},
     dataObtain: {},
+    totalNetoScan: 0,
+    totalPayamouScan: 0,
     // </editor-fold>
     init: function (view) {
         prototype.id = 'StatementReconciliationsForm';
@@ -43,6 +45,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                 meDE.onChangeHeader();
             });
         }
+        meDE.initScanFilters();
+        // El id de gridDataInfoScanArc es fijo (prototype.id + '-gridDataInfoScanArc')
+        // en cada apertura del Data Entry -- si el usuario buscó, cerró sin usar
+        // "Clean Detail" y volvió a abrir, el store de la búsqueda anterior podía
+        // seguir ahí. Se fuerza un store vacío al abrir para que el scan siempre
+        // arranque limpio, sin depender de que el usuario lo limpie a mano.
+        meDE.clear_tableNormal();
         switch (this.actionCode) {
             case 'U':
                 this.getData();
@@ -75,10 +84,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                 var res = Ext.JSON.decode(response.responseText);
                 if (res.success) {
                     me.lstCard = res.lstCard;
-                    Ext.getCmp(prototype.id + '-cmbSCARCOD').bindStore(
-                            Ext.create('Ext.data.Store', {data: res.lstCard, autoLoad: true}));
-                    Ext.getCmp(prototype.id + '-cmbSCARCOD').setValue('');
-                    if (res.userPermis.PERMM === 'Y') {
+                    // "Reverse Match" solo aplica a conciliaciones MANUALES (STVAL=5),
+                    // no tendría sentido reversar un match automático (STVAL=1) por acá.
+                    if (res.userPermis.PERMM === 'Y' && meDE.bean.data.STVAL === '5') {
                         Ext.getCmp(prototype.id + '-btn-reverse').show();
                     } else {
                         Ext.getCmp(prototype.id + '-btn-reverse').hide();
@@ -303,23 +311,44 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                     var gridScanArc = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
                     var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
 
-                    if (gridScanArc && gridScan) {
-                        gridScanArc.bindStore(storeData);
+                    if (gridScan) {
                         gridScan.bindStore(storeData);
                     }
+                    // gridDataInfoScanArc ya no se llena con el mismo store de "Detail Settlement 2" (pendiente definir su propia fuente de datos).
 
                     // ... resto de tu lógica de visualización de paneles ...
-                    if (meDE.bean.data.CCUSTPRO == '02') {
-                        if (panelScanArc)
-                            panelScanArc.show();
-                        if (panelScan)
-                            panelScan.hide();
-                    } else {
-                        if (panelScanArc)
-                            panelScanArc.hide();
-                        if (panelScan)
-                            panelScan.show();
+                    var panelScanCard = Ext.getCmp(prototype.id + '-panelScanCard');
+                    var panelScanCard2 = Ext.getCmp(prototype.id + '-panelScanCard2');
 
+                    var panelSumAmountQty = Ext.getCmp(prototype.id + '-panelSumAmountQty');
+
+                    // Si "Detail Settlement 2" ya trae registros, no hace falta el scan (ni su grilla ni los filtros de búsqueda).
+                    // Si no trae registros, se oculta la grilla y se muestran los filtros para buscar manualmente.
+                    if (data.length > 0) {
+                        if (panelScan) panelScan.show();
+                        if (panelScanCard) panelScanCard.hide();
+                        if (panelScanCard2) panelScanCard2.hide();
+                        if (panelSumAmountQty) panelSumAmountQty.show(); // es de "Detail Settlement 2", solo aplica cuando esa grilla se ve
+                    } else {
+                        if (panelScan) panelScan.hide();
+                        if (panelScanCard) panelScanCard.show();
+                        if (panelScanCard2) panelScanCard2.show();
+                        if (panelSumAmountQty) panelSumAmountQty.hide(); // con el scan activo no aplica (siempre mostraba 0.00 / 0)
+                    }
+
+                    // Si ya está Match o Match Manual (1 o 5), no tiene sentido mostrar la grilla ARC de abajo.
+                    var btnToggleVoucher = Ext.getCmp(prototype.id + '-btnToggleVoucher');
+                    if (meDE.bean.data.STVAL == '1' || meDE.bean.data.STVAL == '5') {
+                        if (panelScanArc) panelScanArc.hide();
+                        // Mostrar/Ocultar Voucher solo tiene sentido si ya está conciliado
+                        // (lee el SFILE de "Detail Settlement 2"); en Pending no hay nada que mostrar.
+                        if (btnToggleVoucher) btnToggleVoucher.show();
+                    } else {
+                        if (panelScanArc) panelScanArc.show();
+                        if (btnToggleVoucher) btnToggleVoucher.hide();
+                    }
+
+                    if (meDE.bean.data.STVAL == '3') {
                         // Lógica adicional de columnas
                         if (meDE.bean.data.TINPUT == 'I') {
                             meDE.hiddenGridColumns();
@@ -359,20 +388,13 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
     //</editor-fold>
 
+    // "Detail Settlement 2" ahora usa siempre el mismo set de columnas que el
+    // scan (Nbr/Status/Country/Agent/Abono Date/Currency/Neto/Payamou/Reference/
+    // Filename/Npag), sin importar el origen (ICCS/BSP/ARC) -- ya no hace falta
+    // ocultar/ajustar columnas por TINPUT (Concept/Sconsol/Amount USD ya no existen).
     hiddenGridColumns: function () {
-        Ext.getCmp(prototype.id + '-columnPAYAMOU').hide()
-        Ext.getCmp(prototype.id + '-columnSAGENT').hide()
-        Ext.getCmp(prototype.id + '-columnCONCEPT').hide()
-//        Ext.getCmp(prototype.id + '-gridDataInfoScan').hide()
-//        Ext.getCmp(prototype.id + '-gridDataInfoScan').hide()
-
     },
     hiddenGridColumnsBSP: function () {
-        Ext.getCmp(prototype.id + '-columnUSDEQUI').hide();
-        Ext.getCmp(prototype.id + '-columnDESC_SCOUNTRY').setWidth(130);
-        Ext.getCmp(prototype.id + '-columnSAGENT').setWidth(80);
-        Ext.getCmp(prototype.id + '-columnSCONSOL').setWidth(85);
-        console.log("Entra aqui");
     },
     calcularMontos: function () {
         console.log('calcularMontos');
@@ -506,9 +528,23 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             }
         });
     },
+    // El excel exporta el CARRITO (lo acumulado en gridDataInfoScanArc tras 1 o
+    // varias búsquedas), no una búsqueda puntual -- por eso se manda por POST
+    // (global.openWindowWithPost, mismo patrón que GSACommisionsReportController)
+    // en vez del GET con beanString: la lista puede ser larga para ir en la URL.
     exportExcel: function () {
-        me.paramsDetail.beanString = JSON.stringify(this.beanScan);
-        global.getFile(prototype.url + '/getXLSXEntry?beanString=' + encodeURI(me.paramsDetail.beanString));
+        var store = Ext.getCmp(prototype.id + '-gridDataInfoScanArc').getStore();
+        var cart = [];
+        store.each(function (record) {
+            cart.push(record.data);
+        });
+
+        if (cart.length === 0) {
+            global.Msg({msg: 'No hay registros en la lista para exportar.'});
+            return;
+        }
+
+        global.openWindowWithPost(prototype.url + '/getXLSXScanCart', 'beanString', JSON.stringify(cart));
     },
     mostrarCombinacionValida: function (combination, diff) {
         console.log('Se encontró una combinación válida:');
@@ -554,203 +590,322 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 //            console.log('El checkbox no está marcado');
         }
     },
-    clear_keyDownHandler: function () {
-
-        this.setValue('txtFromADATE', null);
-        this.setValue('txtToADATE', null);
-        this.setValue('txtFromSDATE', null);
-        this.setValue('txtToSDATE', null);
-        this.setValue('txtACCNUMBER', '');
-        this.setValue('txtNETO', '');
-        this.setValue('cmbSCARCOD', '');
-
-    },
-    selectAdateFiltro: function () {
-        if (win.getValue('txtFromADATE').trim() === '') {
-            this.inhabilitarFiltrosAdate();
-        } else {
-            this.habilitarFiltrosAdate();
-        }
-    },
-    inhabilitarFiltrosAdate: function () {
-        win.enabled('txtToADATE', false);
-        win.setValue('txtToADATE', '');
-    },
-    habilitarFiltrosAdate: function () {
-        win.enabled('txtToADATE', true);
-    },
-    selectSdateFiltro: function () {
-        if (win.getValue('txtFromADATE').trim() === '') {
-            this.inhabilitarFiltrosSdate();
-        } else {
-            this.habilitarFiltrosSdate();
-        }
-    },
-    inhabilitarFiltrosSdate: function () {
-        win.enabled('txtToSDATE', false);
-        win.setValue('txtToSDATE', '');
-    },
-    habilitarFiltrosSdate: function () {
-        win.enabled('txtToSDATE', true);
-    },
+    // "Clean Detail" limpia la grilla del scan MPF190 (gridDataInfoScanArc), no
+    // "Detail Settlement 2" -- son grillas distintas, y el scan es la que vive en
+    // este mismo panel de filtros junto al botón.
     clear_tableNormal: function () {
+        meDE.totalNetoScan = 0;
+        meDE.totalPayamouScan = 0;
+        meDE.setValue('de-txtTotalNetoScan', Ext.util.Format.number(0, '0,000.00'));
+        meDE.setValue('de-txtTotalPayamouScan', Ext.util.Format.number(0, '0,000.00'));
 
-        win.setValue('de-txtQty', '');
-        win.setValue('de-txtSumAmount', '');
         let storeDataClear = Ext.create('Ext.data.Store', {
-            data: '',
+            data: [],
             autoLoad: true
         });
-        Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataClear);
-
-        this.sumAmount = 0;
+        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+        grid.bindStore(storeDataClear);
+        grid.getView().refresh();
     },
-    cambiaParams: function (checkbox, newValue, oldValue, eOpts) {
-        this.beanScan = {}
-        let chkMERCHANT = Ext.getCmp(prototype.id01 + '-chkMERCHANT').getValue();
-        let chkACCNUMBER = Ext.getCmp(prototype.id01 + '-chkACCNUMBER').getValue();
-        let chkADATE = Ext.getCmp(prototype.id01 + '-chkADATE').getValue();
-        let chkSDATE = Ext.getCmp(prototype.id01 + '-chkSDATE').getValue();
-        var fecha_a_validar = "";
-        this.beanScan.IN_FROMADATE = (Ext.getCmp(prototype.id + '-txtFromADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromADATE').getValue(), 'Ymd');
-        this.beanScan.IN_TOADATE = (Ext.getCmp(prototype.id + '-txtToADATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToADATE').getValue(), 'Ymd');
-        this.beanScan.IN_FROMSDATE = (Ext.getCmp(prototype.id + '-txtFromSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtFromSDATE').getValue(), 'Ymd');
-        this.beanScan.IN_TOSDATE = (Ext.getCmp(prototype.id + '-txtToSDATE').getValue() === null) ? fecha_a_validar : Ext.util.Format.date(Ext.getCmp(prototype.id + '-txtToSDATE').getValue(), 'Ymd');
-        this.beanScan.IN_SCARCOD = Ext.getCmp(prototype.id + '-cmbSCARCOD').getValue();
-
-        this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-txtACCNUMBER').getValue();
-        if (this.beanScan.IN_ACCNUMBER === '') {
-            this.beanScan.IN_ACCNUMBER = Ext.getCmp(prototype.id + '-de-txtACCNUMBER').getValue();
+    // Botón "Del." de cada fila de la grilla del scan (igual patrón que removeTKT
+    // en los demás DataEntry, pero apuntando a gridDataInfoScanArc). Como el scan
+    // ahora es un "carrito" acumulado, hay que recalcular los totales al borrar.
+    removeScanRow: function (grid, rowIndex, colIndex) {
+        var gridArc = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+        gridArc.getStore().removeAt(rowIndex);
+        meDE.recalcularTotalesScan();
+        gridArc.getView().refresh();
+    },
+    // Botón "Img." (ojito) de cada fila del scan: abre el voucher/comprobante de
+    // esa venta directa (MPF190) en una pestaña nueva -- mismo endpoint que usa
+    // DirectSales (downloadVoucher) para mostrarlo inline en su propio Data Entry,
+    // pero acá se abre en pestaña aparte porque este Data Entry (Cash) YA tiene
+    // su propio iframe pdfIframeVoucher mostrando el scan del extracto (MPF102);
+    // reusarlo taparía esa imagen y confundiría cuál documento se está viendo.
+    viewImageScan: function (grid, rowIndex, colIndex) {
+        var record = grid.getStore().getAt(rowIndex);
+        if (!record) {
+            return;
         }
-        if (!chkACCNUMBER) {
-            this.beanScan.IN_ACCNUMBER = '';
-        }
-
-        this.beanScan.IN_MERCHAND = Ext.getCmp(prototype.id + '-txtMERCHANT').getValue();
-        if (this.beanScan.IN_MERCHAND === '') {
-            this.beanScan.IN_MERCHAND = Ext.getCmp(prototype.id + '-de-txtMERCHAND').getValue();
-        }
-        if (!chkMERCHANT) {
-            this.beanScan.IN_MERCHAND = '';
-        }
-
-        if (this.beanScan.IN_FROMADATE === '') {
-            this.beanScan.IN_FROMADATE = Ext.getCmp(prototype.id + '-de-txtVALDATE').getValue();
-        }
-        if (!chkADATE) {
-            this.beanScan.IN_FROMADATE = '';
-        }
-
-        this.beanScan.IN_CODEBANK = meDE.bean.data.CODEBANK;
-        this.beanScan.IN_BANDOC = meDE.bean.data.BANDOC;
-        this.beanScan.IN_strNETO = Ext.getCmp(prototype.id + '-txtNETO').getValue();
-        this.beanScan.IN_STVAL = meDE.bean.data.STVAL;
-
-
-        this.beanScan.IN_TERMI = Ext.getCmp(prototype.id + '-txtTERMI').getValue();
-        this.beanScan.IN_SAGENT = Ext.getCmp(prototype.id + '-txtSAGENT').getValue();
-        this.beanScan.IN_SEQ = Ext.getCmp(prototype.id + '-txtSEQ').getValue();
-        this.beanScan.IN_RED = Ext.getCmp(prototype.id + '-txtRED').getValue();
-
-        if (this.beanScan.IN_STVAL === 'Match') {
-            this.beanScan.IN_STVAL = '1';
-        } else if (this.beanScan.IN_STVAL === 'Match Manual') {
-            this.beanScan.IN_STVAL = '5';
-        } else {
-            this.beanScan.IN_STVAL = 'P';
-        }
-
-        if (
-                !this.beanScan.IN_FROMADATE &&
-                !this.beanScan.IN_TOADATE &&
-                !this.beanScan.IN_FROMSDATE &&
-                !this.beanScan.IN_TOSDATE &&
-                !this.beanScan.IN_SCARCOD &&
-                !this.beanScan.IN_ACCNUMBER &&
-                !this.beanScan.IN_VALDATE &&
-                !this.beanScan.IN_strNETO
-                ) {
-            global.Msg({msg: 'Fields to Scan must be filled out'});
+        var row = record.data;
+        if (!row.SFILE) {
+            global.Msg({msg: 'Este registro no tiene archivo adjunto.'});
             return;
         }
 
-        // Obtener el componente del grid
-        let gridComponentNormalon = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-        let dataGrid = gridComponentNormalon.getStore().getData().items;
-        let constructorExcluir = {}.constructor;
-        let arrayConstructor = dataGrid.filter(function (elemento) {
-            return elemento.constructor !== constructorExcluir;
+        var year = (row.ADATE || '').toString().substring(0, 4);
+        var targetPage = parseInt(row.NPAG, 10);
+        var pageHash = (!isNaN(targetPage) && targetPage > 0) ? ('#page=' + targetPage) : '';
+
+        var url = CONTEXTPATH + '/DirectSales/downloadVoucher' +
+                '?sfile=' + encodeURIComponent(row.SFILE) +
+                '&sagent=' + encodeURIComponent(row.SAGENT) +
+                '&year=' + encodeURIComponent(year) +
+                '&adate=' + encodeURIComponent(row.ADATE) +
+                '&disposition=inline' + pageHash;
+
+        window.open(url, '_blank');
+    },
+    // Botón "Conc." de cada fila del scan: concilia MANUALMENTE (STVAL='5') el
+    // MPF102 abierto en este Data Entry contra la venta directa (MPF190) de esa
+    // fila, vía MPS779. Al ser manual, solo valida Neto igual + Moneda igual +
+    // Tipo de documento = Sales (sin las reglas de canal/agente de MPS320) --
+    // se valida del lado del cliente antes de llamar al servidor, que igual
+    // las vuelve a validar.
+    conciliarScan: function (grid, rowIndex, colIndex) {
+        var record = grid.getStore().getAt(rowIndex);
+        if (!record) {
+            return;
+        }
+        var row = record.data;
+
+        var netoExtracto = parseFloat(meDE.beanResult.NETO) || 0;
+        var netoVenta = parseFloat(row.NETO) || 0;
+
+        if (Math.abs(netoExtracto - netoVenta) > 0.009) {
+            global.Msg({msg: 'Los montos no coinciden (Extracto: ' + Ext.util.Format.number(netoExtracto, '0,000.00')
+                        + ' vs. Venta Directa: ' + Ext.util.Format.number(netoVenta, '0,000.00') + '). No se puede conciliar.'});
+            return;
+        }
+        if ((meDE.beanResult.SCURRENCY || '').trim() !== (row.SCURRENCY || '').trim()) {
+            global.Msg({msg: 'Las monedas no coinciden entre el extracto y la venta directa.'});
+            return;
+        }
+        if ((meDE.beanResult.TDOC || '').trim() !== 'S') {
+            global.Msg({msg: 'El registro del extracto no es de tipo Sales, no se puede conciliar.'});
+            return;
+        }
+
+        Ext.Msg.show({
+            title: '.:PRAXIS:.',
+            msg: '¿Confirma conciliar el extracto contra la venta directa Nbr ' + (rowIndex + 1)
+                    + ' (Neto ' + Ext.util.Format.number(netoVenta, '0,000.00') + ')?',
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.MessageBox.QUESTION,
+            modal: true,
+            fn: function (btn) {
+                if (btn !== 'yes') {
+                    return;
+                }
+
+                var bean = {
+                    // MPF102 (el extracto abierto en este Data Entry)
+                    CCUST: meDE.bean.data.CCUST,
+                    BANDOC: meDE.beanResult.BANDOC,
+                    DATECI: meDE.beanResult.DATECI,
+                    TRANCI: meDE.beanResult.TRANCI,
+                    TDOC: meDE.beanResult.TDOC,
+                    NETO_102: netoExtracto,
+                    SCURRENCY_102: meDE.beanResult.SCURRENCY,
+                    // MPF190 (la fila elegida en el scan) -- CCUST propio, puede ser
+                    // distinto al de la MPF102 (el scan busca mezclado en 133/134/202/547).
+                    CCUST_190: row.CCUST,
+                    TREG: row.TREG,
+                    ADATE_190: row.ADATE,
+                    SCOUNTRY: row.SCOUNTRY,
+                    SAGENT: row.SAGENT,
+                    SCURRENCY_190: row.SCURRENCY,
+                    CBATCH: row.CBATCH,
+                    SEQ: row.SEQ,
+                    NETO_190: netoVenta
+                };
+
+                Ext.getCmp(prototype.id + '-dataEntryCash').mask('Conciliando...');
+                Ext.Ajax.request({
+                    url: prototype.url + '/conciliarManualScan',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: JSON.stringify(bean)},
+                    success: function (response) {
+                        Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                        var res = Ext.JSON.decode(response.responseText);
+                        if (res.success) {
+                            global.Msg({
+                                msg: res.Mensaje,
+                                icon: 1,
+                                fn: function () {
+                                    Ext.getCmp(prototype.id + '-dataEntryCash').close();
+                                    var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
+                                    if (btnSearch) {
+                                        btnSearch.fireEvent('click', {});
+                                    }
+                                }
+                            });
+                        } else {
+                            global.Msg({msg: res.Mensaje || 'No se pudo conciliar.'});
+                        }
+                    },
+                    failure: function () {
+                        Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                        global.Msg({msg: 'Error de comunicación con el servidor.'});
+                    }
+                });
+            }
         });
-        let arrayNormal = [];
-        if (arrayConstructor.length > 0) {
-            for (let value of arrayConstructor) {
-                arrayNormal.push(value.data);
+    },
+    // Llave única de MPF190 (misma que usa DirectSales/MPS777 para el UPDATE:
+    // CCUST+TREG+ADATE+SCOUNTRY+SAGENT+SCURRENCY+CBATCH+SEQ). Sirve para
+    // deduplicar cuando el carrito acumula resultados de varias búsquedas.
+    buildScanRowKey: function (row) {
+        return [row.CCUST, row.TREG, row.ADATE, row.SCOUNTRY, row.SAGENT, row.SCURRENCY, row.CBATCH, row.SEQ].join('#');
+    },
+    // El SP solo calcula el total de SU búsqueda puntual; como el carrito acumula
+    // varias búsquedas, el total mostrado en el summary de la grilla tiene que ser
+    // el de TODO lo que quedó acumulado, así que se recalcula del lado del cliente.
+    recalcularTotalesScan: function () {
+        var store = Ext.getCmp(prototype.id + '-gridDataInfoScanArc').getStore();
+        var totalNeto = 0;
+        var totalPayamou = 0;
+        store.each(function (record) {
+            totalNeto += parseFloat(record.get('NETO')) || 0;
+            totalPayamou += parseFloat(record.get('PAYAMOU')) || 0;
+        });
+        meDE.totalNetoScan = totalNeto;
+        meDE.totalPayamouScan = totalPayamou;
+
+        meDE.setValue('de-txtTotalNetoScan', Ext.util.Format.number(totalNeto, '0,000.00'));
+        meDE.setValue('de-txtTotalPayamouScan', Ext.util.Format.number(totalPayamou, '0,000.00'));
+    },
+    // <editor-fold defaultstate="collapsed" desc="Scan MPF190 (MPS778)">
+    initScanFilters: function () {
+        var yearActual = new Date().getFullYear();
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearScan').bindStore(win.getStoreYear(true));
+        Ext.getCmp(prototype.id + '-cmbDateToYearScan').bindStore(win.getStoreYear(true));
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthScan').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateToMonthScan').bindStore(win.getStoreMonth(true));
+        Ext.getCmp(prototype.id + '-cmbDateFromDayScan').bindStore(win.getStoreDays(true));
+        Ext.getCmp(prototype.id + '-cmbDateToDayScan').bindStore(win.getStoreDays(true));
+
+        Ext.getCmp(prototype.id + '-cmbDateFromYearScan').setValue(yearActual);
+        Ext.getCmp(prototype.id + '-cmbDateToYearScan').setValue(yearActual);
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToMonthScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateFromDayScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToDayScan').setValue('');
+
+        var storeDataCountry = Ext.create('Ext.data.Store', {
+            data: meDE.lstCountry,
+            autoLoad: true
+        });
+        Ext.getCmp(prototype.id + '-cmbCountryScanMPF190').bindStore(storeDataCountry);
+        Ext.getCmp(prototype.id + '-cmbCountryScanMPF190').setValue('');
+    },
+    // Al elegir Año/Mes/Día en "From" se replica en "To" (igual que DirectSalesController).
+    selectComboFromYearScan: function (obj) {
+        Ext.getCmp(prototype.id + '-cmbDateToYearScan').setValue(obj.getValue());
+    },
+    selectComboFromMonthScan: function (obj) {
+        Ext.getCmp(prototype.id + '-cmbDateToMonthScan').setValue(obj.getValue());
+    },
+    selectComboFromDayScan: function (obj) {
+        Ext.getCmp(prototype.id + '-cmbDateToDayScan').setValue(obj.getValue());
+    },
+    buildScanDate: function (y, m, d) {
+        y = String(y || '').trim();
+        m = String(m || '').trim();
+        d = String(d || '').trim();
+
+        if (!y) {
+            return '';
+        }
+        if (m) {
+            m = m.padStart(2, '0');
+            if (d) {
+                d = d.padStart(2, '0');
             }
         }
-        console.log(arrayNormal, 'arrayNormal')
-        let listAux = {};
-
-        for (let value of arrayNormal) {
-            listAux[`${value.descSTVAL}#${value.CCUST}#${value.descTDOC}#${value.SDATE}#${value.SAGENT}#${value.TERMI}#${value.SCARCOD}#${value.SCARDN}#${value.SAUTHOC}#${value.SCURRENCY}#${value.NETO}#${value.RED}#${value.SEQ}`] = "repetido";
-        }
-
-        var beanString = JSON.stringify(this.beanScan);
-//        Ext.Ajax.request({
-//            url: prototype.url + '/searchBean_DETAIL_CO',
-//            method: 'POST',
-//            timeout: 60000000,
-//            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-//            params: {beanString: beanString},
-//            success: function (response, options) {
-//                Ext.getCmp(prototype.id + '-dataEntry').unmask('Loading...');
-//                var res = Ext.JSON.decode(response.responseText);
-//
-//                if (res.success) {
-//                    let lstNormal = arrayNormal.length > 0 ? arrayNormal : [];
-//                    console.log(lstNormal, 'lstNormal')
-//                    console.log(res.data, 'res.data')
-//                    for (let item of res.data) {
-//                        if (`${item.descSTVAL}#${item.CCUST}#${item.descTDOC}#${item.SDATE}#${item.SAGENT}#${item.TERMI}#${item.SCARCOD}#${item.SCARDN}#${item.SAUTHOC}#${item.SCURRENCY}#${item.NETO}#${item.RED}#${item.SEQ}` in listAux) {
-//                            continue
-//                        }
-//                        lstNormal.push({
-//                            descSTVAL: item.descSTVAL,
-//                            CCUST: item.CCUST,
-//                            descTDOC: item.descTDOC,
-//                            SDATE: item.SDATE,
-//                            SAGENT: item.SAGENT,
-//                            TERMI: item.TERMI,
-//                            SCARCOD: item.SCARCOD,
-//                            SCARDN: item.SCARDN,
-//                            SAUTHOC: item.SAUTHOC,
-//                            SCURRENCY: item.SCURRENCY,
-//                            MERCHAND: item.MERCHAND,
-//                            BANDOC: item.BANDOC,
-//                            CORES: item.CORES,
-//                            ACCNUMBER: item.ACCNUMBER,
-//                            ADATE: item.ADATE,
-//                            NETO: item.NETO,
-//                            RED: item.RED,
-//                            SEQ: item.SEQ,
-//                            TDOC: item.TDOC
-//                        })
-//                    }
-//
-//                    var storeDataNormal = Ext.create('Ext.data.Store', {
-//                        data: lstNormal,
-//                        autoLoad: true
-//                    });
-//                    console.log(lstNormal, 'lstNormal dadadadada')
-//                    Ext.getCmp(prototype.id + '-gridDataInfoScan').bindStore(storeDataNormal);
-//
-//                    meDE.calcularMontos();
-//                    meDE.calcularDiferencias();
-//                } else {
-//                    global.Msg({msg: res.Mensaje});
-//                }
-//            }
-//        });
+        return y + m + d;
     },
+    eventKeyScan: function (field, e) {
+        if (e.getKey() === 13) {
+            meDE.searchMPF190Scan();
+        }
+    },
+    clearMPF190ScanFilters: function () {
+        Ext.getCmp(prototype.id + '-cmbInputDateScan').setValue('A');
+        Ext.getCmp(prototype.id + '-cmbDateFromMonthScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateFromDayScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToMonthScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbDateToDayScan').setValue('');
+        Ext.getCmp(prototype.id + '-typeSocietyScan').setValue('');
+        Ext.getCmp(prototype.id + '-cmbCountryScanMPF190').setValue('');
+        Ext.getCmp(prototype.id + '-txtAgentScan').setValue('');
+    },
+    // Programa MPS778: busca directo en MPF190 (siempre STVAL='3', Pending), sin paginado.
+    // No reemplaza la grilla "Arc" (gridDataInfoScanArc): funciona como un carrito,
+    // acumulando los resultados de cada búsqueda y deduplicando por la llave real
+    // de MPF190 (ver buildScanRowKey), igual patrón que usa BankReconciliation Cash
+    // para su grid de conciliación.
+    searchMPF190Scan: function () {
+        var bean = {};
+        bean.IN_CCUST = Ext.getCmp(prototype.id + '-typeSocietyScan').getValue() || '';
+        bean.IN_SEARCH = Ext.getCmp(prototype.id + '-cmbInputDateScan').getValue() || 'A';
+        bean.IN_DATE_FROM = meDE.buildScanDate(
+                Ext.getCmp(prototype.id + '-cmbDateFromYearScan').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateFromMonthScan').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateFromDayScan').getValue()
+                );
+        bean.IN_DATE_TO = meDE.buildScanDate(
+                Ext.getCmp(prototype.id + '-cmbDateToYearScan').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateToMonthScan').getValue(),
+                Ext.getCmp(prototype.id + '-cmbDateToDayScan').getValue()
+                );
+        bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountryScanMPF190').getValue() || '';
+        bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAgentScan').getValue() || '';
+
+        var beanString = JSON.stringify(bean);
+        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
+
+        Ext.getCmp(prototype.id + '-dataEntryCash').mask('Loading...');
+        Ext.Ajax.request({
+            url: prototype.url + '/searchMPF190Scan',
+            method: 'POST',
+            timeout: 60000000,
+            params: {beanString: beanString},
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                var res = Ext.JSON.decode(response.responseText);
+                if (res.success) {
+                    // Si la grilla todavía no tiene store (primera búsqueda), se arranca
+                    // con uno vacío para poder usar store.add() igual que en las siguientes.
+                    if (!grid.getStore() || !grid.getStore().add) {
+                        grid.bindStore(Ext.create('Ext.data.Store', {data: [], autoLoad: true}));
+                    }
+                    var store = grid.getStore();
+
+                    var existingKeys = {};
+                    store.each(function (record) {
+                        existingKeys[meDE.buildScanRowKey(record.data)] = true;
+                    });
+
+                    var nuevos = (res.data || []).filter(function (item) {
+                        return !existingKeys[meDE.buildScanRowKey(item)];
+                    });
+
+                    store.add(nuevos);
+
+                    // El total del SP es solo de esta búsqueda puntual; como el carrito
+                    // acumula varias búsquedas, se recalcula sobre TODO lo acumulado.
+                    meDE.recalcularTotalesScan();
+                    grid.getView().refresh();
+
+                    if (!res.data || res.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                    } else if (nuevos.length === 0) {
+                        global.Msg({msg: 'No hay candidatos nuevos (ya estaban en la lista).'});
+                    }
+                } else {
+                    global.Msg({msg: res.Mensaje || 'Error searching MPF190.'});
+                }
+            },
+            failure: function () {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                global.Msg({msg: 'Error de comunicación con el servidor.'});
+            }
+        });
+    },
+    // </editor-fold>
     validateFields: function () {
         var msj = '';
         var bean = searchParams.bean;
@@ -825,20 +980,18 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             });
         }
     },
+    // "Reverse Match": reversa una conciliación MANUAL hecha por MPS779 (STVAL=5)
+    // vía MPS780. Solo se muestra cuando el registro está en STVAL=5 (ver obtainData).
     onReverseClick: function (btn) {
-
-
         Ext.Msg.show({
             title: '.:Confirmation:.',
             msg: 'Are you sure to Reverse?',
             buttons: Ext.MessageBox.YESNO,
             scope: this,
-//            animateTarget: btn,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
             fn: function (btn) {
                 if (btn === 'yes') {
-
                     this.reverseOption();
                 }
             }
@@ -870,136 +1023,44 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     // </editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="executeOption">
+    // Reversa vía MPS780: identifica el par MPF102/MPF190 por BANDOC/DATECI/TRANCI
+    // (el mismo "link" que dejó MPS779 al conciliar), no hace falta nada más.
     reverseOption: function () {
-        let datos = {}
-        datos.IN_BANDOC = Ext.getCmp(prototype.id + '-de-txtBANDOC').getValue().trim()
-        datos.IN_DATECI = Ext.getCmp(prototype.id + '-de-txtDATECI').getValue().trim()
-        datos.IN_TRANCI = Ext.getCmp(prototype.id + '-de-txtTRANCI').getValue().trim()
-        console.log(datos, 'reverseOption')
+        var bean = {
+            CCUST: meDE.bean.data.CCUST,
+            BANDOC: meDE.beanResult.BANDOC,
+            DATECI: meDE.beanResult.DATECI,
+            TRANCI: meDE.beanResult.TRANCI
+        };
+
+        Ext.getCmp(prototype.id + '-dataEntryCash').mask('Reversando...');
         Ext.Ajax.request({
-            url: prototype.url + '/reverseOption',
+            url: prototype.url + '/reversarManualScan',
             method: 'POST',
             timeout: 60000000,
-            params: {beanString: JSON.stringify(datos)},
-            beforerequest: Ext.getCmp(prototype.id + '-dataEntry').mask('Loading...'),
-            success: function (response, opts) {
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            params: bean,
+            success: function (response) {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
                 var res = Ext.JSON.decode(response.responseText);
-                console.log(res);
                 if (res.success) {
-                    let objResult = res.result;
-                    Ext.create('Ext.window.Window', {
-                        title: objResult.MESSAGE,
-                        width: 500,
-                        height: 380,
-                        modal: true, // Hace que la ventana sea modal
-                        closable: true,
-                        layout: 'fit',
-                        items: [
-                            {
-                                xtype: 'panel',
-                                //                    bodyPadding: 10,
-                                tpl: new Ext.XTemplate(`
-                                    <style>
-                                        .styled-table {
-                                            width: 100%;
-                                            border-collapse: collapse;
-                                            margin: 0px 0;
-                                            font-size: 12px;
-                                            font-family: Arial, sans-serif;
-                                            text-align: left;
-                                        }
-                                        .styled-table thead {
-                                            background-color: #7f98a8;
-                                            color: white;
-                                        }
-                                        .styled-table th, .styled-table td {
-                                            padding: 12px 15px;
-                                            border: 1px solid #ddd;
-                                        }
-                                        .styled-table tbody tr:nth-child(even) {
-                                            background-color: #f2f2f2;
-                                        }
-                                        .styled-table tbody tr:hover {
-                                            background-color: #e0e0e0;
-                                        }
-                                        .styled-table tbody th {
-                                            background-color: #f9f9f9;
-                                            font-weight: bold;
-                                        }
-                                    </style>
-                                    <table class="styled-table">
-                                        <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Quantity</th>
-                                                <th>Updated</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <th>Acc. Statements</th> 
-                                                <td>{QTYP102}</td> 
-                                                <td>{QTYPROC102}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Settlements Phase I</th> 
-                                                <td>{QTYP060}</td> 
-                                                <td>{QTYPROC060}</td> 
-                                            </tr>
-                                            <tr>
-                                                <th>Settlements Phase II</th> 
-                                                <td>{QTYP101}</td> 
-                                                <td>{QTYPROC101}</td> 
-                                            </tr>
-                                            <tr>
-                                                <th>Tickets</th> 
-                                                <td>{QTYP100}</td> 
-                                                <td>{QTYPROC100}</td> 
-                                            </tr>
-                                            <tr>
-                                                <th>Refund Trans.</th> 
-                                                <td>{QTYP075}</td> 
-                                                <td>{QTYPROC075}</td> 
-                                            </tr>
-                                            <tr>
-                                                <th>Chargueback Trans.</th> 
-                                                <td>{QTYP076}</td> 
-                                                <td>{QTYPROC076}</td> 
-                                            </tr>
-                                            <tr>
-                                                <th>Acredit. Trans.</th> 
-                                                <td>{QTYP077}</td> 
-                                                <td>{QTYPROC077}</td> 
-                                            </tr>
-                                        </tbody>
-                                    </table>`
-                                        ),
-                                data: objResult
+                    global.Msg({
+                        msg: res.Mensaje,
+                        icon: 1,
+                        fn: function () {
+                            Ext.getCmp(prototype.id + '-dataEntryCash').close();
+                            var btnSearch = Ext.getCmp(prototype.id + '-btnSearch');
+                            if (btnSearch) {
+                                btnSearch.fireEvent('click', {});
                             }
-                        ],
-                        buttons: [
-                            {
-                                text: 'Cerrar',
-                                handler: function () {
-                                    meDE.gridRefresh()
-                                    this.up('window').close();
-                                    Ext.getCmp(prototype.id + '-dataEntry').close();
-
-
-
-                                }
-                            }
-                        ]
-                    }).show();
-
-
-                } else
-                    global.Msg({msg: res.sesion});
+                        }
+                    });
+                } else {
+                    global.Msg({msg: res.Mensaje || 'No se pudo reversar.'});
+                }
             },
-            failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
-                Ext.getCmp(prototype.id + '-dataEntry').unmask();
+            failure: function () {
+                Ext.getCmp(prototype.id + '-dataEntryCash').unmask();
+                global.Msg({msg: 'Error de comunicación con el servidor.'});
             }
         });
     },
@@ -1262,56 +1323,56 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         var win = this.getView();
         var panelVoucher = Ext.getCmp(prototype.id + '-panelVoucher');
 
+        // originalWidth debe ser el ancho normal de la ventana (1200, ver DataEntryCash.js)
+        // y expandedWidth = ese ancho + el del panelVoucher (720) + su margen (10).
         var originalWidth = 1200;
-        var expandedWidth = 1810;
+        var expandedWidth = 1930;
 
         if (panelVoucher) {
             if (panelVoucher.isHidden()) {
 
-                // 1. Obtener la data. 
-                // Si los datos están en componentes UI, puedes usar Ext.getCmp('...').getValue()
-                // Como veo en tu código, también guardas la data en meDE.beanResult
-                var data = (meDE && meDE.beanResult) ? meDE.beanResult : {};
-                
                 let info = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
 
-                // Intentar sacar de los inputs en pantalla o del beanResult
                 var sfile = info.SFILE;
-//                var sfile = "76990163_20260601_CASH 01JUN2026.pdf";
-                var adate = info.ADATE;
-//                var adate = "20260601";
                 var sagent = info.SAGENT;
-//                var sagent = "76990163";
+                // Se usa SDATE (Sales Date), no ADATE (Abono Date) -- mismo criterio que
+                // DataEntryDirectSalesController.js (loadVoucher): el nombre real del
+                // archivo en la carpeta se arma con la fecha de venta, y ADATE puede
+                // venir mal cargada (desfasada del archivo real).
+                var sdate = info.SDATE;
                 var npage = info.NPAG;
-//                var npage = "1";
 
-                if (sfile && adate && sagent) {
-                    // 2. Extraer el año. Validamos si es objeto Date o String (YYYYMMDD)
-                    var year = '';
-                    if (Ext.isDate(adate)) {
-                        year = adate.getFullYear().toString();
-                    } else {
-                        year = adate.toString().substring(0, 4);
-                    }
+                console.log('onToggleVoucher -> SFILE=[' + sfile + '] SAGENT=[' + sagent + '] SDATE=[' + sdate + '] NPAG=[' + npage + ']');
 
-                    // 3. Manejar la página específica del PDF
+                var iframe = document.getElementById('pdfIframeVoucher');
+
+                if (sfile && sagent && sdate) {
+                    var year = sdate.toString().substring(0, 4);
+
                     var targetPage = parseInt(npage, 10);
                     var pageHash = (!isNaN(targetPage) && targetPage > 0) ? ('#page=' + targetPage) : '';
 
-                    // 4. Construir la URL hacia el backend de Java
-                    var url = prototype.url + '/downloadPdfVentaDirecta' +
+                    // Mismo endpoint que usa DirectSales (DataEntryDirectSalesController.js
+                    // -> loadVoucher): decide del lado del servidor si sirve .pdf/.png/.jpg
+                    // según lo que realmente exista en la carpeta, y si SFILE no calza por
+                    // nombre exacto busca por prefijo "sagent_sdate" (fallback ya probado).
+                    var url = CONTEXTPATH + '/DirectSales/downloadVoucher' +
                             '?sfile=' + encodeURIComponent(sfile) +
                             '&sagent=' + encodeURIComponent(sagent) +
                             '&year=' + encodeURIComponent(year) +
+                            '&sdate=' + encodeURIComponent(sdate) +
                             '&disposition=inline' + pageHash;
 
-                    // 5. Cargar el PDF en el iframe
-                    var iframe = document.getElementById('pdfIframeVoucher');
+                    console.log('onToggleVoucher -> url=' + url);
+
                     if (iframe) {
                         iframe.src = url;
                     }
                 } else {
-                    Ext.Msg.alert('Warning', 'No hay datos suficientes (SFILE, ADATE, SAGENT) para cargar el documento.');
+                    if (iframe) {
+                        iframe.removeAttribute('src');
+                    }
+                    Ext.Msg.alert('Warning', 'No hay datos suficientes (SFILE, SAGENT, SDATE) para cargar el documento.');
                 }
 
                 // Expandir la ventana

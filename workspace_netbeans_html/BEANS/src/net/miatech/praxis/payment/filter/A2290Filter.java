@@ -135,6 +135,7 @@ public class A2290Filter extends A2290 {
     public String IN_COUNTRY = "";
     public String IN_ACCOUNTS = "";
     public String IN_TINPUT = "";
+    public String IN_TYPE_SOURCE = "";
     public String IN_COREP = "";
     public String IN_PGRM = "";
     public String NAME = "";

@@ -4390,7 +4390,11 @@
                                                             value = 'ICCS';
                                                         }  else if (value === '02'){
                                                             value = 'ARC';
-                                                        }  
+                                                        }  else if (value === '03'){
+                                                            value = 'VENTA DIRECTA';
+                                                        }  else {
+                                                            value = 'Unknown';
+                                                        }
                                                         return value;
                                                     }
                                                 },

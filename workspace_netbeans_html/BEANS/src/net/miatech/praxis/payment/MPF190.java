@@ -72,4 +72,9 @@ public class MPF190 {
 
     public String COMMENTS    = "";
 
+    // ── Cuentas bancarias del agente (MPS778, subselect a MPF106 por SAGENT=CAGENCY) ──
+    public String ACCOUNT1    = "";
+    public String ACCOUNT2    = "";
+    public String ACCOUNT3    = "";
+
 }
