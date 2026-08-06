@@ -17,6 +17,8 @@ public class MPF108Filter {
     public String IN_FECHA_FROM = "";
     public String IN_FECHA_TO = "";
     public String IN_ACCOUNT = "";
+    // null = not used (existing IN_ACCOUNT-based drill-downs); non-null (incl. "") selects the STVAL-based drill-down
+    public String IN_STVAL = null;
     public String IN_CFUENTE = "";
     public String IN_SOCIETY = "";
     public String IN_COUNTRY = "";

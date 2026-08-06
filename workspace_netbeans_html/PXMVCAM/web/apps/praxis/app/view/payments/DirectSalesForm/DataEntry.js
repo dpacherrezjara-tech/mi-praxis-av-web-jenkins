@@ -207,6 +207,21 @@ Ext.define('Ext.Praxis.view.payments.DirectSalesForm.DataEntry', {
                         {
                             xtype: 'panel',
                             layout: 'hbox',
+                            margin: '5 0 15 0',
+                            items: [
+                                { xtype: 'tbspacer', width: 7 },
+                                { xtype: 'label', text: 'Str Date', style: 'font-weight:bold;color:#000;', width: 95 },
+                                { xtype: 'textfield', id: prototype.id + '-deSTRDATE', maskRe: /[0-9]/, maxLength: 8, enforceMaxLength: true, width: 180 },
+                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'label', text: 'End Date', style: 'font-weight:bold;color:#000;', width: 95 },
+                                { xtype: 'textfield', id: prototype.id + '-deENDDATE', maskRe: /[0-9]/, maxLength: 8, enforceMaxLength: true, width: 180 },
+                                { xtype: 'tbspacer', width: 20 },
+                                { xtype: 'tbspacer', width: 290 }
+                            ]
+                        },
+                        {
+                            xtype: 'panel',
+                            layout: 'hbox',
                             margin: '5 0 10 0',
                             items: [
                                 { xtype: 'tbspacer', width: 7 },

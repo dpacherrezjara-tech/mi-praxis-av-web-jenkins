@@ -316,6 +316,24 @@ public class DirectSalesController extends BaseController {
         return new Gson().toJson(map);
     }
 
+    @RequestMapping(value = "runReconciliationPhase2", method = RequestMethod.POST)
+    public @ResponseBody
+    String runReconciliationPhase2(ModelMap map) {
+        System.out.println("-------------- DirectSales : runReconciliationPhase2 (MPS782) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            Map<String, Object> result = logic.executeMPS782();
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
     @RequestMapping(value = "createDirectSales", method = RequestMethod.POST)
     public @ResponseBody
     String createDirectSales(ModelMap map, HttpServletRequest request) {

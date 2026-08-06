@@ -48,6 +48,10 @@ public class DirectSalesLogic {
         return DirectSalesDAO.executeMPS320();
     }
 
+    public Map<String, Object> executeMPS782() throws SQLException, Exception {
+        return DirectSalesDAO.executeMPS782();
+    }
+
     public String createMPS781(MPF190Create bean) throws SQLException, Exception {
         return DirectSalesDAO.createMPS781(bean);
     }

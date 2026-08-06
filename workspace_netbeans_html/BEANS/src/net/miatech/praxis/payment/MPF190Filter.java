@@ -20,8 +20,13 @@ public class MPF190Filter {
     public String IN_SCOUNTRY  = "";
     public String IN_SAGENT    = "";
 
-    // ── MPS775 (detalle / drill-down) ────────────────────────────────────────
-    public String IN_PERIODO   = "";
+    // ── MPS775 (detalle, tanto por drill-down del dashboard como por el toggle
+    // Dashboard/Detail con filtro libre) ─────────────────────────────────────
     public String IN_STVAL     = "";
+    public String IN_SCURRENCY = "";
+    // IN_NETO/IN_PAYAMOU van como texto (no numérico) para poder enviar el
+    // signo tal cual si el monto buscado es negativo.
+    public String IN_NETO      = "";
+    public String IN_PAYAMOU   = "";
 
 }

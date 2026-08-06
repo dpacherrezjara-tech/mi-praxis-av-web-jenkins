@@ -54,6 +54,8 @@ public class MPF190 {
     public String NPAG        = "";
     public String SAGENT      = "";
     public String STVAL       = "";
+    public String STRDATE     = "";
+    public String ENDDATE     = "";
 
     // ── Auditoría (no se muestra en la grilla) ───────────────────────────────
     public String USCR        = "";

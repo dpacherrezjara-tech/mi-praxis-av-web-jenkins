@@ -268,6 +268,53 @@ public class DirectSalesDAO {
         return result;
     }
 
+    public Map<String, Object> executeMPS782() throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS782(?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setInt(1, 0);
+            cstmt.registerOutParameter(1, Types.INTEGER);
+            cstmt.setString(2, "");
+            cstmt.registerOutParameter(2, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(1);
+            String message = cstmt.getString(2);
+
+            result.put("success", sqlCode != 0);
+            result.put("sqlCode", sqlCode);
+            result.put("message", message);
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "SQL Error: " + e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
     public String updateMPS777(MPF190Update bean) throws SQLException, Exception {
 
         String strMsj = "Operation was successful.";
@@ -275,7 +322,7 @@ public class DirectSalesDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS777(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS777(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -297,9 +344,11 @@ public class DirectSalesDAO {
             cstmt.setString(13, bean.REFERENCE);
             cstmt.setString(14, bean.SFILE);
             cstmt.setString(15, bean.NPAG);
-            cstmt.setString(16, bean.COMMENTS);
+            cstmt.setString(16, bean.STRDATE);
+            cstmt.setString(17, bean.ENDDATE);
+            cstmt.setString(18, bean.COMMENTS);
 
-            cstmt.setString(17, session.getUserView().getUserInfo().USR);
+            cstmt.setString(19, session.getUserView().getUserInfo().USR);
 
             cstmt.execute();
 
@@ -330,7 +379,7 @@ public class DirectSalesDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS781(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS781(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -349,9 +398,11 @@ public class DirectSalesDAO {
             cstmt.setString(10, bean.REFERENCE);
             cstmt.setString(11, bean.SFILE);
             cstmt.setString(12, bean.NPAG);
-            cstmt.setString(13, bean.COMMENTS);
+            cstmt.setString(13, bean.STRDATE);
+            cstmt.setString(14, bean.ENDDATE);
+            cstmt.setString(15, bean.COMMENTS);
 
-            cstmt.setString(14, session.getUserView().getUserInfo().USR);
+            cstmt.setString(16, session.getUserView().getUserInfo().USR);
 
             cstmt.execute();
 
@@ -384,34 +435,39 @@ public class DirectSalesDAO {
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS775(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS775(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
-            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(11, Types.INTEGER);
+            cstmt.registerOutParameter(12, Types.INTEGER);
+            cstmt.registerOutParameter(13, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_SEARCH);
-            cstmt.setString(3, filter.IN_PERIODO);
-            cstmt.setString(4, filter.IN_STVAL);
+            cstmt.setString(3, filter.IN_DATE_FROM);
+            cstmt.setString(4, filter.IN_DATE_TO);
             cstmt.setString(5, filter.IN_SCOUNTRY);
+            cstmt.setString(6, filter.IN_SAGENT);
+            cstmt.setString(7, filter.IN_STVAL);
+            cstmt.setString(8, filter.IN_SCURRENCY);
+            cstmt.setString(9, filter.IN_NETO);
+            cstmt.setString(10, filter.IN_PAYAMOU);
 
-            cstmt.setInt(6, filter.page.PAGNUM);
-            cstmt.setInt(7, filter.page.PAGROW);
-            cstmt.setInt(8, filter.page.TOTPAG);
-            cstmt.setInt(9, filter.page.TOTROW);
+            cstmt.setInt(11, filter.page.PAGNUM);
+            cstmt.setInt(12, filter.page.PAGROW);
+            cstmt.setInt(13, filter.page.TOTPAG);
+            cstmt.setInt(14, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(6);
-            filter.page.PAGROW = cstmt.getInt(7);
-            filter.page.TOTPAG = cstmt.getInt(8);
-            filter.page.TOTROW = cstmt.getInt(9);
+            filter.page.PAGNUM = cstmt.getInt(11);
+            filter.page.PAGROW = cstmt.getInt(12);
+            filter.page.TOTPAG = cstmt.getInt(13);
+            filter.page.TOTROW = cstmt.getInt(14);
 
             rst = cstmt.getResultSet();
             while (rst.next()) {
@@ -434,6 +490,8 @@ public class DirectSalesDAO {
                 bean.NPAG = rst.getString("NPAG") != null ? rst.getString("NPAG").trim() : "";
                 bean.SAGENT = rst.getString("SAGENT") != null ? rst.getString("SAGENT").trim() : "";
                 bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                bean.STRDATE = rst.getString("STRDATE") != null ? rst.getString("STRDATE").trim() : "";
+                bean.ENDDATE = rst.getString("ENDDATE") != null ? rst.getString("ENDDATE").trim() : "";
 
                 bean.USCR = rst.getString("USCR") != null ? rst.getString("USCR").trim() : "";
                 bean.FECR = rst.getString("FECR") != null ? rst.getString("FECR").trim() : "";
