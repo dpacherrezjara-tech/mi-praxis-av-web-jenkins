@@ -347,6 +347,18 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             }
                         },
                         //
+                    
+                        
+                        {
+                            xtype:'button',
+                            id: prototype.id+'-btnReporteAgencias',
+                            icon: 'resources/img/botones/24x24/excel2.png',
+                            tooltip: 'Contabilidad reporte de Agencias',
+                 
+                            listeners: {
+                                click: 'agenciasReport_clickHandler'
+                            }
+                        },
                         
                         
                         

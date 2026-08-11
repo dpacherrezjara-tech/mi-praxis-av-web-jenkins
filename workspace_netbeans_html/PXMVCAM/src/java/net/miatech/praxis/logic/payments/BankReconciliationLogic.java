@@ -17,6 +17,7 @@ import net.miatech.praxis.dao.payments.BankReconciliationDAO;
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
+import net.miatech.praxis.payment.filter.MPF101Filter;
 import net.miatech.praxis.spring.INF020;
 
 /**
@@ -431,4 +432,13 @@ public class BankReconciliationLogic {
     public List<A2290Filter> loadPX269SQPMPS653(A2290Filter filter) throws Exception {
         return bankReconciliationDAO.loadPX269SQPMPS653(filter);
     }
+    
+    //
+    
+    
+      public String loadContador(MPF101Filter filter) throws Exception {
+        return bankReconciliationDAO.loadContador(filter);
+    }
+    
+    
 }
