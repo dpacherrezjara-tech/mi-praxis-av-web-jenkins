@@ -880,7 +880,40 @@ public class CargoGuideController extends BaseController {
             CargoGuideLogic logic = new CargoGuideLogic();
             logic.setSession(this.serverSession.getServerSession());
 
-            Map<String, Object> result = logic.runMPS556();
+            // NOTA: NO usar Gson().fromJson(beanString, Map.class) — la version de Gson
+            // de este proyecto no resuelve un TypeAdapter para la interfaz java.util.Map
+            // sin un TypeToken y lanza "MapTypeAdapter failed to deserialize...". Se
+            // parsea con JsonParser/JsonObject en su lugar (igual de simple, sin ese bug).
+            String beanString = request.getParameter("beanString");
+            com.google.gson.JsonObject bean = null;
+            if (beanString != null && !beanString.trim().isEmpty()) {
+                try {
+                    bean = new com.google.gson.JsonParser().parse(beanString).getAsJsonObject();
+                } catch (Exception exParse) {
+                    bean = null;
+                }
+            }
+            String country = (bean != null && bean.has("country") && !bean.get("country").isJsonNull())
+                    ? bean.get("country").getAsString() : "";
+            String fecr = (bean != null && bean.has("fecr") && !bean.get("fecr").isJsonNull())
+                    ? bean.get("fecr").getAsString() : "";
+
+            Map<String, Object> result;
+
+            if ("HN".equals(country)) {
+                // HN ya NO ejecuta un store DB2: dispara CONCILIACION_HN en el
+                // backend Python vía REST. La URL depende del ambiente actual.
+                String baseUrl = this.getPythonApiBaseUrl();
+                result = logic.runConciliacionHN(baseUrl, fecr);
+            } else if ("SV".equals(country)) {
+                // SV: mismo patrón que HN — dispara MPS_CONCILIACION_SALVADOR
+                // en el backend Python vía REST (conciliacionSV).
+                String baseUrl = this.getPythonApiBaseUrl();
+                result = logic.runConciliacionSV(baseUrl, fecr);
+            } else {
+                // CO: único país con proceso DB2 activo por ahora (FASE 1 = MPS556).
+                result = logic.runMPS556();
+            }
 
             map.put("success", result.get("success"));
             map.put("Mensaje", result.get("mensaje"));
@@ -893,6 +926,8 @@ public class CargoGuideController extends BaseController {
 
         return new Gson().toJson(map);
     }
+
+    // getPythonApiBaseUrl() ahora vive en BaseController (compartido con CargoSendController).
 
     @RequestMapping(value = "MaintenanceA2280", method = RequestMethod.POST)
     public @ResponseBody

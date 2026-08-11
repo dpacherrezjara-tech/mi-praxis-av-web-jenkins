@@ -51,6 +51,10 @@ import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2354Filter;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import org.json.JSONObject;
 
 /**
  *
@@ -957,7 +961,65 @@ public class CargoGuideDAO {
 
         return response;
     }
-    
+
+    /**
+     * Conciliación HN — YA NO es un store DB2: dispara CONCILIACION_HN en el
+     * backend Python (Django) vía REST (GET /api/conciliacionHN/?fecr=...).
+     * `baseUrl` ya viene resuelto por ambiente desde el controller
+     * (ver CargoGuideController.getPythonApiBaseUrl()).
+     */
+    public Map<String, Object> runConciliacionHN(String baseUrl, String fecr) {
+        return llamarConciliacionPais(baseUrl, "/api/conciliacionHN/", fecr, "HN");
+    }
+
+    /**
+     * Conciliación SV — mismo patrón que HN: dispara MPS_CONCILIACION_SALVADOR
+     * en el backend Python vía REST (GET /api/conciliacionSV/?fecr=...).
+     * Mismo contrato de request/response que conciliacionHN.
+     */
+    public Map<String, Object> runConciliacionSV(String baseUrl, String fecr) {
+        return llamarConciliacionPais(baseUrl, "/api/conciliacionSV/", fecr, "SV");
+    }
+
+    /**
+     * Llamada genérica a los endpoints de conciliación por país del backend
+     * Python (conciliacionHN/conciliacionSV/...): todos comparten el mismo
+     * contrato — IN: fecr (YYYYMMDD, opcional); OUT JSON: {ok, archivos_procesados,
+     * conciliados_total, detalle} o {ok:false, error}.
+     */
+    private Map<String, Object> llamarConciliacionPais(String baseUrl, String path, String fecr, String pais) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String url = baseUrl + path;
+            Unirest.setTimeouts(600000, 300000);
+            HttpResponse<JsonNode> resp = Unirest.get(url)
+                    .queryString("fecr", fecr != null ? fecr.trim() : "")
+                    .asJson();
+
+            JSONObject body = resp.getBody().getObject();
+
+            if (resp.getStatus() >= 200 && resp.getStatus() < 300 && body.optBoolean("ok", false)) {
+                int archivos    = body.optInt("archivos_procesados", 0);
+                int conciliados = body.optInt("conciliados_total", 0);
+                response.put("success", true);
+                response.put("mensaje", "Conciliación " + pais + " completada. Archivos procesados: " + archivos
+                        + " | Pagos conciliados: " + conciliados);
+            } else {
+                String err = body.has("error") ? body.getString("error") : "Error desconocido en el servicio de conciliación.";
+                response.put("success", false);
+                response.put("mensaje", err);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logError.error("llamarConciliacionPais [" + pais + "] -> " + e.getMessage(), e);
+            response.put("success", false);
+            response.put("mensaje", "Error al llamar al servicio de conciliación " + pais + ": " + e.getMessage());
+        }
+
+        return response;
+    }
+
     public List<MPF295> loadMPS603(MPF295Filter filter) throws SQLException, Exception {
 
         List<MPF295> lstData = new ArrayList<>(0);

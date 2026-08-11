@@ -107,7 +107,15 @@ Ext.define('Ext.Praxis.controller.payments.CargoSend.DataEntryCargoSendControlle
                 if (btn !== 'yes') { return; }
 
                 var urlExport;
-                if (reportType === 'PSE') {
+
+                // HN/SV: YA NO pasa por el store DB2 (MPS716, que deja el archivo en una
+                // ruta de red) — llama al reporte del backend Python y se descarga directo.
+                if (country === 'HN' || country === 'SV') {
+                    urlExport = prototype.url + '/exportReporteConciliacion'
+                        + '?country=' + encodeURIComponent(country)
+                        + '&dateFrom=' + encodeURIComponent(dateFrom)
+                        + '&dateTo=' + encodeURIComponent(dateTo);
+                } else if (reportType === 'PSE') {
                     var beanString = JSON.stringify({
                         IN_FECHA_FROM: dateFrom,
                         IN_FECHA_TO:   dateTo,
