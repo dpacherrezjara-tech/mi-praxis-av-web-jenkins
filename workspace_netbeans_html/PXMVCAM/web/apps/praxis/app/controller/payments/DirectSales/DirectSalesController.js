@@ -12,6 +12,9 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
     me: '',
     searchParams: {},
     paramsDetail: {},
+    paramsTicketDetail: {},
+    paramsLiquiDetail: {},
+    detailCurrentPage: null,
     paramsObtainData: {},
     init: function (view) {
         me = this;
@@ -73,6 +76,12 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
     xpanel_afterrender: function () {
         $('#DirectSalesForm-btnToggleSwitchDashboardDetail').on('change', function () {
             me.showFiltersDashboardDetail();
+            me.btnSearch_click();
+        });
+
+        // Fase 1 (default, desmarcado) / Fase 2 (marcado): solo afecta al
+        // Dashboard (MPS774 pivota por STVAL o STVALF2, ver setFormatParameter).
+        $('#DirectSalesForm-btnToggleSwitchFase').on('change', function () {
             me.btnSearch_click();
         });
 
@@ -180,11 +189,34 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
         me.bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
         me.bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAgent').getValue() || '';
 
+        // Fase 1 (default, switch desmarcado) pivota MPS774 por STVAL; Fase 2
+        // (marcado) hace lo mismo pero por STVALF2.
+        me.bean.IN_FASE = me.getFaseValue();
+        me.syncWOStatementLabel(me.bean.IN_FASE === '2');
+
         var beanString = JSON.stringify(me.bean);
         searchParams = {
             bean: me.bean,
             beanString: beanString
         };
+    },
+    // Lee el switch Fase 1/Fase 2 y devuelve '1' o '2'. Único punto que toca
+    // el checkbox directamente; todo lo demás (MPS774, MPS775 por drill-down
+    // o por el toggle Dashboard/Detail, toggleQtyColumns) llama a esto.
+    getFaseValue: function () {
+        var faseToggle = Ext.getCmp(prototype.id + '-btnToggleSwitchFase');
+        var faseChecked = faseToggle && faseToggle.getEl() ? faseToggle.getEl().down('input[type="checkbox"]').dom.checked : false;
+        return faseChecked ? '2' : '1';
+    },
+    // Fase 1: "W/O Statement" (etiqueta original). Fase 2: "W/O Sales", ya
+    // que en esa fase la columna pivota por STVALF2 en vez de STVAL.
+    syncWOStatementLabel: function (faseChecked) {
+        var col = Ext.getCmp(prototype.id + '-colWOStatement');
+        if (!col) {
+            return;
+        }
+        var label = faseChecked ? 'W/O Sales' : 'W/O Statement';
+        col.setText('<span style="color:black;font-weight:bold;">' + label + '</span>');
     },
     setGridData: function () {
         win.lblUser_toolTip("Estructura: MPS774");
@@ -479,6 +511,10 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
         bean.IN_STVAL = stVal;
         bean.IN_SCOUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
         bean.IN_SAGENT = Ext.getCmp(prototype.id + '-txtAgent').getValue() || '';
+        // La celda clickeada del Dashboard fue calculada con la Fase activa en
+        // ESE momento (STVAL o STVALF2, ver MPS774); Detail debe filtrar por
+        // esa misma columna para que el conteo coincida con lo que se vio.
+        bean.IN_FASE = me.getFaseValue();
         me.paramsDetail.beanString = JSON.stringify(bean);
         me.beanDetDirectSales = bean;
 
@@ -551,16 +587,46 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
         bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue() || '';
         bean.IN_SCURRENCY = Ext.getCmp(prototype.id + '-cmbCurrency').getValue() || '';
         bean.IN_NETO = Ext.getCmp(prototype.id + '-txtNeto').getValue() || '';
+        // Igual criterio que el drill-down: Detail filtra por la misma
+        // columna (STVAL/STVALF2) que la Fase activa en el Dashboard.
+        bean.IN_FASE = me.getFaseValue();
         bean.IN_PAYAMOU = Ext.getCmp(prototype.id + '-txtPayamou').getValue() || '';
 
         me.paramsDetail.beanString = JSON.stringify(bean);
         me.beanDetDirectSales = bean;
     },
+    // Qty Ticket/Qty Liqui solo se muestran cuando el switch Fase 2 está
+    // activo Y se bajó a Detail por Auto (STVAL/STVALF2='1') o Manual ('5').
+    toggleQtyColumns: function () {
+        var stValActual = (me.beanDetDirectSales || {}).IN_STVAL;
+        var isAutoOrManual = (stValActual === '1' || stValActual === '5');
+
+        var showQtyCols = (me.getFaseValue() === '2') && isAutoOrManual;
+        Ext.getCmp(prototype.id + '-colQtyTicket').setVisible(showQtyCols);
+        Ext.getCmp(prototype.id + '-colQtyLiqui').setVisible(showQtyCols);
+
+        // Forzar refresh de la vista: mostrar/ocultar columnas sin esto puede
+        // dejar desalineado el mapeo celda->columna que usa el click (la fila
+        // Qty Ticket termina resolviendo al actioncolumn Edit u otra columna).
+        var detGrid = Ext.getCmp(prototype.id + '-gridDetailDirectSales');
+        if (detGrid && detGrid.getView()) {
+            detGrid.getView().refresh();
+        }
+    },
     setGridDetDirectSales: function () {
         win.lblUser_toolTip("Estructura: MPS775");
         me.setWidthPie();
+        me.toggleQtyColumns();
+
+        // Si se viene de un Back desde Ticket/Liqui detail, restaura la página
+        // en la que estaba Detail en vez de resetear a la 1 (ver
+        // onQtyTicketClick/onQtyLiquiClick, que guardan detailCurrentPage
+        // antes de bajar al subnivel). Se consume una sola vez.
+        var restorePage = me.detailCurrentPage || 1;
+        me.detailCurrentPage = null;
 
         var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            currentPage: restorePage,
             proxy: {
                 url: prototype.url + '/searchDetail'
             },
@@ -615,6 +681,133 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
         Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
         this.getPaggin();
     },
+    // Primera validación: si Qty Ticket es 0, solo avisa. Si es mayor a 0,
+    // baja a un SUBNIVEL de Detail (igual mecanismo que Dashboard->Detail:
+    // push/pop en me.drillDown + global.selectedChild), NO al DataEntry.
+    onQtyTicketClick: function (column, cell, rowIndex, colIndex, e, record) {
+        if (!record.get('QTYTICKET')) {
+            global.Msg({msg: 'No cuenta con tickets vinculados'});
+            return;
+        }
+
+        // Recuerda en qué página de Detail estaba, para que al volver con
+        // Back (setGridDetDirectSales) no se resetee a la página 1.
+        var detStore = Ext.getCmp(prototype.id + '-gridDetailDirectSales').getStore();
+        me.detailCurrentPage = detStore ? detStore.currentPage : 1;
+
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelTicketDetailDirectSales';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+        var bean = {
+            IN_CCUST: record.get('CCUST'),
+            IN_DATEC: record.get('DATEC'),
+            IN_TRANC: record.get('TRANC')
+        };
+        me.paramsTicketDetail.beanString = JSON.stringify(bean);
+
+        this.setGridTicketDetail();
+    },
+    setGridTicketDetail: function () {
+        win.lblUser_toolTip("Estructura: MPS783");
+        me.setWidthPie();
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchTicketDetail'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsTicketDetail;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin3');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                        Ext.getCmp(prototype.id + '-lblTicketTotAmount').setText('0.00');
+                    } else {
+                        var firstRec = obj.getData().items[0].data;
+                        Ext.getCmp(prototype.id + '-lblTicketTotAmount').setText(Ext.util.Format.number(firstRec.TOTAMOUNTTICKET, '0,000.00'));
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridTicketDetailDirectSales').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+        this.getPaggin();
+    },
+    // Igual que Qty Ticket, pero muestra liquidaciones: filas hermanas en el
+    // propio MPF190 (mismo DATEC+TRANC+CCUST, Auto/Manual). Sirve porque una
+    // conciliación puede ser de varias liquidaciones contra varias ventas, y
+    // se quiere ver cuántas liquidaciones hicieron match. Reutiliza MPS775
+    // (mismo endpoint /searchDetail) con IN_DATEC/IN_TRANC en vez de un proc
+    // nuevo, ya que la estructura/columnas ya son exactamente las mismas.
+    onQtyLiquiClick: function (column, cell, rowIndex, colIndex, e, record) {
+        if (!record.get('QTYLIQUI')) {
+            global.Msg({msg: 'No cuenta con liquidaciones vinculadas'});
+            return;
+        }
+
+        // Recuerda en qué página de Detail estaba, para que al volver con
+        // Back (setGridDetDirectSales) no se resetee a la página 1.
+        var detStore = Ext.getCmp(prototype.id + '-gridDetailDirectSales').getStore();
+        me.detailCurrentPage = detStore ? detStore.currentPage : 1;
+
+        me.drillDown.push(me.panelActual);
+        me.panelActual = '-panelLiquiDetailDirectSales';
+        global.selectedChild(me.childs, prototype.id + me.panelActual);
+
+        var bean = {
+            IN_CCUST: record.get('CCUST'),
+            IN_DATEC: record.get('DATEC'),
+            IN_TRANC: record.get('TRANC')
+        };
+        me.paramsLiquiDetail.beanString = JSON.stringify(bean);
+
+        this.setGridLiquiDetail();
+    },
+    setGridLiquiDetail: function () {
+        win.lblUser_toolTip("Estructura: MPS775 (liquidaciones vinculadas)");
+        me.setWidthPie();
+
+        var storeGridDatas = Ext.create('Ext.Praxis.store.payments.GridData', {
+            proxy: {
+                url: prototype.url + '/searchDetail'
+            },
+            listeners: {
+                beforeload: function (obj) {
+                    obj.proxy.extraParams = me.paramsLiquiDetail;
+                },
+                load: function (obj) {
+                    var pag = Ext.getCmp(prototype.id + '-paggin3');
+                    var pagData = pag.getPageData();
+                    Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
+                    Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+
+                    if (obj.data.length === 0) {
+                        global.Msg({msg: 'Data not found.'});
+                        Ext.getCmp(prototype.id + '-lblLiquiTotNeto').setText('0.00');
+                        Ext.getCmp(prototype.id + '-lblLiquiTotPayamou').setText('0.00');
+                    } else {
+                        var firstRec = obj.getData().items[0].data;
+                        Ext.getCmp(prototype.id + '-lblLiquiTotNeto').setText(Ext.util.Format.number(firstRec.TOTNETODETAIL, '0,000.00'));
+                        Ext.getCmp(prototype.id + '-lblLiquiTotPayamou').setText(Ext.util.Format.number(firstRec.TOTPAYAMOUDETAIL, '0,000.00'));
+                    }
+                }
+            }
+        });
+        global.clear();
+        Ext.getCmp(prototype.id + '-gridLiquiDetailDirectSales').bindStore(storeGridDatas);
+        Ext.getCmp(prototype.id + '-paggin3').bindStore(storeGridDatas);
+        this.getPaggin();
+    },
     onEditDirectSalesClick: function (grid, rowIndex, colIndex) {
         var rec = grid.getStore().getAt(rowIndex);
         Ext.create('Ext.Praxis.view.payments.DirectSalesForm.DataEntry', {
@@ -657,6 +850,14 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             case  '-panelDetailDirectSales':
                 global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(me.paramsDetail.beanString));
                 break;
+            case  '-panelTicketDetailDirectSales':
+                global.getFile(prototype.url + '/getXLSXTicketDetail?beanString=' + encodeURI(me.paramsTicketDetail.beanString));
+                break;
+            case  '-panelLiquiDetailDirectSales':
+                // Reutiliza getXLSXDetail (MPS775): el bean ya trae
+                // IN_DATEC/IN_TRANC, misma consulta que arma la grilla.
+                global.getFile(prototype.url + '/getXLSXDetail?beanString=' + encodeURI(me.paramsLiquiDetail.beanString));
+                break;
             default:
                 global.Msg({msg: 'Under Construction'});
         }
@@ -698,6 +899,14 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
                 me.pagginActual = '';
                 break;
             case  '-panelDetailDirectSales':
+                me.pagginActual = '-paggin3';
+                Ext.getCmp(prototype.id + '-pie').setVisible(true);
+                break;
+            case  '-panelTicketDetailDirectSales':
+                me.pagginActual = '-paggin3';
+                Ext.getCmp(prototype.id + '-pie').setVisible(true);
+                break;
+            case  '-panelLiquiDetailDirectSales':
                 me.pagginActual = '-paggin3';
                 Ext.getCmp(prototype.id + '-pie').setVisible(true);
                 break;
@@ -756,13 +965,26 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             me.syncToggleSwitch();
             me.setWidthPie();
 
-            this.getPaggin();
-            if (me.pagginActual !== '') {
-                var pag = Ext.getCmp(prototype.id + me.pagginActual);
-                var pagData = pag.getPageData();
-                Ext.getCmp(prototype.id + '-lbl-currentPage').setText(Ext.util.Format.number(pagData.currentPage, '0,000'));
-                Ext.getCmp(prototype.id + '-lbl-pageCount').setText(Ext.util.Format.number(pagData.pageCount, '0,000'));
-                Ext.getCmp(prototype.id + '-lbl-total').setText(Ext.util.Format.number(pagData.total, '0,000'));
+            // -paggin3 es UN SOLO paginador compartido entre Detail/Ticket/Liqui:
+            // cada subnivel lo re-bindea a su propio store al entrar (bindStore).
+            // Si acá solo se leyera getPageData() sin volver a bindearlo al store
+            // del panel al que se regresa, el paginado queda apuntando al store
+            // del subnivel del que se viene. Por eso hay que recargar la grilla
+            // del panel destino (esto ya re-bindea -paggin3 correctamente),
+            // en vez de solo leer el pageData viejo.
+            switch (me.panelActual) {
+                case '-panelDetailDirectSales':
+                    this.setGridDetDirectSales();
+                    break;
+                case '-panelTicketDetailDirectSales':
+                    this.setGridTicketDetail();
+                    break;
+                case '-panelLiquiDetailDirectSales':
+                    this.setGridLiquiDetail();
+                    break;
+                default:
+                    this.getPaggin();
+                    break;
             }
         } else {
             global.showMenu();
