@@ -395,6 +395,7 @@ items: [
                                 ['COM', 'COMMISSION'],
                                 ['FIS', 'FISCAL'],
                                 ['AFI', 'AFFILIATE'],
+                                ['DEP', 'DEPOSIT'],
                                 ['NA', 'NOT APPLICABLE']
                             ]
                         }),

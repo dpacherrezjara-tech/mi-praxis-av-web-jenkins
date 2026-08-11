@@ -416,13 +416,15 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
     // Deposit row detail
     // =========================================================================
 
-    _openDepositDetail: function (rowData) {
+    _openDepositDetail: async function (rowData) {
         const me = this;
         const view = me.getView();
         const stcont = String((me._liveRow || view.rowData || {}).STCONT || '');
+        const admin = await me._isAdmin();
         Ext.create('Ext.Praxis.view.payments.AccountingMasterProcessForm.AccountingDepositDetailModal', {
             rowData: rowData,
-            stcont: stcont
+            stcont: stcont,
+            canEdit: admin
         }).show();
     },
 
@@ -776,6 +778,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
                     {
                         text: 'Confirm Reversal',
                         itemId: 'btn-confirm-bulk',
+                        iconCls: 'prx-icon-reload',
                         style: 'color:#c82d2d;font-weight:bold;',
                         handler: function () {
                             win.destroy();
@@ -1038,7 +1041,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
             if (el) {
                 el.innerHTML = n > 0
                     ? '<b>¿Confirma reversar ' + n + ' error(es) de interfaz?</b><br>'
-                    + '<span style="font-size:11px;color:#c82d2d;">Esta acción marcará los errores como REVERSED (STREV=1) en MPS194.</span>'
+                    + '<span style="font-size:11px;color:#c82d2d;">Esta acción marcará los errores seleccionados como reversados y no se puede deshacer.</span>'
                     : '<b style="color:#c82d2d;">No quedan errores seleccionados. Cierre esta ventana.</b>';
             }
             const confirmBtn = win && win.down('#btn-confirm-reverse-errors');
@@ -1066,7 +1069,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
                         bodyStyle: 'background:#fff3cd;padding:10px 16px;',
                         html: '<div id="' + bannerId + '" style="color:#856404;font-size:13px;">'
                             + '<b>¿Confirma reversar ' + count + ' error(es) de interfaz?</b><br>'
-                            + '<span style="font-size:11px;color:#c82d2d;">Esta acción marcará los errores como REVERSED (STREV=1) en MPS194.</span>'
+                            + '<span style="font-size:11px;color:#c82d2d;">Esta acción marcará los errores seleccionados como reversados y no se puede deshacer.</span>'
                             + '</div>'
                     },
                     {
@@ -1121,6 +1124,7 @@ Ext.define('Ext.Praxis.controller.payments.AccountingMasterProcess.AccountingDet
                     {
                         text: 'Confirm Reversal',
                         itemId: 'btn-confirm-reverse-errors',
+                        iconCls: 'prx-icon-reload',
                         style: 'color:#c82d2d;font-weight:bold;',
                         handler: function () {
                             win.destroy();
