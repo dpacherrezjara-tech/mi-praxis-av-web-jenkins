@@ -84,7 +84,23 @@ public class BaseController {
         //System.out.println("approoot: " + appRoot);
         return appRoot;
     }
-    
-    
-    
+
+    /**
+     * Base URL del backend Python (Django) según el ambiente actual
+     * (DB_SERVER_DEFAULT_TYPE: DEV/ATT/PRO) — compartida por todos los
+     * controllers que necesiten llamar endpoints del backend Python
+     * (CargoGuide/runProcess, CargoSend/exportReporteConciliacion, ...).
+     */
+    protected String getPythonApiBaseUrl() {
+        String ruta = this.serverSession.propertySession.get("DB_SERVER_DEFAULT_TYPE").toString();
+        if ("ATT".equals(ruta)) {
+            return "http://10.0.0.138:8000";
+        } else if ("PRO".equals(ruta)) {
+            return "http://10.0.0.207:8000";
+        } else {
+            // DEV u otro valor no reconocido -> localhost
+            return "http://localhost:8000";
+        }
+    }
+
 }

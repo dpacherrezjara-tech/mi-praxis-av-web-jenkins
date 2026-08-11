@@ -94,6 +94,14 @@ public class CargoGuideLogic {
     public Map<String, Object> runMPS557() throws Exception {
         return CargoGuideDAO.runMPS557();
     }
+
+    public Map<String, Object> runConciliacionHN(String baseUrl, String fecr) throws Exception {
+        return CargoGuideDAO.runConciliacionHN(baseUrl, fecr);
+    }
+
+    public Map<String, Object> runConciliacionSV(String baseUrl, String fecr) throws Exception {
+        return CargoGuideDAO.runConciliacionSV(baseUrl, fecr);
+    }
     
     public List<MPF295> loadMPS603(MPF295Filter filter) throws SQLException, Exception {
         return CargoGuideDAO.loadMPS603(filter);

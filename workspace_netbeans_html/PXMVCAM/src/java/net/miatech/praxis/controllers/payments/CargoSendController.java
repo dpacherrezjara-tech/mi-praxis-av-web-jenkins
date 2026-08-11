@@ -60,6 +60,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+import org.apache.commons.io.IOUtils;
+import org.json.JSONObject;
 
 /**
  *
@@ -2080,6 +2084,82 @@ public class CargoSendController extends BaseController {
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
+     * Reporte de conciliación (Process Accounting) para HN/SV — YA NO pasa
+     * por el store DB2 (MPS716/MPS717, que deja el archivo en una ruta de
+     * red y hay que ir a buscarlo aparte al grid). En su lugar llama al
+     * endpoint del backend Python (conciliacionReporteHN/SV — ver
+     * app/report/conciliacion_reporte_hn.py) y re-transmite el .xlsx que
+     * devuelve directo al navegador, en la misma llamada. dateFrom/dateTo
+     * (los campos "From"/"To" del form) filtran por FECR (fecha de CARGA en
+     * MPF295), NO por PAYDAY — así se pide explícitamente. CO sigue con el
+     * flujo viejo (exportExcel + MPS716), sin cambios.
+     */
+    @RequestMapping(value = "exportReporteConciliacion", method = RequestMethod.GET)
+    public void exportReporteConciliacion(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- CargoSend : exportReporteConciliacion (HN/SV) -------------");
+
+        String country  = request.getParameter("country");
+        String dateFrom  = request.getParameter("dateFrom");
+        String dateTo    = request.getParameter("dateTo");
+
+        if (country == null || dateFrom == null || dateTo == null
+                || !("HN".equals(country) || "SV".equals(country))) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        try {
+            String baseUrl = this.getPythonApiBaseUrl();
+            String path = "HN".equals(country) ? "/api/conciliacionReporteHN/" : "/api/conciliacionReporteSV/";
+
+            Unirest.setTimeouts(600000, 300000);
+            HttpResponse<java.io.InputStream> resp = Unirest.get(baseUrl + path)
+                    .queryString("fecr_inicio", dateFrom)
+                    .queryString("fecr_final", dateTo)
+                    .asBinary();
+
+            byte[] contenido = IOUtils.toByteArray(resp.getBody());
+            String contentType = resp.getHeaders().getFirst("Content-Type");
+            boolean esExcel = contentType != null && contentType.contains("spreadsheetml");
+
+            if (resp.getStatus() >= 200 && resp.getStatus() < 300 && esExcel) {
+                String fileNameDownload = "RV_Conciliacion_" + country + "_"
+                        + new java.text.SimpleDateFormat("dd-MM-yyyy").format(new java.util.Date()) + ".xlsx";
+                response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+                response.getOutputStream().write(contenido);
+                response.getOutputStream().flush();
+                System.out.println("-------------- exportReporteConciliacion : Excel recibido de Python y "
+                        + "re-transmitido correctamente -------------");
+            } else {
+                // Error del backend Python: viene como JSON {ok:false, error:...}
+                String mensaje;
+                try {
+                    JSONObject body = new JSONObject(new String(contenido, "UTF-8"));
+                    mensaje = body.has("error") ? body.getString("error") : "Error generando el reporte.";
+                } catch (Exception exParse) {
+                    mensaje = "Error generando el reporte (HTTP " + resp.getStatus() + ").";
+                }
+                logError.error("exportReporteConciliacion [" + country + "] -> " + mensaje);
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.setContentType("text/plain; charset=UTF-8");
+                response.getWriter().write(mensaje);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logError.error("exportReporteConciliacion [" + country + "] -> " + e.getMessage(), e);
+            try {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.setContentType("text/plain; charset=UTF-8");
+                response.getWriter().write("Error al generar el reporte: " + e.getMessage());
+            } catch (IOException ioEx) {
+                logError.error("exportReporteConciliacion -> no se pudo escribir el error: " + ioEx.getMessage(), ioEx);
+            }
         }
     }
 
