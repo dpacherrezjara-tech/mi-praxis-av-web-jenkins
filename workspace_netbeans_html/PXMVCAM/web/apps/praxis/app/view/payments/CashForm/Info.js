@@ -103,10 +103,14 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                         dataIndex: 'QSALES', width: 100, style: 'background:#F9D88C;color:black !important', align: 'center ', menuDisabled: true, //flex: 1
 
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "color:#2B2B2B;text-align:right;";
+                                                            metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                             return  value;
                                                         },
+                                                        listeners: {
+                                                            click: 'onGridDataDetailPrincipalByStatus',
+                                                            args: ['']
+                                                        }
                                                     },
                                                     {
                                                         text: '<span style="color:black;font-weight:bold;">Match</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
@@ -116,9 +120,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                 text: '<span style="color:black;font-weight:bold;">Auto</span>', dataIndex: 'QMATCH',
                                                                 style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetailPrincipalByStatus',
+                                                                    args: ['1']
                                                                 }
                                                             },
                                                             {
@@ -147,9 +155,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                 text: '<span style="color:black;font-weight:bold;">Manual</span>', dataIndex: 'QMANUAL',
                                                                 style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetailPrincipalByStatus',
+                                                                    args: ['5']
                                                                 }
                                                             },
                                                             {
@@ -354,10 +366,14 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                         dataIndex: 'QSALES', width: 100, style: 'background:#F9D88C;color:black !important', align: 'center ', menuDisabled: true, //flex: 1
 
                                                         renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "color:#2B2B2B;text-align:right;";
+                                                            metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
                                                             value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                             return  value;
                                                         },
+                                                        listeners: {
+                                                            click: 'onGridDataDetailPrincipalSourceByStatus',
+                                                            args: ['']
+                                                        }
                                                     },
                                                     {
                                                         text: '<span style="color:black;font-weight:bold;">Match</span>', menuDisabled: true, style: 'background:#D1FBD2;color:black !important',
@@ -367,9 +383,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                 text: '<span style="color:black;font-weight:bold;">Auto</span>', dataIndex: 'QMATCH',
                                                                 style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetailPrincipalSourceByStatus',
+                                                                    args: ['1']
                                                                 }
                                                             },
                                                             {
@@ -398,9 +418,13 @@ Ext.define('Ext.Praxis.view.payments.CashForm.Info', {
                                                                 text: '<span style="color:black;font-weight:bold;">Manual</span>', dataIndex: 'QMANUAL',
                                                                 style: 'background:#D1FBD2;color:black !important', width: 100, align: 'center', menuDisabled: true,
                                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                                    metaData.style = "color:#2B2B2B;text-align:right;";
+                                                                    metaData.style = "color:#057ECB;text-align:right;color:#057ECB;text-decoration:underline;cursor:pointer";
                                                                     value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
                                                                     return  value;
+                                                                },
+                                                                listeners: {
+                                                                    click: 'onGridDataDetailPrincipalSourceByStatus',
+                                                                    args: ['5']
                                                                 }
                                                             },
                                                             {

@@ -91,6 +91,15 @@ Ext.define('Ext.Praxis.view.payments.DirectSalesForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnDataEntryPhase2',
+                            icon: 'resources/img/icon/16x16/icon_update_bash.png',
+                            tooltip: 'Conciliacion Fase 2',
+                            listeners: {
+                                click: 'onCallSummaryMPS782'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnAdd',
                             iconCls: 'prx-icon-add',
                             tooltip: 'New'

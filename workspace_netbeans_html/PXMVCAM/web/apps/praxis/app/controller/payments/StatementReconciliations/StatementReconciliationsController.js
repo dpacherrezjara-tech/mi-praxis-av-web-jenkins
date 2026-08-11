@@ -504,6 +504,23 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.StatementRec
             }
         }
     },
+    // Type Source solo tiene sentido si el registro ya está conciliado (CCUSTPRO
+    // recién se define al conciliar) -- se muestra solo con Status = Match (1) o
+    // Match Manual (5). Si se cambia a cualquier otro status (ej. Pending), se
+    // oculta y se resetea a "All" para no dejar un filtro escondido aplicado.
+    onStatusCashSelect: function (combo, record) {
+        var value = combo.getValue();
+        var cmbTypeSource = Ext.getCmp(prototype.id + '-cmbTypeSourceCash');
+        if (!cmbTypeSource) {
+            return;
+        }
+        if (value === '1' || value === '5') {
+            cmbTypeSource.setVisible(true);
+        } else {
+            cmbTypeSource.setValue('');
+            cmbTypeSource.setVisible(false);
+        }
+    },
     // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="Parametros Dashboard Cash ">

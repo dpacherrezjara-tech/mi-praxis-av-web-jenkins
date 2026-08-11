@@ -22,6 +22,7 @@ import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
 import net.miatech.praxis.payment.MPF190Create;
+import net.miatech.praxis.MPF300;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -256,6 +257,94 @@ public class DirectSalesController extends BaseController {
         }
     }
 
+    @RequestMapping(value = "getXLSXTicketDetail")
+    public @ResponseBody
+    void getXLSXTicketDetail(HttpServletRequest request, HttpServletResponse response) {
+
+        String fileNameDownload = "Direct Sales Ticket Detail - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            String beanString = request.getParameter("beanString");
+            MPF190Filter filter = new Gson().fromJson(beanString, MPF190Filter.class);
+            filter.page.PAGNUM = 1;
+            filter.page.PAGROW = -1;
+            filter.page.TOTPAG = 0;
+            filter.page.TOTROW = -1;
+
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            List<MPF300> listaData = logic.loadMPS783(filter);
+
+            SXSSFWorkbook workbook = new SXSSFWorkbook(100);
+            Sheet sheet = workbook.createSheet("Ticket Detail");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            CellStyle amountStyle = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            amountStyle.setDataFormat(format.getFormat("#,##0.00"));
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Nbr", "Ticket", "Status", "Source", "Type", "Form Payment",
+                "Sales Date", "Country", "Agent", "Days Pending", "Currency", "Amount"
+            };
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500);
+            }
+
+            int rowIdx = 1;
+            for (MPF300 item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.RN);
+                row.createCell(1).setCellValue(item.strTicket);
+
+                String statusLabel;
+                if ("1".equals(item.STVAL)) {
+                    statusLabel = "Match";
+                } else if ("5".equals(item.STVAL)) {
+                    statusLabel = "Match Manual";
+                } else {
+                    statusLabel = "Sales Without Liqui.";
+                }
+                row.createCell(2).setCellValue(statusLabel);
+
+                row.createCell(3).setCellValue(item.CFUENTE);
+                row.createCell(4).setCellValue(item.strPEM);
+                row.createCell(5).setCellValue(item.SPAYMENT);
+                row.createCell(6).setCellValue(item.SDATE);
+                row.createCell(7).setCellValue(item.SCOUNTRY);
+                row.createCell(8).setCellValue(item.SAGENT);
+                row.createCell(9).setCellValue(item.DIFFDAYS);
+                row.createCell(10).setCellValue(item.SCURRENCY);
+                Cell amountCell = row.createCell(11);
+                amountCell.setCellValue(item.SVFOPNETR);
+                amountCell.setCellStyle(amountStyle);
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.dispose();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
     @RequestMapping(value = "searchDashboard")
     public @ResponseBody
     String searchDashboard(ModelMap map, HttpServletRequest request) {
@@ -307,6 +396,24 @@ public class DirectSalesController extends BaseController {
             logic.setSession(this.serverSession.getServerSession());
 
             Map<String, Object> result = logic.executeMPS320();
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "runReconciliationPhase2", method = RequestMethod.POST)
+    public @ResponseBody
+    String runReconciliationPhase2(ModelMap map) {
+        System.out.println("-------------- DirectSales : runReconciliationPhase2 (MPS782) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            Map<String, Object> result = logic.executeMPS782();
             map.put("success", result.get("success"));
             map.put("message", result.get("message"));
         } catch (Exception e) {
@@ -379,6 +486,35 @@ public class DirectSalesController extends BaseController {
             filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
 
             List<MPF190> lst = logic.loadMPS775(filter);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "searchTicketDetail")
+    public @ResponseBody
+    String searchTicketDetail(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : searchTicketDetail (MPS783) -------------");
+        map.put("success", true);
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF190Filter filter = new Gson().fromJson(beanString, MPF190Filter.class);
+            filter.page.TOTROW = -1;
+            filter.page.START = 0;
+            filter.page.LIMIT = 0;
+
+            int start = request.getParameter("start") == null ? 0 : Integer.parseInt(request.getParameter("start").toString());
+
+            filter.page.PAGROW = 20;
+            filter.page.PAGNUM = (start / filter.page.PAGROW) + 1;
+
+            List<MPF300> lst = logic.loadMPS783(filter);
             map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
             map.put("data", lst);
         } catch (Exception e) {

@@ -292,8 +292,6 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
 
                 Ext.getCmp(prototype.id + '-titleFieldsetAccounting').setVisible(false);
                 Ext.getCmp(prototype.id + '-titleFieldsetSale').setVisible(false);
-                dayFromCash.setDisabled(true);
-                dayToCash.setDisabled(true);
                 societyCash.setDisabled(true);
                 inputDateCash.setDisabled(false);
 
@@ -308,8 +306,11 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     setFormatParameterDashboard: function () {
         me.bean = {};
 
-        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearCash').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthCash').getValue();
-        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearCash').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthCash').getValue();
+        let dayFromCash = Ext.getCmp(prototype.id + '-cmbDateFromDayCash').getValue() || '';
+        let dayToCash = Ext.getCmp(prototype.id + '-cmbDateToDayCash').getValue() || '';
+
+        me.bean.IN_FECHA_FROM = Ext.getCmp(prototype.id + '-cmbDateFromYearCash').getValue() + Ext.getCmp(prototype.id + '-cmbDateFromMonthCash').getValue() + dayFromCash;
+        me.bean.IN_FECHA_TO = Ext.getCmp(prototype.id + '-cmbDateToYearCash').getValue() + Ext.getCmp(prototype.id + '-cmbDateToMonthCash').getValue() + dayToCash;
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
         me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteCash').getValue();
         me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
@@ -665,6 +666,36 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
     },
     // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="Mostrando Bajada Total/Auto/Manual por Fuente Cash ">
+    onGridDataDetailPrincipalSourceByStatus: function (IN_STVAL, column, e, rowIndex, colIndex, rowData) {
+        let rowPadre = rowData.record.data;
+        me.bean = {};
+
+        const societyNamesCash = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+        const stvalLabelsCash = {'': 'Total Tickets', '1': 'Auto Match', '5': 'Manual Match'};
+
+        me.bean.IN_SOCIETY = me.IN_SOCIETY_CASH;
+        me.bean.IN_FECHA_FROM = rowPadre.SDATE;
+        me.bean.IN_FECHA_TO = rowPadre.SDATE;
+        me.bean.IN_STVAL = IN_STVAL;
+        me.bean.IN_CFUENTE = (rowPadre.CFUENTE || "").trim();
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
+        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
+
+        me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextPrincipalSourceCash');
+        if (lblContext) {
+            let societyLabel = societyNamesCash[me.IN_SOCIETY_CASH] || 'AV GROUP';
+            let tipoBajada = stvalLabelsCash[IN_STVAL] || '';
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.SDATE + '  —  ' + tipoBajada);
+        }
+
+        console.log(me.bean, 'searchParamsDetailPrincipal');
+        this.setGridDataDetailPrincipalSource();
+    },
+    // </editor-fold>
+
     // <editor-fold defaultstate="collapsed" desc="Mostrando Bajada pendientes  Cash ">
     onGridDataDetailPrincipal: function (IN_ACCOUNT, column, e, rowIndex, colIndex, rowData) {
         let esPadre = rowData.record.childNodes.length ? true : false;
@@ -736,6 +767,45 @@ Ext.define('Ext.Praxis.controller.payments.Cash.CashController', {
         Ext.getCmp(prototype.id + '-gridDataDetailPrincipalCash').bindStore(storeGridDatas);
         Ext.getCmp(prototype.id + '-paggin').bindStore(storeGridDatas);
         me.getPaggin();
+    },
+    // </editor-fold>
+
+    // <editor-fold defaultstate="collapsed" desc="Mostrando Bajada Total/Auto/Manual  Cash ">
+    onGridDataDetailPrincipalByStatus: function (IN_STVAL, column, e, rowIndex, colIndex, rowData) {
+        let esPadre = rowData.record.childNodes.length ? true : false;
+        let rowPadre = rowData.record.data;
+        let fecha = this.getPeriodoYYYYMM(rowPadre.strFormatDate);
+        me.bean = {};
+
+        const societyNamesCash = {'133': 'LACSA', '134': 'AVIANCA', '202': 'TACA', '547': 'AEROGAL'};
+        const stvalLabelsCash = {'': 'Total Tickets', '1': 'Auto Match', '5': 'Manual Match'};
+
+        let societyLabel;
+        if (esPadre) {
+            me.bean.IN_SOCIETY = "";
+            societyLabel = 'AV GROUP';
+        } else {
+            me.bean.IN_SOCIETY = rowPadre.CCUST;
+            societyLabel = societyNamesCash[rowPadre.CCUST] || rowPadre.CCUST;
+        }
+
+        me.bean.IN_FECHA_FROM = fecha;
+        me.bean.IN_FECHA_TO = fecha;
+        me.bean.IN_STVAL = IN_STVAL;
+        me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountryCash').getValue();
+        me.bean.IN_SOURCE = Ext.getCmp(prototype.id + '-cmbCfuenteCash').getValue();
+        me.bean.IN_TREG = Ext.getCmp(prototype.id + '-cmbInputDateCash').getValue();
+
+        me.paramsDetailSource.beanString = JSON.stringify(me.bean);
+
+        let lblContext = Ext.getCmp(prototype.id + '-lblContextPrincipalCash');
+        if (lblContext) {
+            let tipoBajada = stvalLabelsCash[IN_STVAL] || '';
+            lblContext.setText(societyLabel + '  —  ' + rowPadre.strFormatDate + '  —  ' + tipoBajada);
+        }
+
+        console.log(me.bean, 'searchParamsDetailPrincipal');
+        this.setGridDataDetailPrincipal();
     },
     // </editor-fold>
 

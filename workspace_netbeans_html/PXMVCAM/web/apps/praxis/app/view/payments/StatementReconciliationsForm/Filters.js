@@ -300,7 +300,10 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.Filters', {
                                             valueField: 'value', displayField: 'description',
                                             enableKeyEvents: true,
                                             triggerAction: 'all',
-                                            margin: '0 10 0 0'
+                                            margin: '0 10 0 0',
+                                            listeners: {
+                                                select: 'onStatusCashSelect'
+                                            }
                                         },
                                         {
                                             fieldLabel: 'Type Source',

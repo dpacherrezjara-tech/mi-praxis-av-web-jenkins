@@ -20,6 +20,7 @@ import net.miatech.praxis.payment.MPF190Filter;
 import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
 import net.miatech.praxis.payment.MPF190Create;
+import net.miatech.praxis.MPF300;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -64,7 +65,7 @@ public class DirectSalesDAO {
         long   totalQTotal = 0, totalQMatch = 0, totalQManual = 0, totalQPend = 0;
         double totalAmtTotal = 0, totalAmtMatch = 0, totalAmtManual = 0, totalAmtPend = 0;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS774(?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS774(?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -76,6 +77,7 @@ public class DirectSalesDAO {
             cstmt.setString(4, filter.IN_DATE_TO);
             cstmt.setString(5, filter.IN_SCOUNTRY);
             cstmt.setString(6, filter.IN_SAGENT);
+            cstmt.setString(7, filter.IN_FASE);
 
             cstmt.execute();
 
@@ -268,6 +270,53 @@ public class DirectSalesDAO {
         return result;
     }
 
+    public Map<String, Object> executeMPS782() throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS782(?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setInt(1, 0);
+            cstmt.registerOutParameter(1, Types.INTEGER);
+            cstmt.setString(2, "");
+            cstmt.registerOutParameter(2, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int sqlCode = cstmt.getInt(1);
+            String message = cstmt.getString(2);
+
+            result.put("success", sqlCode != 0);
+            result.put("sqlCode", sqlCode);
+            result.put("message", message);
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "SQL Error: " + e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
     public String updateMPS777(MPF190Update bean) throws SQLException, Exception {
 
         String strMsj = "Operation was successful.";
@@ -275,7 +324,7 @@ public class DirectSalesDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS777(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS777(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -297,9 +346,11 @@ public class DirectSalesDAO {
             cstmt.setString(13, bean.REFERENCE);
             cstmt.setString(14, bean.SFILE);
             cstmt.setString(15, bean.NPAG);
-            cstmt.setString(16, bean.COMMENTS);
+            cstmt.setString(16, bean.STRDATE);
+            cstmt.setString(17, bean.ENDDATE);
+            cstmt.setString(18, bean.COMMENTS);
 
-            cstmt.setString(17, session.getUserView().getUserInfo().USR);
+            cstmt.setString(19, session.getUserView().getUserInfo().USR);
 
             cstmt.execute();
 
@@ -330,7 +381,7 @@ public class DirectSalesDAO {
         CallableStatement cstmt = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS781(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS781(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
@@ -349,9 +400,11 @@ public class DirectSalesDAO {
             cstmt.setString(10, bean.REFERENCE);
             cstmt.setString(11, bean.SFILE);
             cstmt.setString(12, bean.NPAG);
-            cstmt.setString(13, bean.COMMENTS);
+            cstmt.setString(13, bean.STRDATE);
+            cstmt.setString(14, bean.ENDDATE);
+            cstmt.setString(15, bean.COMMENTS);
 
-            cstmt.setString(14, session.getUserView().getUserInfo().USR);
+            cstmt.setString(16, session.getUserView().getUserInfo().USR);
 
             cstmt.execute();
 
@@ -379,40 +432,64 @@ public class DirectSalesDAO {
 
         List<MPF190> lstData = new ArrayList<MPF190>(0);
         MPF190 bean;
+        long totQtyDetail = 0;
+        double totNetoDetail = 0;
+        double totPayamouDetail = 0;
 
         CallableStatement cstmt = null;
         ResultSet rst = null;
         Connection cnx = null;
 
-        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS775(?,?,?,?,?,?,?,?,?)}";
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS775(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
 
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
             cstmt = cnx.prepareCall(SQLCLL01);
 
-            cstmt.registerOutParameter(6, Types.INTEGER);
-            cstmt.registerOutParameter(7, Types.INTEGER);
-            cstmt.registerOutParameter(8, Types.INTEGER);
-            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.registerOutParameter(14, Types.INTEGER);
+            cstmt.registerOutParameter(15, Types.INTEGER);
+            cstmt.registerOutParameter(16, Types.INTEGER);
+            cstmt.registerOutParameter(17, Types.INTEGER);
 
             cstmt.setString(1, filter.IN_CCUST);
             cstmt.setString(2, filter.IN_SEARCH);
-            cstmt.setString(3, filter.IN_PERIODO);
-            cstmt.setString(4, filter.IN_STVAL);
+            cstmt.setString(3, filter.IN_DATE_FROM);
+            cstmt.setString(4, filter.IN_DATE_TO);
             cstmt.setString(5, filter.IN_SCOUNTRY);
+            cstmt.setString(6, filter.IN_SAGENT);
+            cstmt.setString(7, filter.IN_STVAL);
+            cstmt.setString(8, filter.IN_SCURRENCY);
+            cstmt.setString(9, filter.IN_NETO);
+            cstmt.setString(10, filter.IN_PAYAMOU);
+            cstmt.setString(11, filter.IN_DATEC);
+            cstmt.setString(12, filter.IN_TRANC);
+            cstmt.setString(13, filter.IN_FASE);
 
-            cstmt.setInt(6, filter.page.PAGNUM);
-            cstmt.setInt(7, filter.page.PAGROW);
-            cstmt.setInt(8, filter.page.TOTPAG);
-            cstmt.setInt(9, filter.page.TOTROW);
+            cstmt.setInt(14, filter.page.PAGNUM);
+            cstmt.setInt(15, filter.page.PAGROW);
+            cstmt.setInt(16, filter.page.TOTPAG);
+            cstmt.setInt(17, filter.page.TOTROW);
 
             cstmt.execute();
 
-            filter.page.PAGNUM = cstmt.getInt(6);
-            filter.page.PAGROW = cstmt.getInt(7);
-            filter.page.TOTPAG = cstmt.getInt(8);
-            filter.page.TOTROW = cstmt.getInt(9);
+            filter.page.PAGNUM = cstmt.getInt(14);
+            filter.page.PAGROW = cstmt.getInt(15);
+            filter.page.TOTPAG = cstmt.getInt(16);
+            filter.page.TOTROW = cstmt.getInt(17);
 
+            // Result set 1: totales (mismo filtro, sin paginar)
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                totQtyDetail = rst.getLong("TOTAL_QTY");
+                totNetoDetail = rst.getDouble("TOTAL_NETO");
+                totPayamouDetail = rst.getDouble("TOTAL_PAYAMOU");
+            }
+            rst.close();
+
+            // Result set 2: detalle paginado
+            if (!cstmt.getMoreResults()) {
+                return lstData;
+            }
             rst = cstmt.getResultSet();
             while (rst.next()) {
                 bean = new MPF190();
@@ -434,6 +511,13 @@ public class DirectSalesDAO {
                 bean.NPAG = rst.getString("NPAG") != null ? rst.getString("NPAG").trim() : "";
                 bean.SAGENT = rst.getString("SAGENT") != null ? rst.getString("SAGENT").trim() : "";
                 bean.STVAL = rst.getString("STVAL") != null ? rst.getString("STVAL").trim() : "";
+                bean.STRDATE = rst.getString("STRDATE") != null ? rst.getString("STRDATE").trim() : "";
+                bean.ENDDATE = rst.getString("ENDDATE") != null ? rst.getString("ENDDATE").trim() : "";
+                bean.DATEC = rst.getString("DATEC") != null ? rst.getString("DATEC").trim() : "";
+                bean.TRANC = rst.getString("TRANC") != null ? rst.getString("TRANC").trim() : "";
+                bean.STVALF2 = rst.getString("STVALF2") != null ? rst.getString("STVALF2").trim() : "";
+                bean.QTYTICKET = rst.getLong("QTYTICKET");
+                bean.QTYLIQUI = rst.getLong("QTYLIQUI");
 
                 bean.USCR = rst.getString("USCR") != null ? rst.getString("USCR").trim() : "";
                 bean.FECR = rst.getString("FECR") != null ? rst.getString("FECR").trim() : "";
@@ -443,6 +527,141 @@ public class DirectSalesDAO {
                 bean.FEUP = rst.getString("FEUP") != null ? rst.getString("FEUP").trim() : "";
                 bean.HOUP = rst.getString("HOUP") != null ? rst.getString("HOUP").trim() : "";
                 bean.PGMUP = rst.getString("PGMUP") != null ? rst.getString("PGMUP").trim() : "";
+
+                bean.TOTQTYDETAIL = totQtyDetail;
+                bean.TOTNETODETAIL = totNetoDetail;
+                bean.TOTPAYAMOUDETAIL = totPayamouDetail;
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
+    // Tickets (MPF300) vinculados a un registro de Direct Sales por
+    // DATEC+TRANC; drill-down desde la columna Qty Ticket del Detail.
+    // Misma estructura/lectura de resultado que CashDAO.loadMPS445 (la
+    // pantalla "Ticket" de Cash), solo que MPS783 filtra directo por
+    // CCUST/DATEC/TRANC en vez de los filtros propios de Cash.
+    public List<MPF300> loadMPS783(MPF190Filter filter) throws SQLException, Exception {
+
+        List<MPF300> lstData = new ArrayList<MPF300>(0);
+        MPF300 bean;
+        long totQtyTicket = 0;
+        double totAmountTicket = 0;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL " + session.getMainLibrary() + "MP.MPS783(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_CCUST);
+            cstmt.setString(2, filter.IN_DATEC);
+            cstmt.setString(3, filter.IN_TRANC);
+
+            cstmt.setInt(4, filter.page.PAGNUM);
+            cstmt.setInt(5, filter.page.PAGROW);
+            cstmt.setInt(6, filter.page.TOTPAG);
+            cstmt.setInt(7, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(4);
+            filter.page.PAGROW = cstmt.getInt(5);
+            filter.page.TOTPAG = cstmt.getInt(6);
+            filter.page.TOTROW = cstmt.getInt(7);
+
+            // Result set 1: totales (mismo filtro, sin paginar)
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                totQtyTicket = rst.getLong("TOTAL_QTY");
+                totAmountTicket = rst.getDouble("TOTAL_AMOUNT");
+            }
+            rst.close();
+
+            // Result set 2: detalle paginado
+            if (!cstmt.getMoreResults()) {
+                return lstData;
+            }
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF300();
+                bean.RN = rst.getInt("RN");
+                bean.DIFFDAYS = rst.getInt("DIFFDAYS");
+                bean.QTYDOC = rst.getInt("QTYDOC");
+                bean.CCUST = rst.getString("CCUST");
+                bean.CCIA = rst.getString("CCIA");
+                bean.FORMA = rst.getString("FORMA");
+                bean.SERIE = rst.getString("SERIE");
+                bean.TDOC = rst.getString("TDOC");
+                bean.SEQ = rst.getString("SEQ");
+                bean.CORRL = rst.getString("CORRL");
+                bean.STVAL = rst.getString("STVAL");
+                bean.CFUENTE = rst.getString("CFUENTE");
+                bean.TRNCU = rst.getString("TRNCU");
+                bean.SCOUNTRY = rst.getString("SCOUNTRY");
+                bean.SAGENT = rst.getString("SAGENT");
+                bean.SCONSOL = rst.getString("SCONSOL");
+                bean.SDATE = rst.getString("SDATE");
+                bean.SCURRENCY = rst.getString("SCURRENCY");
+                bean.SPAYMENT = rst.getString("SPAYMENT");
+
+                bean.SVFOP = rst.getDouble("SVFOP");
+                bean.SVFOPNETR = rst.getDouble("SVFOPNETR");
+                bean.SVFOPNETRU = rst.getDouble("SVFOPNETRU");
+                bean.SVFOPUSD = rst.getDouble("SVFOPUSD");
+
+                if (rst.getString("TDOC").trim().equals("A")) {
+                    bean.strPEM = "ADJUST.";
+                } else if (rst.getString("TDOC").trim().equals("R")) {
+                    bean.strPEM = "REFUND";
+                } else {
+                    bean.strPEM = "SALES";
+                }
+
+                bean.strTicket = rst.getString("CCIA").trim() + rst.getString("FORMA").trim() + rst.getString("SERIE").trim();
+
+                bean.TOTQTYTICKET = totQtyTicket;
+                bean.TOTAMOUNTTICKET = totAmountTicket;
 
                 bean.page.PAGNUM = filter.page.PAGNUM;
                 bean.page.PAGROW = filter.page.PAGROW;

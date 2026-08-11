@@ -65,5 +65,11 @@ public class MPF300 {
     public double SVFOPNETR = 0;
     public double SVFOPNETRU = 0;
     public double SVFOPUSD = 0;
-    
+
+    // ── Totales del subselect de tickets vinculados (MPS783, drill-down de
+    // Qty Ticket en Direct Sales): agregados sobre TODO el resultado
+    // filtrado, no solo la página actual. ────────────────────────────────────
+    public long   TOTQTYTICKET    = 0;
+    public double TOTAMOUNTTICKET = 0;
+
 }

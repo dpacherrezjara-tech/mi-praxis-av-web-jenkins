@@ -49,13 +49,56 @@ Ext.define('Ext.Praxis.view.payments.DirectSalesForm.Info', {
                                     xtype: 'panel',
                                     id: prototype.id + '-panelGridWithWarning',
                                     border: false,
-                                    width: 1120,
+                                    width: 1300,
                                     bodyStyle: 'background: transparent;',
                                     layout: {
                                         type: 'hbox',
                                         align: 'stretch'
                                     },
                                     items: [
+                                        {
+                                            // Fase 1 / Fase 2: por ahora solo visual, sin
+                                            // funcionalidad todavía (Fase 1 activo por defecto).
+                                            // Mismo patrón horizontal que el switch Dashboard/Detail.
+                                            xtype: 'container',
+                                            id: prototype.id + '-panelFaseToggle',
+                                            width: 160,
+                                            margin: '0 10 0 0',
+                                            layout: {
+                                                type: 'hbox',
+                                                align: 'middle',
+                                                pack: 'center'
+                                            },
+                                            items: [
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Fase 1',
+                                                    margin: '0 5 0 0',
+                                                    width: 40,
+                                                    style: 'font-weight:bold; font-size:11px; color:#1a4d8f;'
+                                                },
+                                                {
+                                                    xtype: 'component',
+                                                    id: prototype.id + '-btnToggleSwitchFase',
+                                                    margin: '0 5 0 0',
+                                                    html: `<style>
+                                                        .toggle-container{display:inline-block;position:relative;width:30px;height:16px;vertical-align:middle;}
+                                                        .toggle-input{opacity:0;width:0;height:0;}
+                                                        .toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#72e34f;transition:.4s;border-radius:16px;}
+                                                        .toggle-slider::before{position:absolute;content:"";height:12px;width:12px;border-radius:50%;left:2px;bottom:2px;background-color:white;transition:.4s;}
+                                                        .toggle-input:checked+.toggle-slider{background-color:#4c7daf;}
+                                                        .toggle-input:checked+.toggle-slider::before{transform:translateX(16px);}
+                                                    </style>
+                                                    <label class="toggle-container"><input type="checkbox" class="toggle-input"><span class="toggle-slider"></span></label>`
+                                                },
+                                                {
+                                                    xtype: 'label',
+                                                    text: 'Fase 2',
+                                                    width: 50,
+                                                    style: 'font-weight:bold; font-size:11px; color:#1a4d8f;'
+                                                }
+                                            ]
+                                        },
                                         {
                                             xtype: 'panel',
                                             id: prototype.id + '-panelFxWarning',
@@ -199,10 +242,13 @@ Ext.define('Ext.Praxis.view.payments.DirectSalesForm.Info', {
                                                         ]
                                                     },
                                                     {
-                                                        text: '<span style="color:black;font-weight:bold;">Statement</span>',
+                                                        text: '<span style="color:black;font-weight:bold;">Settlement</span>',
                                                         style: 'background:#FFA8A8;color:black !important',
                                                         columns: [
                                                             {
+                                                                // Fase 1: "W/O Statement"; Fase 2: "W/O Sales" (ver
+                                                                // syncWOStatementLabel en el controller).
+                                                                id: prototype.id + '-colWOStatement',
                                                                 text: '<span style="color:black;font-weight:bold;">W/O Statement</span>',
                                                                 dataIndex: 'VL_QTY_PEND', width: 120, align: 'center',
                                                                 style: 'background:#FFA8A8;color:black !important',
@@ -444,6 +490,32 @@ Ext.define('Ext.Praxis.view.payments.DirectSalesForm.Info', {
                                                     return Ext.util.Format.number(value, '0,000.00');
                                                 }
                                             },
+                                            {
+                                                // Solo Fase 2 y solo bajando por Auto/Manual (ver
+                                                // toggleQtyColumns en el controller).
+                                                id: prototype.id + '-colQtyTicket',
+                                                hidden: true,
+                                                text: '<span style="color:white;font-weight:bold;">Qty Ticket</span>', dataIndex: 'QTYTICKET', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                },
+                                                listeners: {
+                                                    click: 'onQtyTicketClick'
+                                                }
+                                            },
+                                            {
+                                                id: prototype.id + '-colQtyLiqui',
+                                                hidden: true,
+                                                text: '<span style="color:white;font-weight:bold;">Qty Liqui</span>', dataIndex: 'QTYLIQUI', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right; color:#057ECB; text-decoration:underline;";
+                                                    return '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+                                                },
+                                                listeners: {
+                                                    click: 'onQtyLiquiClick'
+                                                }
+                                            },
                                             {text: '<span style="color:white;font-weight:bold;">Reference</span>', dataIndex: 'REFERENCE', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData) {
                                                     metaData.style = "text-align:left;";
@@ -479,6 +551,236 @@ Ext.define('Ext.Praxis.view.payments.DirectSalesForm.Info', {
                                             }
                                         ]
                                     }
+                                }
+                            ]
+                        },
+                        {
+                            // Subnivel de Detail: tickets (MPF300) vinculados a la fila por
+                            // DATEC+TRANC, vía MPS783. Se llega con drill-down (push/pop en
+                            // me.drillDown, igual que Dashboard->Detail), no con el DataEntry.
+                            xtype: 'panel',
+                            border: false,
+                            width: 1300,
+                            id: prototype.id + '-panelTicketDetailDirectSales',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridTicketDetailDirectSales',
+                                    height: 513,
+                                    width: 1043,
+                                    margin: 0,
+                                    hidden: false,
+                                    columnLines: true,
+                                    title: 'Linked Tickets',
+                                    titleAlign: 'center',
+                                    header: {
+                                        style: 'background-color: #e8e8e8; color: #333; font-weight: bold;'
+                                    },
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'RN', width: 40, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Ticket</span>', dataIndex: 'strTicket', width: 120, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Status</span>', dataIndex: 'STVAL', width: 120, style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value) {
+                                                    if (value === '1') {
+                                                        return 'Match';
+                                                    } else if (value === '5') {
+                                                        return 'Match Manual';
+                                                    }
+                                                    return 'Sales Without Liqui.';
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Source</span>', dataIndex: 'CFUENTE', width: 60, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Type</span>', dataIndex: 'strPEM', width: 80, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Form Payment</span>', dataIndex: 'SPAYMENT', width: 100, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 80, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 90, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Days Pending</span>', dataIndex: 'DIFFDAYS', width: 94, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 75, style: 'padding:2px; background: #6C87A8;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Amount</span>', dataIndex: 'SVFOPNETR', width: 110, align: 'right', style: 'padding:2px; background: #6C87A8;',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right;";
+                                                    return '<span>' + Ext.util.Format.number(value, '0,000.00') + '</span>';
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    // Totales sobre TODO el resultado filtrado (no solo la página
+                                    // actual), vía el 1er result set de MPS783. Ver setGridTicketDetail.
+                                    // Mismo patrón visual que -fakeSummaryDashboard: celdas-label con
+                                    // su propio padding/background/border-right, para que se vea como
+                                    // una fila más de la grilla (columnas alineadas con las de arriba).
+                                    xtype: 'panel',
+                                    id: prototype.id + '-fakeSummaryTicketDetail',
+                                    border: false,
+                                    width: 1043,
+                                    margin: 0,
+                                    bodyStyle: 'background:#c9daf5; border-top: 1px solid #b0c4e0;',
+                                    layout: {type: 'hbox', align: 'middle'},
+                                    defaults: {xtype: 'label', border: false},
+                                    items: [
+                                        {width: 40, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},
+                                        {width: 120, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''}, // Ticket
+                                        {width: 120, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''}, // Status
+                                        {width: 60, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Source
+                                        {width: 80, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Type
+                                        {width: 100, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''}, // Form Payment
+                                        {width: 80, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Sales Date
+                                        {width: 70, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Country
+                                        {width: 90, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Agent
+                                        {width: 94, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Days Pending
+                                        {width: 75, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Currency
+                                        {id: prototype.id + '-lblTicketTotAmount', width: 110, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 6px; background:#c9daf5;', text: '0.00'}
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            // Subnivel de Detail: liquidaciones (MPF190, filas hermanas por
+                            // DATEC+TRANC+CCUST con Auto/Manual) vinculadas a la fila. Mismas
+                            // columnas que el grid principal de Detail. Se llega con drill-down
+                            // (push/pop en me.drillDown), reutiliza MPS775 (no un proc nuevo).
+                            xtype: 'panel',
+                            border: false,
+                            width: 1300,
+                            id: prototype.id + '-panelLiquiDetailDirectSales',
+                            bodyStyle: 'background-color: #F4F7FD;',
+                            padding: '1',
+                            layout: {
+                                type: 'vbox',
+                                align: 'center'
+                            },
+                            items: [
+                                {
+                                    xtype: 'grid',
+                                    id: prototype.id + '-gridLiquiDetailDirectSales',
+                                    height: 510,
+                                    width: 1300,
+                                    hidden: false,
+                                    columnLines: true,
+                                    title: 'Linked Liquidations',
+                                    titleAlign: 'center',
+                                    header: {
+                                        style: 'background-color: #e8e8e8; color: #333; font-weight: bold;'
+                                    },
+                                    viewConfig: {
+                                        enableTextSelection: true
+                                    },
+                                    columns: {
+                                        defaults: {
+                                            menuDisabled: true,
+                                            sortable: true,
+                                            align: 'center'
+                                        },
+                                        items: [
+                                            {text: '<span style="color:white;font-weight:bold;">Nbr</span>', dataIndex: 'NBR', width: 55, style: 'padding:4px; background: #6C87A8;border-color:white;'},
+                                            {text: '<span style="color:white;font-weight:bold;">Country</span>', dataIndex: 'SCOUNTRY', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Agent</span>', dataIndex: 'SAGENT', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Abono Date</span>', dataIndex: 'ADATE', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Sales Date</span>', dataIndex: 'SDATE', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Currency</span>', dataIndex: 'SCURRENCY', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Neto</span>', dataIndex: 'NETO', width: 130, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right;";
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Payamou</span>', dataIndex: 'PAYAMOU', width: 130, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:right;";
+                                                    return Ext.util.Format.number(value, '0,000.00');
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Reference</span>', dataIndex: 'REFERENCE', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:left;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">SFile</span>', dataIndex: 'SFILE', width: 310, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:left;";
+                                                    return value;
+                                                }
+                                            },
+                                            {text: '<span style="color:white;font-weight:bold;">Npag</span>', dataIndex: 'NPAG', width: 60, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                                renderer: function (value, metaData) {
+                                                    metaData.style = "text-align:center;";
+                                                    return value;
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    // Totales sobre TODO el resultado filtrado (no solo la página
+                                    // actual), vía el 1er result set de MPS775. Ver setGridLiquiDetail.
+                                    // Mismo patrón que -fakeSummaryTicketDetail: celdas alineadas a
+                                    // las columnas de la grilla de arriba. Qty no se muestra: ya se ve
+                                    // en el paginador.
+                                    xtype: 'panel',
+                                    id: prototype.id + '-fakeSummaryLiquiDetail',
+                                    border: false,
+                                    width: 1300,
+                                    margin: 0,
+                                    bodyStyle: 'background:#c9daf5; border-top: 1px solid #b0c4e0;',
+                                    layout: {type: 'hbox', align: 'middle'},
+                                    defaults: {xtype: 'label', border: false},
+                                    items: [
+                                        {width: 55, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Nbr
+                                        {width: 70, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Country
+                                        {width: 80, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Agent
+                                        {width: 90, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Abono Date
+                                        {width: 90, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Sales Date
+                                        {width: 80, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''},  // Currency
+                                        {id: prototype.id + '-lblLiquiTotNeto', width: 130, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 6px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: '0.00'},   // Neto
+                                        {id: prototype.id + '-lblLiquiTotPayamou', width: 130, style: 'text-align:right; font-weight:bold; color:black; font-size:11px; padding:3px 6px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: '0.00'}, // Payamou
+                                        {width: 120, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''}, // Reference
+                                        {width: 310, style: 'padding:3px 4px; background:#c9daf5; border-right:1px solid #b0c4e0;', text: ''}, // SFile
+                                        {width: 60, style: 'padding:3px 4px; background:#c9daf5;', text: ''} // Npag
+                                    ]
                                 }
                             ]
                         }

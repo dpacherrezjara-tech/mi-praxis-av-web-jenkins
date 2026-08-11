@@ -27,5 +27,7 @@ public class MPF190Update {
     public String REFERENCE = "";
     public String SFILE     = "";
     public String NPAG      = "";
+    public String STRDATE   = "";
+    public String ENDDATE   = "";
     public String COMMENTS  = "";
 }

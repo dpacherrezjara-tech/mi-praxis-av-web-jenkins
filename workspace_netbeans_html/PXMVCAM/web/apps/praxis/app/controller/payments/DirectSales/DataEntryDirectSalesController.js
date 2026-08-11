@@ -74,7 +74,7 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DataEntryDirectSalesContr
 
         var ids = ['-deCCUST', '-deADATE', '-deSCOUNTRY', '-deSAGENT', '-deSCURRENCY',
             '-deCBATCH', '-deSEQ', '-deNETO', '-dePAYAMOU', '-deSDATE',
-            '-deREFERENCE', '-deSFILE', '-deNPAG', '-deCOMMENTS',
+            '-deREFERENCE', '-deSFILE', '-deNPAG', '-deSTRDATE', '-deENDDATE', '-deCOMMENTS',
             '-deUSCR', '-deFECR', '-deHOCR', '-dePGMCR', '-deUSUP', '-deFEUP', '-deHOUP', '-dePGMUP'];
         Ext.Array.each(ids, function (suffix) {
             Ext.getCmp(prototype.id + suffix).setValue('');
@@ -151,6 +151,8 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DataEntryDirectSalesContr
         Ext.getCmp(prototype.id + '-deREFERENCE').setValue(rec.get('REFERENCE'));
         Ext.getCmp(prototype.id + '-deSFILE').setValue(rec.get('SFILE'));
         Ext.getCmp(prototype.id + '-deNPAG').setValue(rec.get('NPAG'));
+        Ext.getCmp(prototype.id + '-deSTRDATE').setValue(rec.get('STRDATE'));
+        Ext.getCmp(prototype.id + '-deENDDATE').setValue(rec.get('ENDDATE'));
         Ext.getCmp(prototype.id + '-deCOMMENTS').setValue(rec.get('COMMENTS'));
 
         Ext.getCmp(prototype.id + '-deUSCR').setValue(rec.get('USCR'));
@@ -271,6 +273,8 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DataEntryDirectSalesContr
         bean.REFERENCE = Ext.getCmp(prototype.id + '-deREFERENCE').getValue();
         bean.SFILE = Ext.getCmp(prototype.id + '-deSFILE').getValue();
         bean.NPAG = Ext.getCmp(prototype.id + '-deNPAG').getValue();
+        bean.STRDATE = Ext.getCmp(prototype.id + '-deSTRDATE').getValue();
+        bean.ENDDATE = Ext.getCmp(prototype.id + '-deENDDATE').getValue();
         bean.COMMENTS = Ext.getCmp(prototype.id + '-deCOMMENTS').getValue();
         return bean;
     },

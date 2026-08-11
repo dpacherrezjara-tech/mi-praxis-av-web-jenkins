@@ -54,6 +54,24 @@ public class MPF190 {
     public String NPAG        = "";
     public String SAGENT      = "";
     public String STVAL       = "";
+    public String STRDATE     = "";
+    public String ENDDATE     = "";
+
+    // ── Solo se llenan cuando se baja al Detail por Match Auto o Match Manual
+    // (STVAL='1'/'5'); en cualquier otro estado MPS775 devuelve 0 en QTYTICKET
+    // y QTYLIQUI sin ejecutar los subselects. ──────────────────────────────────
+    public String DATEC       = "";
+    public String TRANC       = "";
+    public String STVALF2     = "";
+    public long   QTYTICKET   = 0;
+    public long   QTYLIQUI    = 0;
+
+    // ── Totales de MPS775 (Detail y el subnivel de Qty Liqui, que reutiliza
+    // este mismo proc): agregados sobre TODO el resultado filtrado, no solo
+    // la página actual. ────────────────────────────────────────────────────
+    public long   TOTQTYDETAIL     = 0;
+    public double TOTNETODETAIL    = 0;
+    public double TOTPAYAMOUDETAIL = 0;
 
     // ── Auditoría (no se muestra en la grilla) ───────────────────────────────
     public String USCR        = "";
