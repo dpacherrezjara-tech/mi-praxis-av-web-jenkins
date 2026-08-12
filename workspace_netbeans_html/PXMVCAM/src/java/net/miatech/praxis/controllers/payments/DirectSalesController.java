@@ -576,6 +576,12 @@ public class DirectSalesController extends BaseController {
         String carpetaBase = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\VentaDirecta\\" + sagent + "\\" + year + "\\archivo\\";
         System.out.println("downloadVoucher -> DB_SERVER_DEFAULT_TYPE=[" + ruta + "] carpetaBase=[" + carpetaBase + "]");
 
+        // Debug visible desde el navegador (Network -> Headers), para no depender de
+        // la consola del servidor cuando no se tiene acceso a ella. Se manda siempre,
+        // no solo en el 404, así también se ve en los casos que sí funcionan.
+        response.setHeader("X-Debug-Ambiente", ruta == null ? "" : ruta);
+        response.setHeader("X-Debug-CarpetaBase", carpetaBase);
+
         String nombreBase = sfile;
         int idxPunto = sfile.lastIndexOf('.');
         if (idxPunto > 0) {
@@ -593,17 +599,20 @@ public class DirectSalesController extends BaseController {
 
         File archivoEncontrado = null;
         String nombreDescarga = sfile;
+        StringBuilder debugCandidatos = new StringBuilder();
 
         for (String candidato : candidatos) {
             File f = new File(carpetaBase + candidato);
             boolean existe = f.exists() && f.isFile();
             System.out.println("downloadVoucher -> probando candidato [" + candidato + "] -> " + (existe ? "ENCONTRADO" : "no existe"));
+            debugCandidatos.append(candidato).append("=").append(existe ? "SI" : "NO").append(" | ");
             if (existe) {
                 archivoEncontrado = f;
                 nombreDescarga = candidato;
                 break;
             }
         }
+        response.setHeader("X-Debug-Candidatos", debugCandidatos.toString());
 
         // Segunda búsqueda de respaldo: el nombre real en disco puede no calzar por
         // problemas de codificación de caracteres (tildes/ñ) al guardarse SFILE en la
@@ -617,6 +626,9 @@ public class DirectSalesController extends BaseController {
             File carpeta = new File(carpetaBase);
             File[] archivosCarpeta = carpeta.listFiles();
             System.out.println("downloadVoucher -> carpeta.exists()=" + carpeta.exists() + " listFiles()=" + (archivosCarpeta == null ? "null (no se pudo listar, ¿existe/permiso la carpeta?)" : archivosCarpeta.length + " archivos"));
+            response.setHeader("X-Debug-PrefijoFallback", prefijo);
+            response.setHeader("X-Debug-CarpetaExists", String.valueOf(carpeta.exists()));
+            response.setHeader("X-Debug-ListFiles", archivosCarpeta == null ? "null-sin-acceso" : String.valueOf(archivosCarpeta.length));
             if (archivosCarpeta != null) {
                 File candidatoPdf = null;
                 File cualquiera = null;
