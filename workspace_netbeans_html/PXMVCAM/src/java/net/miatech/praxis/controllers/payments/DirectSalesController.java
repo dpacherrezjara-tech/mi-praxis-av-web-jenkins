@@ -10,6 +10,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -589,6 +592,31 @@ public class DirectSalesController extends BaseController {
         debugBody.append("carpetaBase (ruta real donde busca)=[").append(carpetaBase).append("]\n");
         response.setHeader("X-Debug-Ambiente", ruta == null ? "" : ruta);
         response.setHeader("X-Debug-CarpetaBase", carpetaBase);
+
+        // Con qué cuenta de Windows corre el proceso Java -- esto por sí solo ya dice
+        // si el proceso corre como el usuario esperado o como otra identidad (ej.
+        // Sistema Local / cuenta de servicio) que puede no tener acceso al share.
+        String usuarioProceso = System.getProperty("user.name");
+        debugBody.append("Usuario Windows del proceso Java (user.name)=[").append(usuarioProceso).append("]\n");
+        response.setHeader("X-Debug-UsuarioProceso", usuarioProceso == null ? "" : usuarioProceso);
+
+        // File.exists()/listFiles() TRAGAN el error real (si no hay permiso, devuelven
+        // false/null igual que si la carpeta no existiera). Con Files.newDirectoryStream
+        // (NIO.2) sí se propaga la excepción real (AccessDeniedException, etc.), que es
+        // la prueba concreta de si es un problema de permisos o de otra cosa.
+        try (DirectoryStream<java.nio.file.Path> ds = Files.newDirectoryStream(Paths.get(carpetaBase))) {
+            int cuenta = 0;
+            for (java.nio.file.Path p : ds) {
+                cuenta++;
+            }
+            debugBody.append("Acceso real a la carpeta (Files.newDirectoryStream) = OK, ").append(cuenta).append(" archivos\n");
+            response.setHeader("X-Debug-AccesoCarpeta", "OK-" + cuenta + "-archivos");
+        } catch (Exception accEx) {
+            String detalle = accEx.getClass().getName() + ": " + accEx.getMessage();
+            debugBody.append("Acceso real a la carpeta (Files.newDirectoryStream) = ERROR -> ").append(detalle).append("\n");
+            response.setHeader("X-Debug-AccesoCarpeta", "ERROR");
+            logError.warn("downloadVoucher: fallo real accediendo a carpetaBase (usuario=" + usuarioProceso + ") -> " + detalle, accEx);
+        }
 
         String nombreBase = sfile;
         int idxPunto = sfile.lastIndexOf('.');
