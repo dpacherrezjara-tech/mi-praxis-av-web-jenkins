@@ -1320,18 +1320,29 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         });
     },
     onToggleVoucher: function (btn) {
+      try {
         var win = this.getView();
         var panelVoucher = Ext.getCmp(prototype.id + '-panelVoucher');
+        if (!panelVoucher) {
+            console.error('onToggleVoucher -> no se encontró el componente panelVoucher.');
+            return;
+        }
 
         // originalWidth debe ser el ancho normal de la ventana (1200, ver DataEntryCash.js)
         // y expandedWidth = ese ancho + el del panelVoucher (720) + su margen (10).
         var originalWidth = 1200;
         var expandedWidth = 1930;
 
-        if (panelVoucher) {
-            if (panelVoucher.isHidden()) {
+        if (panelVoucher.isHidden()) {
 
-                let info = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore().getData().items[0].data;
+                var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+                var record = gridScan && gridScan.getStore() ? gridScan.getStore().getAt(0) : null;
+                if (!record) {
+                    console.warn('onToggleVoucher -> gridDataInfoScan no tiene registros cargados todavía.');
+                    Ext.Msg.alert('Warning', 'No hay datos cargados en Detail Settlement para mostrar el voucher.');
+                    return;
+                }
+                let info = record.data;
 
                 var sfile = info.SFILE;
                 var sagent = info.SAGENT;
@@ -1391,6 +1402,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 
             // Centrar simétricamente la ventana
             win.center();
-        }
+      } catch (e) {
+          console.error('onToggleVoucher -> ERROR', e);
+          Ext.Msg.alert('Error', 'Ocurrió un error al mostrar el voucher: ' + e.message);
+      }
     }
 });

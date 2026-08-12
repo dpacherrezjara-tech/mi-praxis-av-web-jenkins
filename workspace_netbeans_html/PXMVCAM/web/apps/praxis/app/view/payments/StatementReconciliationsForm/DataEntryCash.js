@@ -2216,7 +2216,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
             id: prototype.id + '-panelVoucher',
             hidden: true,
             width: 720,
-            height: 830,
+            height: 700,
             margin: '0 0 0 10',
             layout: 'fit',
             // Usamos un iframe nativo. Le damos un ID para manipular su src desde el controller
