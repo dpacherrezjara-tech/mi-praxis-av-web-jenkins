@@ -576,9 +576,17 @@ public class DirectSalesController extends BaseController {
         String carpetaBase = "\\\\10.0.0.87\\av\\Efectivo\\" + rutaCarpeta + "\\process\\VentaDirecta\\" + sagent + "\\" + year + "\\archivo\\";
         System.out.println("downloadVoucher -> DB_SERVER_DEFAULT_TYPE=[" + ruta + "] carpetaBase=[" + carpetaBase + "]");
 
-        // Debug visible desde el navegador (Network -> Headers), para no depender de
-        // la consola del servidor cuando no se tiene acceso a ella. Se manda siempre,
-        // no solo en el 404, así también se ve en los casos que sí funcionan.
+        // Debug visible desde el navegador -- se arma en texto plano y, si el archivo
+        // no se encuentra, se manda como CUERPO de la respuesta 404 (se ve directo en
+        // la pestaña "Respuesta" de DevTools, o pegando la URL en una pestaña nueva),
+        // sin depender de la consola del servidor ni de expandir Response Headers.
+        StringBuilder debugBody = new StringBuilder();
+        debugBody.append("sfile=[").append(sfile).append("]\n");
+        debugBody.append("sagent=[").append(sagent).append("]\n");
+        debugBody.append("year=[").append(year).append("]\n");
+        debugBody.append("sdate=[").append(sdate).append("]\n");
+        debugBody.append("DB_SERVER_DEFAULT_TYPE (ambiente)=[").append(ruta).append("]\n");
+        debugBody.append("carpetaBase (ruta real donde busca)=[").append(carpetaBase).append("]\n");
         response.setHeader("X-Debug-Ambiente", ruta == null ? "" : ruta);
         response.setHeader("X-Debug-CarpetaBase", carpetaBase);
 
@@ -601,11 +609,13 @@ public class DirectSalesController extends BaseController {
         String nombreDescarga = sfile;
         StringBuilder debugCandidatos = new StringBuilder();
 
+        debugBody.append("Candidatos probados en esa carpeta:\n");
         for (String candidato : candidatos) {
             File f = new File(carpetaBase + candidato);
             boolean existe = f.exists() && f.isFile();
             System.out.println("downloadVoucher -> probando candidato [" + candidato + "] -> " + (existe ? "ENCONTRADO" : "no existe"));
             debugCandidatos.append(candidato).append("=").append(existe ? "SI" : "NO").append(" | ");
+            debugBody.append("  - ").append(carpetaBase).append(candidato).append(" -> ").append(existe ? "ENCONTRADO" : "no existe").append("\n");
             if (existe) {
                 archivoEncontrado = f;
                 nombreDescarga = candidato;
@@ -629,6 +639,9 @@ public class DirectSalesController extends BaseController {
             response.setHeader("X-Debug-PrefijoFallback", prefijo);
             response.setHeader("X-Debug-CarpetaExists", String.valueOf(carpeta.exists()));
             response.setHeader("X-Debug-ListFiles", archivosCarpeta == null ? "null-sin-acceso" : String.valueOf(archivosCarpeta.length));
+            debugBody.append("Fallback por prefijo=[").append(prefijo).append("]\n");
+            debugBody.append("  carpeta.exists()=").append(carpeta.exists()).append("\n");
+            debugBody.append("  listFiles()=").append(archivosCarpeta == null ? "null (no se pudo listar -- ¿existe/permiso la carpeta?)" : archivosCarpeta.length + " archivos").append("\n");
             if (archivosCarpeta != null) {
                 File candidatoPdf = null;
                 File cualquiera = null;
@@ -647,16 +660,24 @@ public class DirectSalesController extends BaseController {
                 if (archivoEncontrado != null) {
                     nombreDescarga = archivoEncontrado.getName();
                     logError.warn("downloadVoucher: SFILE no calzó por nombre exacto, se usó por prefijo '" + prefijo + "' -> " + archivoEncontrado.getName());
+                    debugBody.append("  match por prefijo -> ").append(archivoEncontrado.getName()).append("\n");
                 } else {
                     System.out.println("downloadVoucher -> ningún archivo en la carpeta empieza con el prefijo [" + prefijo + "]");
+                    debugBody.append("  ningún archivo en la carpeta empieza con ese prefijo.\n");
                 }
             }
         }
 
         if (archivoEncontrado == null) {
             System.out.println("downloadVoucher -> 404 NOT_FOUND: no se encontró el archivo en " + carpetaBase);
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             logError.warn("downloadVoucher: archivo no encontrado (ni por nombre ni por prefijo agente+fecha) -> " + carpetaBase + sfile);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            response.setContentType("text/plain; charset=UTF-8");
+            try {
+                response.getWriter().write(debugBody.toString());
+            } catch (IOException ioEx) {
+                logError.error("downloadVoucher -> no se pudo escribir el cuerpo de debug del 404", ioEx);
+            }
             return;
         }
 
