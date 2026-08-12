@@ -3678,7 +3678,7 @@ public class StatementReconciliationsDAO {
                 beanTkt.CBATCH = rst.getString("CBATCH");
                 beanTkt.FECR = rst.getString("FECR");
                 beanTkt.DPERIOD = rst.getString("DPERIOD");
-                beanTkt.SFILE = rst.getString("SFILE");
+                beanTkt.SFILE = rst.getString("SFILE") != null ? rst.getString("SFILE").trim() : "";
                 beanTkt.NPAG = rst.getString("NPAG");
                 // SDATE solo existe en el branch CCUSTPRO='03' (MPF190) -- BSP/ICCS/ARC
                 // (MPF191/MPF199) no tienen esta columna, por eso el try/catch: no debe
