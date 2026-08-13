@@ -24,7 +24,6 @@ import static net.miatech.praxis.dao.payments.StatementReconciliationsDAO.pasarG
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
-import net.miatech.praxis.payment.filter.MPF101Filter;
 import net.miatech.praxis.spring.INF020;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -10775,54 +10774,52 @@ public class BankReconciliationDAO {
         return lstTkts;
     }
     
-    
-   
-    
-     ///AGREGAMOS METODO PARA CONTADOR
-    public String loadContador(MPF101Filter filter) throws SQLException, Exception {
+    public A2290Filter SQPMPP117_MPF107(UserView user) throws SQLException, Exception {
 
-        CallableStatement cstmt = null;
-        ResultSet rst = null;
-        String contador = "";
-
-        String SQLCLL01 = "{CALL PRAXISMP.MPS618(?,?,?)}";
+        String strMsj = "Operation was successful.";
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + "PRAXISMP" + ".MPS785(?,?,?,?,?)}";
 
         Connection cnx = null;
         try {
             cnx = session.getCNXIBMDB2().getIBMDB2Connection();
-            cstmt = cnx.prepareCall(SQLCLL01);
+            cstmt01 = cnx.prepareCall(SQLCLL01);
 
-            
-            cstmt.setString(1, filter.IN_AGENT);
-            cstmt.setString(2, filter.IN_DATEF);
-            cstmt.setString(3, filter.IN_DATET);
-          
-            cstmt.execute();
+            cstmt01.registerOutParameter(5, Types.VARCHAR);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, user.getUserInfo().USR);
+            cstmt01.setString(3, Functions.getFechaActual());
+            cstmt01.setString(4, Functions.getHoraActual());
+            cstmt01.setString(5, objRtn.MESSAGE);
 
-            rst = cstmt.getResultSet();
-
-            if (rst.next()) {
-                contador = rst.getString("QTY");
-
-            }
+            cstmt01.execute();
+            objRtn.MESSAGE = cstmt01.getString(5);
 
         } catch (Exception e) {
+            e.getMessage();
             e.printStackTrace();
+            strMsj = e.getMessage();
         } finally {
-            if (rst != null) try {
-                rst.close();
-            } catch (SQLException e) {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
             }
-            if (cstmt != null) try {
-                cstmt.close();
-            } catch (SQLException e) {
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
             }
-            if (cnx != null) {
-                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
-            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
         }
-
-        return contador;
-
+//        objRtn.MESSAGE = strMsj;
+        return objRtn;
     }
 }

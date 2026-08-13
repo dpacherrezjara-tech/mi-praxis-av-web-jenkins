@@ -6532,6 +6532,31 @@ onAddAddAdmBKP: function () {
                                                         return;
                                                 }
 
+    onCallSummaryMPF107: function () {
+
+        Ext.Ajax.request({
+        url: prototype.url + '/onCallProgramBySummary',
+            method: 'POST',
+            timeout: 60000000,
+            params: {},
+            beforerequest: Ext.getCmp(prototype.id + '-contentInfo').mask('Loading...'),
+            success: function (response, opts) {
+            Ext.getCmp(prototype.id + '-contentInfo').unmask();
+                    var res = Ext.JSON.decode(response.responseText);
+                    console.log(res);
+                    if (res.success) {
+            let objResult = res.result;
+                    global.Msg({msg: objResult.MESSAGE});
+                    Ext.getCmp(prototype.id + '-btnSearch').fireEvent('click', {});
+            } else
+                    global.Msg({msg: res.sesion});
+            },
+            failure: function (response, opts) {
+            console.log('server-side failure with status code ' + response.status);
+                    Ext.getCmp(prototype.id + '-contentInfo').unmask();
+            }
+        });
+    },
 
 
 
