@@ -10773,4 +10773,53 @@ public class BankReconciliationDAO {
 
         return lstTkts;
     }
+    
+    public A2290Filter SQPMPP117_MPF107(UserView user) throws SQLException, Exception {
+
+        String strMsj = "Operation was successful.";
+        A2290Filter objRtn = new A2290Filter();
+        CallableStatement cstmt01 = null;
+        ResultSet rs01 = null;
+        String SQLCLL01 = "{CALL " + "PRAXISMP" + ".MPS785(?,?,?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt01 = cnx.prepareCall(SQLCLL01);
+
+            cstmt01.registerOutParameter(5, Types.VARCHAR);
+            cstmt01.setString(1, session.getUserView().getCustomerInfo().CCUST);
+            cstmt01.setString(2, user.getUserInfo().USR);
+            cstmt01.setString(3, Functions.getFechaActual());
+            cstmt01.setString(4, Functions.getHoraActual());
+            cstmt01.setString(5, objRtn.MESSAGE);
+
+            cstmt01.execute();
+            objRtn.MESSAGE = cstmt01.getString(5);
+
+        } catch (Exception e) {
+            e.getMessage();
+            e.printStackTrace();
+            strMsj = e.getMessage();
+        } finally {
+            if (rs01 != null) {
+                try {
+                    rs01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cstmt01 != null) {
+                try {
+                    cstmt01.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
+//        objRtn.MESSAGE = strMsj;
+        return objRtn;
+    }
 }

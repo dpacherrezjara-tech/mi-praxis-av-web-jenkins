@@ -347,7 +347,16 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Options', {
                             }
                         },
                         //
-                        
+                        {
+                            xtype: 'button',
+                            id: prototype.id + '-btnSumaryMPF107',
+//                            iconCls: 'prx-icon-image-update',
+                            icon: 'resources/img/icon/16x16/icon_update_bash.png',
+                            tooltip: 'Refresh',
+                            listeners: {
+                                click: 'onCallSummaryMPF107'
+                            }
+                        },
                         
                         
                         
