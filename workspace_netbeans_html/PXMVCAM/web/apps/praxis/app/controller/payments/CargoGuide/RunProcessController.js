@@ -10,24 +10,34 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.RunProcessController', {
             {code: 'FASE_GENERAL',  name: 'FASE GENERAL',   proc: null,     available: false}
         ],
         'HN': [
-            {code: 'FASE1',         name: 'FASE 1',         proc: null,     available: false},
-            {code: 'FASE2',         name: 'FASE 2',         proc: null,     available: false},
-            {code: 'FASE_GENERAL',  name: 'FASE GENERAL',   proc: null,     available: false}
+            {code: 'CONCILIACION',  name: 'Conciliación HN', proc: 'conciliacionHN', available: true}
         ],
         'SV': [
-            {code: 'FASE1',         name: 'FASE 1',         proc: null,     available: false},
-            {code: 'FASE2',         name: 'FASE 2',         proc: null,     available: false},
-            {code: 'FASE_GENERAL',  name: 'FASE GENERAL',   proc: null,     available: false}
+            {code: 'CONCILIACION',  name: 'Conciliación SV', proc: 'conciliacionSV', available: true}
         ]
     },
+
+    // Países cuya conciliación corre vía el backend Python (endpoint REST) y
+    // por lo tanto necesitan el campo FECR. CO sigue siendo un store DB2 puro.
+    _PAISES_CON_FECR: ['HN', 'SV'],
 
     onCountryChange: function (combo, newVal) {
         var procCombo  = Ext.getCmp(prototype.id + '-rp-cmbProcess');
         var btnExecute = Ext.getCmp(prototype.id + '-rp-btnExecute');
         var lblInfo    = Ext.getCmp(prototype.id + '-rp-lblInfo');
+        var rowFecr    = Ext.getCmp(prototype.id + '-rp-rowFecr');
+        var fldFecr    = Ext.getCmp(prototype.id + '-rp-fldFecr');
 
         procCombo.clearValue();
         btnExecute.setDisabled(true);
+
+        if (this._PAISES_CON_FECR.indexOf(newVal) !== -1) {
+            rowFecr.show();
+            fldFecr.setValue(new Date());
+        } else {
+            rowFecr.hide();
+            fldFecr.setValue(null);
+        }
 
         if (!newVal) {
             procCombo.setDisabled(true);
@@ -111,28 +121,40 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.RunProcessController', {
             return;
         }
 
+        var fecr = '';
+        if (this._PAISES_CON_FECR.indexOf(country) !== -1) {
+            var fldFecr = Ext.getCmp(prototype.id + '-rp-fldFecr');
+            var dtFecr  = fldFecr.getValue();
+            if (!dtFecr) {
+                Ext.Msg.alert('Warning', 'Please select a FECR date.');
+                return;
+            }
+            fecr = Ext.Date.format(dtFecr, 'Ymd');
+        }
+
         var procCombo = Ext.getCmp(prototype.id + '-rp-cmbProcess');
         var rec       = procCombo.getStore().findRecord('code', process);
         var procName  = rec ? rec.get('name').replace(' — (coming soon)', '') : process;
 
         Ext.Msg.show({
             title: '.:PRAXIS:.',
-            msg: 'Execute <b>' + procName + '</b> for country <b>' + country + '</b>?',
+            msg: 'Execute <b>' + procName + '</b> for country <b>' + country + '</b>'
+                + (fecr ? ' (FECR <b>' + fecr + '</b>)' : '') + '?',
             buttons: Ext.MessageBox.YESNO,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
             scope: me,
             fn: function (btn) {
                 if (btn === 'yes') {
-                    me.executeProcess(country, process);
+                    me.executeProcess(country, process, fecr);
                 }
             }
         });
     },
 
-    executeProcess: function (country, process) {
+    executeProcess: function (country, process, fecr) {
         var win  = this.view;
-        var bean = {country: country, process: process};
+        var bean = {country: country, process: process, fecr: fecr || ''};
 
         win.mask('Executing...');
 

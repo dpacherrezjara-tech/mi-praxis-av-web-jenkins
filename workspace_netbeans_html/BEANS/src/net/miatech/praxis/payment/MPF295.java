@@ -17,6 +17,7 @@ public class MPF295 {
     public String CCUST = "";
     public String NCICLO = "";
     public String METPAGO = "";
+    public String FUENTEMON = "";
     public String SCOUNTRY = "";
     public String SCURRENCY = "";
     public String ADATE = "";
@@ -32,7 +33,9 @@ public class MPF295 {
     public String CBATCH = "";
     public String DATEBAT = "";
     public String STATE = "";
-    
+    public String STVAL = "";
+    public double SALDO = 0;
+
     public String USCR = "";
     public String FECR = "";
     public String HOCR = "";

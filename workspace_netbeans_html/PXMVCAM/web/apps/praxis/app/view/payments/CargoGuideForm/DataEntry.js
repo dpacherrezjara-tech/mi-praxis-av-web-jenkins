@@ -7,7 +7,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
     controller: 'DataEntryCargoGuideController',
     title: 'Cargo Guide — Data Entry',
     header: true,
-    height: 560,
+    height: 760,
     width: 990,
     resizable: true,
     maximizable: true,
@@ -49,35 +49,64 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                     },
                     items: [
                         {items: [
-                            {xtype: 'textfield', fieldLabel: 'RN',       id: prototype.id + '-de-txtRN',      width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                            {
+                                xtype: 'combobox',
+                                fieldLabel: 'STVAL',
+                                id: prototype.id + '-de-cmbSTVAL',
+                                width: 290, labelWidth: 60,
+                                editable: false,
+                                forceSelection: true,
+                                queryMode: 'local',
+                                displayField: 'name',
+                                valueField: 'code',
+                                store: {
+                                    fields: ['code', 'name'],
+                                    data: [
+                                        {code: '1', name: '1 - Match'},
+                                        {code: '2', name: '2 - Duplicado'},
+                                        {code: '3', name: '3 - Pendiente'},
+                                        {code: '4', name: '4 - Match sin cartera'},
+                                        {code: '5', name: '5 - Manual'}
+                                    ]
+                                }
+                            },
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'Customer', id: prototype.id + '-de-txtCCUST',   width: 290, labelWidth: 72, fieldStyle: 'text-align:center;'},
+                            {xtype: 'textfield', fieldLabel: 'ADATE',   id: prototype.id + '-de-txtADATE',   width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'ADATE',    id: prototype.id + '-de-txtADATE',   width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'}
+                            {xtype: 'textfield', fieldLabel: 'Pay Day', id: prototype.id + '-de-txtPAYDATE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'}
                         ]},
                         {items: [
-                            {xtype: 'textfield', fieldLabel: 'Pay Day',  id: prototype.id + '-de-txtPAYDATE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                            {xtype: 'textfield', fieldLabel: 'Cycle',   id: prototype.id + '-de-txtNCICLO',  width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'Country',  id: prototype.id + '-de-txtCOUNTRY', width: 290, labelWidth: 72, fieldStyle: 'text-align:center;'},
+                            {xtype: 'textfield', fieldLabel: 'NPAGE',   id: prototype.id + '-de-txtNPAGE',   width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'Cycle',    id: prototype.id + '-de-txtNCICLO',  width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'}
+                            {xtype: 'textfield', fieldLabel: 'METPAGO', id: prototype.id + '-de-txtMETPAGO', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'}
                         ]},
                         {items: [
-                            {xtype: 'textfield', fieldLabel: 'METPAGO', id: prototype.id + '-de-txtMETPAGO', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                            {xtype: 'numberfield', fieldLabel: 'SALDO', id: prototype.id + '-de-txtSALDO', width: 290, labelWidth: 60, hideTrigger: true, decimalPrecision: 2, allowDecimals: true, fieldStyle: 'text-align:right;font-weight:bold;'},
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'NPAGE',   id: prototype.id + '-de-txtNPAGE',   width: 290, labelWidth: 72, fieldStyle: 'text-align:center;'},
+                            {xtype: 'textfield',   fieldLabel: 'STATE', id: prototype.id + '-de-txtSTATE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
                             {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'CUSCA',   id: prototype.id + '-de-txtCUSCA',   width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
-                            {xtype: 'tbspacer', width: 14, id: prototype.id + '-de-spacerREFERENCE', hidden: true},
-                            {xtype: 'textfield', fieldLabel: 'Reference', id: prototype.id + '-de-txtREFERENCE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;', hidden: true}
+                            {xtype: 'textfield',   fieldLabel: 'REFERENCE', id: prototype.id + '-de-txtREFERENCE', flex: 1, labelWidth: 70, fieldStyle: 'text-align:center;'}
                         ]},
-                        {items: [
-                            {xtype: 'textfield', fieldLabel: 'CODPSE', id: prototype.id + '-de-txtCODPSE', width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'},
-                            {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'BANDOC', id: prototype.id + '-de-txtBANDOC', width: 290, labelWidth: 72, fieldStyle: 'text-align:center;'},
-                            {xtype: 'tbspacer', width: 14},
-                            {xtype: 'textfield', fieldLabel: 'STATE',  id: prototype.id + '-de-txtSTATE',  width: 290, labelWidth: 60, fieldStyle: 'text-align:center;'}
-                        ]}
+                        {
+                            layout: {type: 'hbox', align: 'stretch'},
+                            items: [
+                                // SFILE puede ser bastante largo: textarea de solo lectura que
+                                // envuelve el texto en vez de truncarlo en una sola línea.
+                                {
+                                    xtype: 'textarea',
+                                    fieldLabel: 'SFILE',
+                                    id: prototype.id + '-de-txtSFILE',
+                                    flex: 1,
+                                    labelWidth: 60,
+                                    rows: 2,
+                                    grow: false,
+                                    readOnly: true,
+                                    fieldStyle: 'font-family:monospace;font-size:11px;word-break:break-all;background:#F5F7FA;color:#37474F;resize:none;'
+                                }
+                            ]
+                        }
                     ]
                 },
                 // ─── AMOUNT & FILE ────────────────────────────────────────
@@ -141,7 +170,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
         {
             xtype: 'panel',
             id: prototype.id + '-de-panelMPF291',
-            flex: 1,
+            height: 165,
             hidden: true,
             border: false,
             layout: 'fit',
@@ -152,33 +181,18 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                 border: false,
                 viewConfig: {stripeRows: true},
                 columns: [
-                    {text: 'Nbr',       dataIndex: 'RN',     width: 30},
-                    {text: 'AWB No',       dataIndex: 'AWBNO',     width: 140},
-                    {text: 'Cycle',        dataIndex: 'NCICLO',    width: 55,  align: 'center'},
-                    {text: 'METPAGO',      dataIndex: 'METPAGO',   width: 80,  align: 'center'},
-                    {text: 'ADATE',        dataIndex: 'ADATE',     width: 80,  align: 'center'},
-                    {text: 'Pay Day',      dataIndex: 'PAYDAY',    width: 80,  align: 'center'},
-                    {text: 'File (SFILE)', dataIndex: 'SFILE',     flex: 1,
-                        renderer: function(v, m) { m.style = 'font-size:11px;'; return v; }},
-                    {text: 'Reference',    dataIndex: 'REFERENCE', width: 110},
-                    {text: 'Amount',       dataIndex: 'MONTO',     width: 115, align: 'right',
-                        renderer: function(v, m) {
-                            m.style = 'text-align:right;font-weight:bold;color:#1565C0;';
-                            return Ext.util.Format.number(v, '0,000.00');
-                        }},
-                    {text: 'Batch',        dataIndex: 'CBATCH',    width: 70,  align: 'center',
-                        renderer: function(v, m) {
-                            m.style = 'text-align:center;color:#1565C0;font-weight:bold;';
-                            return v;
-                        }},
-                    {text: 'State',        dataIndex: 'STATE',     width: 55,  align: 'center'},
+                    {text: 'Nbr',           dataIndex: 'RN',     width: 45,  align: 'center'},
+                    {text: 'Airwaybilling', dataIndex: 'AWBNO',  width: 150},
+                    {text: 'ADATE',         dataIndex: 'ADATE',  width: 85,  align: 'center'},
+                    {text: 'NPAGE',         dataIndex: 'NPAGE',  width: 80,  align: 'center'},
+                    {text: 'State',         dataIndex: 'STATE',  width: 70,  align: 'center'},
+                    {text: 'BANDOC',        dataIndex: 'BANDOC', flex: 1,    align: 'center'},
                     {
                             text: '<span style="color:white;font-weight:bold;">Delete</span>',
                             width: 60,
                             align: 'center',
                             style: 'padding:2px; background: #6C87A8; border-color:white',
                             renderer: function (value, metaData, record) {
-                                let file = record.get('FILE_NAME'); 
                                 return `<img src="resources/img/botones/restricted_folder_symbol_stop-16.png"
                                              style="cursor:pointer; width:18px; height:18px;"
                                             >`;
@@ -188,6 +202,9 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                             }
                         }
                 ],
+                // Se mantienen todos los campos en el store (aunque no todos se muestren
+                // como columna) porque onDeleteDetailPayment necesita CBATCH/DATEBAT/CCUST/
+                // AWBNO/SFILE del registro seleccionado para armar su request.
                 store: {
                     fields: [
                         'RN','CCUST','AWBNO','NCICLO','METPAGO','NPAGPAGO','SCOUNTRY',
@@ -203,7 +220,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                     style: 'background:#E3F2FD;border-bottom:2px solid #1565C0;',
                     items: [{
                         xtype: 'label',
-                        html: '<b style="color:#1565C0;font-size:12px;letter-spacing:1px;">MPF291 — LINKED RECORDS</b>',
+                        html: '<b style="color:#1565C0;font-size:12px;letter-spacing:1px;">DETAIL TICKETS</b>',
                         style: 'line-height:24px;padding-left:4px;'
                     }]
                 }]
@@ -235,29 +252,53 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                             defaults: {labelStyle: 'font-weight:bold;color:#2E7D32;font-size:11px;'},
                             items: [
                                 {
+                                    // Por ahora la unica fuente disponible es "Extractos" (tabla MPF287).
+                                    // Se deja como combo para poder sumar otras fuentes a futuro.
                                     xtype: 'combobox',
-                                    fieldLabel: 'Bank',
+                                    fieldLabel: 'Source',
                                     id: prototype.id + '-de-scanBANK',
                                     width: 320, labelWidth: 60,
                                     editable: false,
+                                    forceSelection: true,
                                     queryMode: 'local',
                                     displayField: 'name',
                                     valueField: 'code',
-                                    emptyText: 'Select bank...',
+                                    value: 'EXT',
                                     store: {
                                         fields: ['code', 'name'],
                                         data: [
-                                            {code: '',    name: 'All banks'},
-                                            {code: 'BCO', name: 'BANCOLOMBIA'},
-                                            {code: 'DAV', name: 'DAVIVIENDA'},
-                                            {code: 'BBV', name: 'BBVA'}
+                                            {code: 'EXT', name: 'Extractos'}
                                         ]
                                     }
                                 },
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield',   fieldLabel: 'ADATE',  id: prototype.id + '-de-scanADATE',  width: 230, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                                {
+                                    xtype: 'combobox',
+                                    fieldLabel: 'STVAL',
+                                    id: prototype.id + '-de-scanSTVAL',
+                                    width: 190, labelWidth: 50,
+                                    editable: false,
+                                    forceSelection: true,
+                                    queryMode: 'local',
+                                    displayField: 'name',
+                                    valueField: 'code',
+                                    value: '3',
+                                    store: {
+                                        fields: ['code', 'name'],
+                                        data: [
+                                            {code: '',  name: 'All'},
+                                            {code: '1', name: '1 - Match'},
+                                            {code: '2', name: '2 - Duplicado'},
+                                            {code: '3', name: '3 - Pendiente'},
+                                            {code: '4', name: '4 - Sin cartera'},
+                                            {code: '5', name: '5 - Manual'}
+                                        ]
+                                    }
+                                },
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'numberfield', fieldLabel: 'Amount', id: prototype.id + '-de-scanMONTO',  width: 230, labelWidth: 60, hideTrigger: true, decimalPrecision: 2, allowDecimals: true, fieldStyle: 'text-align:right;'}
+                                {xtype: 'textfield',   fieldLabel: 'ADATE',  id: prototype.id + '-de-scanADATE',  width: 200, labelWidth: 60, fieldStyle: 'text-align:center;', maxLength: 8, enforceMaxLength: true, maskRe: /[0-9]/},
+                                {xtype: 'tbspacer', width: 14},
+                                {xtype: 'numberfield', fieldLabel: 'Amount', id: prototype.id + '-de-scanMONTO',  width: 200, labelWidth: 60, hideTrigger: true, decimalPrecision: 2, allowDecimals: true, fieldStyle: 'text-align:right;'}
                             ]
                         },
                         {
@@ -265,11 +306,11 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                             layout: {type: 'hbox', align: 'middle'},
                             defaults: {labelStyle: 'font-weight:bold;color:#2E7D32;font-size:11px;'},
                             items: [
-                                {xtype: 'textfield', fieldLabel: 'Reference', id: prototype.id + '-de-scanREFERENCE', width: 320, labelWidth: 60},
+                                {xtype: 'textfield', fieldLabel: 'Account',   id: prototype.id + '-de-scanACCOUNT',   width: 320, labelWidth: 60, fieldStyle: 'text-align:center;', maxLength: 6, enforceMaxLength: true},
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield', fieldLabel: 'Text',      id: prototype.id + '-de-scanTEXTO',     width: 230, labelWidth: 60},
+                                {xtype: 'textfield', fieldLabel: 'Text',      id: prototype.id + '-de-scanTEXTO',     width: 230, labelWidth: 60, maxLength: 60, enforceMaxLength: true},
                                 {xtype: 'tbspacer', width: 14},
-                                {xtype: 'textfield', fieldLabel: 'BANDOC',    id: prototype.id + '-de-scanBANDOC',    width: 230, labelWidth: 60, fieldStyle: 'text-align:center;'},
+                                {xtype: 'textfield', fieldLabel: 'BANDOC',    id: prototype.id + '-de-scanBANDOC',    width: 230, labelWidth: 60, fieldStyle: 'text-align:center;', maxLength: 10, enforceMaxLength: true},
                                 {xtype: 'container', flex: 1},
                                 {
                                     xtype: 'button',
@@ -290,19 +331,33 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.DataEntry', {
                     margin: '8 0 0 0',
                     border: false,
                     selModel: {selType: 'checkboxmodel', mode: 'SINGLE'},
-                    viewConfig: {stripeRows: true, emptyText: '<div style="padding:18px;color:#90A4AE;text-align:center;">Use the filters above and press <b>Scan</b> to find bank movements to reconcile.</div>'},
+                    viewConfig: {
+                        stripeRows: true,
+                        variableRowHeight: true,
+                        emptyText: '<div style="padding:18px;color:#90A4AE;text-align:center;">Use the filters above and press <b>Scan</b> to find bank movements to reconcile.</div>'
+                    },
                     columns: [
-                        {text: 'Bank',      dataIndex: 'BANK',      width: 120},
-                        {text: 'ADATE',     dataIndex: 'ADATE',     width: 90,  align: 'center'},
-                        {text: 'Amount',    dataIndex: 'MONTO',     width: 120, align: 'right',
+                        {text: 'Status',   dataIndex: 'STVAL',   width: 90,  align: 'center',
+                            renderer: function (v) {
+                                var map = {'1': '1 - Match', '2': '2 - Duplicado', '3': '3 - Pendiente', '4': '4 - Sin cartera', '5': '5 - Manual'};
+                                return map[v] || (v || '');
+                            }},
+                        {text: 'Account',  dataIndex: 'ACCOUNT', width: 90,  align: 'center'},
+                        {text: 'BANDOC',   dataIndex: 'BANDOC',  width: 110, align: 'center'},
+                        {text: 'ADATE',    dataIndex: 'ADATE',   width: 85,  align: 'center'},
+                        {text: 'Amount',   dataIndex: 'NETO',    width: 110, align: 'right',
                             renderer: function (v, m) { m.style = 'text-align:right;font-weight:bold;color:#2E7D32;'; return Ext.util.Format.number(v, '0,000.00'); }},
-                        {text: 'Reference', dataIndex: 'REFERENCE', width: 130},
-                        {text: 'Text',      dataIndex: 'TEXTO',     flex: 1},
-                        {text: 'BANDOC',    dataIndex: 'BANDOC',    width: 100, align: 'center'},
-                        {text: 'State',     dataIndex: 'STATE',     width: 60,  align: 'center'}
+                        {text: 'Text',     dataIndex: 'TEXTO',    flex: 1, minWidth: 200,
+                            renderer: function (v) {
+                                return '<div style="white-space:normal;word-break:break-word;line-height:1.3;padding:2px 0;">' + Ext.String.htmlEncode(v || '') + '</div>';
+                            }},
+                        {text: 'Long Text', dataIndex: 'TEXTOLAR', flex: 2, minWidth: 260,
+                            renderer: function (v) {
+                                return '<div style="white-space:normal;word-break:break-word;line-height:1.3;padding:2px 0;color:#546E7A;">' + Ext.String.htmlEncode(v || '') + '</div>';
+                            }}
                     ],
                     store: {
-                        fields: ['BANK', 'ADATE', 'MONTO', 'REFERENCE', 'TEXTO', 'BANDOC', 'STATE'],
+                        fields: ['RN', 'CCUST', 'STVAL', 'ACCOUNT', 'BANDOC', 'ADATE', 'NETO', 'TEXTO', 'TEXTOLAR'],
                         data: []
                     },
                     dockedItems: [{

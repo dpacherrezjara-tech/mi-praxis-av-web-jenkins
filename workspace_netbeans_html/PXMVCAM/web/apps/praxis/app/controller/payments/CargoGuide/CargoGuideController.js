@@ -296,6 +296,8 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
         me.bean.IN_COUNTRY = Ext.getCmp(prototype.id + '-cmbCountry').getValue() || '';
         me.bean.IN_STVAL = Ext.getCmp(prototype.id + '-cmbStatus').getValue() || '';
         me.bean.IN_OPTION = Ext.getCmp(prototype.id + '-cmbInputDate').getValue() || '';
+        me.bean.IN_BANDOC = Ext.getCmp(prototype.id + '-txtBandoc').getValue() || '';
+        me.bean.IN_MONTO = Ext.getCmp(prototype.id + '-txtMonto').getValue() || 0;
 
         var beanString = JSON.stringify(me.bean);
         searchParams = {
@@ -330,15 +332,6 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
                             msg: 'Data not found.'
                         });
                     }
-                    var grid = Ext.getCmp(prototype.id + '-gridDataDetail');
-                    var country = (me.bean && me.bean.IN_COUNTRY) || '';
-                    var isHnSv = (country === 'HN' || country === 'SV');
-                    var colCusca = grid.columnManager.getHeaderByDataIndex('CUSCA');
-                    var colCodpse = grid.columnManager.getHeaderByDataIndex('CODPSE');
-                    var colReference = grid.columnManager.getHeaderByDataIndex('REFERENCE');
-                    if (colCusca) { colCusca.setHidden(isHnSv); }
-                    if (colCodpse) { colCodpse.setHidden(isHnSv); }
-                    if (colReference) { colReference.setHidden(!isHnSv); }
                 }
             }
         });
@@ -1219,46 +1212,17 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.CargoGuideController', {
 
     },
     btnRunProcess_click: function () {
-        Ext.Msg.confirm('.:PRAXIS:.', 'Are you sure you want to execute the process?', function (btn) {
-            if (btn !== 'yes') { return; }
+        // Antes llamaba directo a /runProcess con beanString='{}' (sin país ni
+        // proceso) — de ahí el error de deserialización. Ahora abre el diálogo
+        // de selección (país + proceso + FECR para HN); el propio diálogo hace
+        // la llamada con el beanString correcto al confirmar.
+        if (Ext.getCmp(prototype.id + '-runProcess')) {
+            Ext.getCmp(prototype.id + '-runProcess').close();
+        }
 
-            var waitWin = Ext.create('Ext.window.Window', {
-                title: '.:PRAXIS:.',
-                width: 320,
-                modal: true,
-                closable: false,
-                resizable: false,
-                bodyStyle: 'background:#fff; padding:20px; text-align:center;',
-                items: [{
-                    xtype: 'component',
-                    html: '<div style="font-size:13px; font-weight:bold; color:#1565C0; margin-bottom:12px;">Ejecutando conciliación...</div>'
-                       + '<div><img src="resources/img/botones/loading.gif" style="width:40px; height:40px;"/></div>'
-                       + '<div style="font-size:11px; color:#607D8B; margin-top:10px;">Por favor espere, este proceso puede tardar unos minutos.</div>'
-                }]
-            });
-            waitWin.show();
-
-            Ext.Ajax.request({
-                url: prototype.url + '/runProcess',
-                method: 'POST',
-                timeout: 60000000,
-                params: { beanString: '{}' },
-                success: function (response) {
-                    waitWin.close();
-                    var res = Ext.JSON.decode(response.responseText);
-                    Ext.Msg.show({
-                        title: '.:PRAXIS:.',
-                        msg: res.Mensaje || (res.success ? 'Proceso ejecutado correctamente.' : 'Error al ejecutar el proceso.'),
-                        buttons: Ext.MessageBox.OK,
-                        icon: res.success ? Ext.MessageBox.INFO : Ext.MessageBox.ERROR
-                    });
-                },
-                failure: function () {
-                    waitWin.close();
-                    Ext.Msg.alert('.:PRAXIS:.', 'Error de conexión. Por favor intente de nuevo.');
-                }
-            });
-        });
+        Ext.create('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
+            id: prototype.id + '-runProcess'
+        }).show();
     },
     winDataEntry: function (action, rec) {
         action = action === null || action === undefined ? 'U' : action;

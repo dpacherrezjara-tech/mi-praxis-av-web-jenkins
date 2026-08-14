@@ -6,7 +6,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
     ],
     controller: 'RunProcessController',
     title: 'Run Process',
-    height: 370,
+    height: 400,
     width: 480,
     resizable: false,
     layout: 'fit',
@@ -72,6 +72,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
                         {
                             xtype: 'container',
                             layout: {type: 'hbox', align: 'middle'},
+                            margin: '0 0 10 0',
                             items: [
                                 {
                                     xtype: 'label',
@@ -97,6 +98,30 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
                                     listeners: {
                                         change: 'onProcessChange'
                                     }
+                                }
+                            ]
+                        },
+                        {
+                            // Aplica a los países cuya conciliación corre vía endpoint
+                            // REST del backend Python (HN, SV — ver _PAISES_CON_FECR en
+                            // RunProcessController.js). Oculto para los demás países.
+                            xtype: 'container',
+                            id: prototype.id + '-rp-rowFecr',
+                            hidden: true,
+                            layout: {type: 'hbox', align: 'middle'},
+                            items: [
+                                {
+                                    xtype: 'label',
+                                    text: 'FECR',
+                                    width: 80,
+                                    style: 'font-weight:bold; color:#0B333C; line-height:24px;'
+                                },
+                                {
+                                    xtype: 'datefield',
+                                    id: prototype.id + '-rp-fldFecr',
+                                    width: 240,
+                                    format: 'Y-m-d',
+                                    editable: false
                                 }
                             ]
                         }

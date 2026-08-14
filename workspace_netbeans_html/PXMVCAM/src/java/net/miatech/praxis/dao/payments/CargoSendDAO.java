@@ -603,6 +603,7 @@ public class CargoSendDAO {
                 row.put("DIFF",       safeStr(rst, "DIFF"));
                 row.put("POR_DIF",    safeStr(rst, "POR_DIF"));
                 row.put("COMENTARIO", safeStr(rst, "COMENTARIO"));
+                row.put("FECSELEC", safeStr(rst, "FECSELEC"));
                 lstData.add(row);
             }
         } catch (Exception e) {

@@ -566,21 +566,9 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                     return  value;
                                                 }
                                             },
-                                            {text: '<span style="color:white;font-weight:bold;">Payment <br> method</span>', dataIndex: 'METPAGO', width: 70, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">FUENTEMON</span>', dataIndex: 'FUENTEMON', width: 90, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
                                                     metaData.style = "text-align:center;";
-
-                                                    if (value == 'P') {
-                                                        return  'PSE';
-                                                    } else if (value == 'B') {
-                                                        return  'DAVIVIENDA';
-                                                    } else if (value == 'N') {
-                                                        return  'NEQUI';
-                                                    } else if (value == 'O') {
-                                                        return  'OTROS';
-                                                    }
-
                                                     return  value;
                                                 }
                                             },
@@ -594,23 +582,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Info', {
                                                 }
                                             },
 
-                                            {text: '<span style="color:white;font-weight:bold;">Cod. <br> Cusca</span>', dataIndex: 'CUSCA', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-
-                                                    return  value;
-                                                }
-                                            },
-                                            {text: '<span style="color:white;font-weight:bold;">Cod. <br> PSE</span>', dataIndex: 'CODPSE', width: 80, style: 'padding:2px; background: #6C87A8;border-color:white',
-                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                    var data = record.data;
-                                                    metaData.style = "text-align:center;";
-
-                                                    return  value;
-                                                }
-                                            },
-                                            {text: '<span style="color:white;font-weight:bold;">Reference</span>', dataIndex: 'REFERENCE', width: 120, hidden: true, style: 'padding:2px; background: #6C87A8;border-color:white',
+                                            {text: '<span style="color:white;font-weight:bold;">Reference</span>', dataIndex: 'REFERENCE', width: 120, style: 'padding:2px; background: #6C87A8;border-color:white',
                                                 renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                                                     metaData.style = "text-align:center;";
                                                     return value;

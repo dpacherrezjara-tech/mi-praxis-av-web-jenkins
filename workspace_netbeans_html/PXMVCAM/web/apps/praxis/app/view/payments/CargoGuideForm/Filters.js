@@ -193,7 +193,7 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Filters', {
                             xtype: 'fieldset',
                             id: prototype.id + '-titleAditionalSetBSP',
                             title: '<span style="color:#1A4D8F;font-weight:bold;">ADITIONAL</span>',
-                            width: 660,
+                            width: 900,
                             style: 'border: 1px solid #1A4D8F; padding: 8px; margin: 5px;',
                             layout: 'hbox',
                             items: [
@@ -274,6 +274,39 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.Filters', {
                                     multiSelect: false,
                                     forceSelection: true,
                                     margin: '0 10 0 0'
+                                },
+                                {
+                                    xtype: 'textfield',
+                                    id: prototype.id + '-txtBandoc',
+                                    fieldLabel: 'BANDOC',
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    labelAlign: 'left',
+                                    width: 170,
+                                    labelWidth: 60,
+                                    maxLength: 10,
+                                    enforceMaxLength: true,
+                                    margin: '0 10 0 0',
+                                    listeners: {
+                                        specialkey: 'eventKey'
+                                    }
+                                },
+                                {
+                                    xtype: 'numberfield',
+                                    id: prototype.id + '-txtMonto',
+                                    fieldLabel: 'Amount',
+                                    labelStyle: 'text-align: left; font-size: 12px;',
+                                    fieldStyle: 'text-align: center; font-size: 12px;',
+                                    labelAlign: 'left',
+                                    width: 170,
+                                    labelWidth: 55,
+                                    hideTrigger: true,
+                                    decimalPrecision: 2,
+                                    allowDecimals: true,
+                                    margin: '0 10 0 0',
+                                    listeners: {
+                                        specialkey: 'eventKey'
+                                    }
                                 }
                             ]
                         },
