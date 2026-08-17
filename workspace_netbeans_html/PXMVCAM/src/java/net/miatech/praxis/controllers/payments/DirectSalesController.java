@@ -26,6 +26,9 @@ import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
 import net.miatech.praxis.payment.MPF190Create;
 import net.miatech.praxis.MPF300;
+import net.miatech.praxis.MPF300Filter;
+import net.miatech.praxis.MPF300Generate;
+import net.miatech.praxis.MPF300GenerateBatch;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -522,6 +525,119 @@ public class DirectSalesController extends BaseController {
             map.put("data", lst);
         } catch (Exception e) {
             throw new SpringException(e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "searchGenerateReverse")
+    public @ResponseBody
+    String searchGenerateReverse(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : searchGenerateReverse (MPS738) -------------");
+        map.put("success", true);
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF300Filter filter = new Gson().fromJson(beanString, MPF300Filter.class);
+            filter.page.PAGNUM = 1;
+            filter.page.PAGROW = 200;
+
+            List<MPF300> lst = logic.loadMPS738(filter);
+            map.put("total", lst.size() > 0 ? lst.get(0).page.TOTROW : 0);
+            map.put("data", lst);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "generateDirectSales", method = RequestMethod.POST)
+    public @ResponseBody
+    String generateDirectSales(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : generateDirectSales (MPS739) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF300Generate bean = new Gson().fromJson(beanString, MPF300Generate.class);
+
+            Map<String, Object> result = logic.executeMPS739(bean);
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "reverseDirectSales", method = RequestMethod.POST)
+    public @ResponseBody
+    String reverseDirectSales(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : reverseDirectSales (MPS740) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF300Generate bean = new Gson().fromJson(beanString, MPF300Generate.class);
+
+            Map<String, Object> result = logic.executeMPS740(bean);
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "generateDirectSalesMasivo", method = RequestMethod.POST)
+    public @ResponseBody
+    String generateDirectSalesMasivo(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : generateDirectSalesMasivo (MPS741) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF300GenerateBatch batch = new Gson().fromJson(beanString, MPF300GenerateBatch.class);
+
+            Map<String, Object> result = logic.executeMPS741(batch);
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        }
+        return new Gson().toJson(map);
+    }
+
+    @RequestMapping(value = "reverseDirectSalesMasivo", method = RequestMethod.POST)
+    public @ResponseBody
+    String reverseDirectSalesMasivo(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- DirectSales : reverseDirectSalesMasivo (MPS742) -------------");
+        try {
+            logic = new DirectSalesLogic();
+            logic.setSession(this.serverSession.getServerSession());
+
+            String beanString = request.getParameter("beanString");
+            MPF300GenerateBatch batch = new Gson().fromJson(beanString, MPF300GenerateBatch.class);
+
+            Map<String, Object> result = logic.executeMPS742(batch);
+            map.put("success", result.get("success"));
+            map.put("message", result.get("message"));
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("message", e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
         }
         return new Gson().toJson(map);
     }

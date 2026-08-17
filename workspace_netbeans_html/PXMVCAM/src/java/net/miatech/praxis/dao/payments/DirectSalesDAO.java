@@ -21,6 +21,9 @@ import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
 import net.miatech.praxis.payment.MPF190Create;
 import net.miatech.praxis.MPF300;
+import net.miatech.praxis.MPF300Filter;
+import net.miatech.praxis.MPF300Generate;
+import net.miatech.praxis.MPF300GenerateBatch;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
 
@@ -696,6 +699,337 @@ public class DirectSalesDAO {
         }
 
         return lstData;
+    }
+
+    // Direct Sales - Generar / Reversa (ventana GenerateReverseForm): busca en
+    // MPF300 las ventas agrupadas (INVOICE/SCOUNTRY/SAGENT/SUBFTE/SDATE/
+    // SCURRENCY/CCUST) con SUM(SVFOPNETR) < 0. Filtra por rango de SDATE y,
+    // opcionalmente, por SAGENT (vacio = todos). RESULT SETS 1 (sin totales
+    // aparte, a diferencia de MPS775/MPS783).
+    public List<MPF300> loadMPS738(MPF300Filter filter) throws SQLException, Exception {
+
+        List<MPF300> lstData = new ArrayList<MPF300>(0);
+        MPF300 bean;
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS738(?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.registerOutParameter(4, Types.INTEGER);
+            cstmt.registerOutParameter(5, Types.INTEGER);
+            cstmt.registerOutParameter(6, Types.INTEGER);
+            cstmt.registerOutParameter(7, Types.INTEGER);
+
+            cstmt.setString(1, filter.IN_DATE_FROM);
+            cstmt.setString(2, filter.IN_DATE_TO);
+            cstmt.setString(3, filter.IN_SAGENT);
+
+            cstmt.setInt(4, filter.page.PAGNUM);
+            cstmt.setInt(5, filter.page.PAGROW);
+            cstmt.setInt(6, filter.page.TOTPAG);
+            cstmt.setInt(7, filter.page.TOTROW);
+
+            cstmt.execute();
+
+            filter.page.PAGNUM = cstmt.getInt(4);
+            filter.page.PAGROW = cstmt.getInt(5);
+            filter.page.TOTPAG = cstmt.getInt(6);
+            filter.page.TOTROW = cstmt.getInt(7);
+
+            rst = cstmt.getResultSet();
+            while (rst.next()) {
+                bean = new MPF300();
+
+                bean.RN = rst.getInt("RN");
+                bean.CCUST = rst.getString("CCUST") != null ? rst.getString("CCUST").trim() : "";
+                bean.SCOUNTRY = rst.getString("SCOUNTRY") != null ? rst.getString("SCOUNTRY").trim() : "";
+                bean.SDATE = rst.getString("SDATE") != null ? rst.getString("SDATE").trim() : "";
+                bean.SAGENT = rst.getString("SAGENT") != null ? rst.getString("SAGENT").trim() : "";
+                bean.SUBFTE = rst.getString("SUBFTE") != null ? rst.getString("SUBFTE").trim() : "";
+                bean.INVOICE = rst.getString("INVOICE") != null ? rst.getString("INVOICE").trim() : "";
+                bean.SCURRENCY = rst.getString("SCURRENCY") != null ? rst.getString("SCURRENCY").trim() : "";
+                bean.MONTO = rst.getDouble("MONTO");
+                bean.BANDOC = rst.getString("BANDOC") != null ? rst.getString("BANDOC").trim() : "";
+
+                bean.page.PAGNUM = filter.page.PAGNUM;
+                bean.page.PAGROW = filter.page.PAGROW;
+                bean.page.TOTPAG = filter.page.TOTPAG;
+                bean.page.TOTROW = filter.page.TOTROW;
+
+                lstData.add(bean);
+            }
+            rst.close();
+
+        } catch (Exception e) {
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (rst != null) {
+                try {
+                    rst.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return lstData;
+    }
+
+    // Direct Sales - GENERAR individual (ventana GenerateReverseForm): llama
+    // a MPS739, que revalida el grupo (SUM<0 y sin Bandoc previo), genera el
+    // correlativo de Bandoc + semillas, inserta MPF199/MPF190 y actualiza
+    // MPF300. IN_USR viene de la sesion (no del bean).
+    public Map<String, Object> executeMPS739(MPF300Generate bean) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS739(?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, bean.CCUST);
+            cstmt.setString(2, bean.SCOUNTRY);
+            cstmt.setString(3, bean.SDATE);
+            cstmt.setString(4, bean.SAGENT);
+            cstmt.setString(5, bean.SUBFTE);
+            cstmt.setString(6, bean.INVOICE);
+            cstmt.setString(7, bean.SCURRENCY);
+            cstmt.setString(8, session.getUserView().getUserInfo().USR);
+
+            cstmt.setInt(9, 0);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.setString(10, "");
+            cstmt.registerOutParameter(10, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int outCode = cstmt.getInt(9);
+            String outMessage = cstmt.getString(10);
+
+            result.put("success", outCode == 1);
+            result.put("message", outMessage);
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "SQL Error: " + e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
+    // Direct Sales - REVERSA individual (ventana GenerateReverseForm): llama
+    // a MPS740, contraparte de MPS739. Misma llave de 7 campos, mismo bean
+    // (MPF300Generate). IN_USR viene de la sesion (no del bean).
+    public Map<String, Object> executeMPS740(MPF300Generate bean) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS740(?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, bean.CCUST);
+            cstmt.setString(2, bean.SCOUNTRY);
+            cstmt.setString(3, bean.SDATE);
+            cstmt.setString(4, bean.SAGENT);
+            cstmt.setString(5, bean.SUBFTE);
+            cstmt.setString(6, bean.INVOICE);
+            cstmt.setString(7, bean.SCURRENCY);
+            cstmt.setString(8, session.getUserView().getUserInfo().USR);
+
+            cstmt.setInt(9, 0);
+            cstmt.registerOutParameter(9, Types.INTEGER);
+            cstmt.setString(10, "");
+            cstmt.registerOutParameter(10, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int outCode = cstmt.getInt(9);
+            String outMessage = cstmt.getString(10);
+
+            result.put("success", outCode == 1);
+            result.put("message", outMessage);
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "SQL Error: " + e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
+    // Arma el string delimitado que esperan MPS741/MPS742: filas separadas
+    // por '~', campos de cada fila separados por '|' (mismo orden que
+    // MPS739/MPS740: CCUST, SCOUNTRY, SDATE, SAGENT, SUBFTE, INVOICE,
+    // SCURRENCY). Se asume que ninguno de esos campos trae '|' ni '~'.
+    private String buildRowsParam(MPF300GenerateBatch batch) {
+        StringBuilder sb = new StringBuilder();
+        for (MPF300Generate row : batch.rows) {
+            if (sb.length() > 0) {
+                sb.append('~');
+            }
+            sb.append(row.CCUST).append('|')
+              .append(row.SCOUNTRY).append('|')
+              .append(row.SDATE).append('|')
+              .append(row.SAGENT).append('|')
+              .append(row.SUBFTE).append('|')
+              .append(row.INVOICE).append('|')
+              .append(row.SCURRENCY);
+        }
+        return sb.toString();
+    }
+
+    // Direct Sales - GENERAR MASIVO (ventana GenerateReverseForm): llama a
+    // MPS741, que a su vez llama a MPS739 una vez por fila seleccionada.
+    public Map<String, Object> executeMPS741(MPF300GenerateBatch batch) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS741(?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, buildRowsParam(batch));
+            cstmt.setString(2, session.getUserView().getUserInfo().USR);
+
+            cstmt.setInt(3, 0);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.setString(4, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int outCode = cstmt.getInt(3);
+            String outMessage = cstmt.getString(4);
+
+            result.put("success", outCode == 1);
+            result.put("message", outMessage);
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "SQL Error: " + e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
+    }
+
+    // Direct Sales - REVERSA MASIVA (ventana GenerateReverseForm): llama a
+    // MPS742, que a su vez llama a MPS740 una vez por fila seleccionada.
+    public Map<String, Object> executeMPS742(MPF300GenerateBatch batch) throws SQLException, Exception {
+
+        Map<String, Object> result = new HashMap<>();
+        CallableStatement cstmt = null;
+        Connection cnx = null;
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS742(?,?,?,?)}";
+
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            cstmt.setString(1, buildRowsParam(batch));
+            cstmt.setString(2, session.getUserView().getUserInfo().USR);
+
+            cstmt.setInt(3, 0);
+            cstmt.registerOutParameter(3, Types.INTEGER);
+            cstmt.setString(4, "");
+            cstmt.registerOutParameter(4, Types.VARCHAR);
+
+            cstmt.execute();
+
+            int outCode = cstmt.getInt(3);
+            String outMessage = cstmt.getString(4);
+
+            result.put("success", outCode == 1);
+            result.put("message", outMessage);
+
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("message", "SQL Error: " + e.getMessage());
+            logError.error("Exception -> " + e.getMessage(), e);
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+            pasarGarbageCollector();
+        }
+
+        return result;
     }
 
 }
