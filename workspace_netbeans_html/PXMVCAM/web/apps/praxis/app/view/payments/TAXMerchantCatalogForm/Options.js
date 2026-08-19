@@ -38,6 +38,15 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.Options', {
                         },
                         {
                             xtype: 'button',
+                            id: prototype.id + '-btnBulkUpload',
+                            iconCls: 'prx-icon-image-file',
+                            tooltip: 'Carga masiva (Excel)',
+                            listeners: {
+                                click: 'onOpenBulkUpload'
+                            }
+                        },
+                        {
+                            xtype: 'button',
                             id: prototype.id + '-btnFilter',
                             iconCls: 'prx-icon-filter',
                             tooltip: 'Display filter',

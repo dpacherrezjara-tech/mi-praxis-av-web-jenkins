@@ -147,6 +147,8 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.MaintenanceDataEnt
         IN_TIPOCB: values.IN_TYPE_CB || '',
         IN_TIPOML: values.IN_TYPE_MEMOLINE || '',
         IN_TEXTML: values.IN_MEMOLINE || '',
+        IN_REFKEY1: values.IN_REFKEY1 || '',
+        IN_REFKEY3: values.IN_REFKEY3 || '',
         IN_IATAVTA_OLD: option === 'U' ? original.IN_SALE_AGENT || '' : '',
         IN_MERCHANT_OLD: option === 'U' ? original.IN_MERCHANT || '' : ''
         

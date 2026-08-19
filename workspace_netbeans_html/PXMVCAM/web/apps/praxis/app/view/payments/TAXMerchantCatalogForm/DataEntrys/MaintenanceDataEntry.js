@@ -420,6 +420,34 @@ items: [
                         }
                     }
                 ]
+            },
+            {
+                // 7️⃣ Septima fila - CSR 1715
+                items: [
+                    {
+                        name: 'IN_REFKEY1',
+                        maxLength: 20,
+                        allowBlank: true,
+                        fieldLabel: 'Ref Key 1',
+                        listeners: {
+                            change: function (field, newValue) {
+                                field.setValue(newValue.toUpperCase());
+                            }
+                        }
+                    },
+                    {
+                        name: 'IN_REFKEY3',
+                        maxLength: 40,
+                        allowBlank: true,
+                        fieldLabel: 'Ref Key 3',
+                        flex: 2,
+                        listeners: {
+                            change: function (field, newValue) {
+                                field.setValue(newValue.toUpperCase());
+                            }
+                        }
+                    }
+                ]
             }
         ]
     },

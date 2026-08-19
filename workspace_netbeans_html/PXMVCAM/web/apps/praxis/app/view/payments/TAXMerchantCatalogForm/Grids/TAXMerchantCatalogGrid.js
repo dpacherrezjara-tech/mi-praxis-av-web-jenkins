@@ -51,6 +51,8 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.Grids.TAXMerchantCat
             {text: 'Account', dataIndex: 'ACCOUNT', flex: 0.8},
             {text: 'Type<br>Memoline', dataIndex: 'TYPE_MEMOLINE', flex: 0.6},
             {text: 'Memoline', dataIndex: 'MEMOLINE', flex: 2.3},
+            {text: 'Ref<br>Key 1', dataIndex: 'REFKEY1', flex: 0.8},
+            {text: 'Ref<br>Key 3', dataIndex: 'REFKEY3', flex: 1.6},
             {
                 sortable: false,
                 xtype: 'actioncolumn',

@@ -35,6 +35,8 @@ public class MPF154 {
     public String TYPE_CB = "";
     public String TYPE_MEMOLINE = "";
     public String MEMOLINE = "";
+    public String REFKEY1 = "";
+    public String REFKEY3 = "";
     public String USCR = "";
     public String FECR = "";
     public String HOCR = "";
