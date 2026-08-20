@@ -910,6 +910,12 @@ public class CargoGuideController extends BaseController {
                 // en el backend Python vía REST (conciliacionSV).
                 String baseUrl = this.getPythonApiBaseUrl();
                 result = logic.runConciliacionSV(baseUrl, fecr);
+            } else if ("EC".equals(country)) {
+                // EC: dispara EXTRACCION_BANCOS_EC en el backend Python vía REST
+                // (extraccionBancosEC). No usa fecr — el endpoint siempre recorre
+                // toda la cuenta configurada del lado Python.
+                String baseUrl = this.getPythonApiBaseUrl();
+                result = logic.runExtraccionBancosEC(baseUrl);
             } else {
                 // CO: único país con proceso DB2 activo por ahora (FASE 1 = MPS556).
                 result = logic.runMPS556();

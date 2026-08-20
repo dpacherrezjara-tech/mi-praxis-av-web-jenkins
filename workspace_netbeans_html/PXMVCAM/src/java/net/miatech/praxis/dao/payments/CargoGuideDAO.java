@@ -1020,6 +1020,44 @@ public class CargoGuideDAO {
         return response;
     }
 
+    /**
+     * Extracción de Bancos EC — dispara EXTRACCION_BANCOS_EC (PRAXISMP.MPF102 ->
+     * PRAXISMP.MPF287) en el backend Python vía REST (GET /api/extraccionBancosEC/).
+     * No recibe parámetros: siempre recorre TODA la cuenta configurada del lado
+     * Python (_ACCOUNT_EXTRACCION_EC), por eso no hay `fecr` aquí.
+     */
+    public Map<String, Object> runExtraccionBancosEC(String baseUrl) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            String url = baseUrl + "/api/extraccionBancosEC/";
+            Unirest.setTimeouts(600000, 300000);
+            HttpResponse<JsonNode> resp = Unirest.get(url).asJson();
+
+            JSONObject body = resp.getBody().getObject();
+
+            if (resp.getStatus() >= 200 && resp.getStatus() < 300 && body.optBoolean("ok", false)) {
+                int nuevos = body.optInt("nuevos", 0);
+                int yaExistian = body.optInt("ya_existian", 0);
+                int total = body.optInt("total", 0);
+                response.put("success", true);
+                response.put("mensaje", "Extracción de Bancos EC completada. Nuevos: " + nuevos
+                        + " | Ya existían: " + yaExistian + " | Total procesados: " + total);
+            } else {
+                String err = body.has("error") ? body.getString("error") : "Error desconocido en el servicio de extracción de bancos.";
+                response.put("success", false);
+                response.put("mensaje", err);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logError.error("runExtraccionBancosEC -> " + e.getMessage(), e);
+            response.put("success", false);
+            response.put("mensaje", "Error al llamar al servicio de extracción de bancos EC: " + e.getMessage());
+        }
+
+        return response;
+    }
+
     public List<MPF295> loadMPS603(MPF295Filter filter) throws SQLException, Exception {
 
         List<MPF295> lstData = new ArrayList<>(0);
