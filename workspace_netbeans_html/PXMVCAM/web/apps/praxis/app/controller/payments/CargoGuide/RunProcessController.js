@@ -14,6 +14,9 @@ Ext.define('Ext.Praxis.controller.payments.CargoGuide.RunProcessController', {
         ],
         'SV': [
             {code: 'CONCILIACION',  name: 'Conciliación SV', proc: 'conciliacionSV', available: true}
+        ],
+        'EC': [
+            {code: 'EXTRACCION_BANCOS', name: 'Extracción de Bancos', proc: 'extraccionBancosEC', available: true}
         ]
     },
 
