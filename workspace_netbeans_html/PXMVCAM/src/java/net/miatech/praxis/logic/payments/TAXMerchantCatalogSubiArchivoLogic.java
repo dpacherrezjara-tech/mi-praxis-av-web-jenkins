@@ -46,13 +46,13 @@ public class TAXMerchantCatalogSubiArchivoLogic {
             boolean exists = existingKeys.contains(key);
             if ("C".equals(mode)) {
                 if (exists) {
-                    row.addError("La llave (Proceso+Merchant+Agente+Procesador+Codigo) ya existe. Use el modo Actualizar o corrija la fila.");
+                    row.addError("The key (Process+Merchant+Agent+Processor+Code) already exists. Use Update mode or fix the row.");
                 } else {
                     row.ACTION = "C";
                 }
             } else {
                 if (!exists) {
-                    row.addError("La llave (Proceso+Merchant+Agente+Procesador+Codigo) no existe en el catalogo. Use el modo Crear o corrija la fila.");
+                    row.addError("The key (Process+Merchant+Agent+Processor+Code) does not exist in the catalog. Use Create mode or fix the row.");
                 } else {
                     row.ACTION = "U";
                 }
@@ -79,7 +79,7 @@ public class TAXMerchantCatalogSubiArchivoLogic {
                     dao.updateRow(row);
                 }
             } catch (Exception e) {
-                row.addError("Error al procesar en base de datos: " + e.getMessage());
+                row.addError("Error processing in database: " + e.getMessage());
             }
         }
     }

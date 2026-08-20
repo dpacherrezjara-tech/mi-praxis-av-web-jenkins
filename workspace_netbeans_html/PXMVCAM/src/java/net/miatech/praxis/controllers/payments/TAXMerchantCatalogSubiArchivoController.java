@@ -8,6 +8,7 @@ package net.miatech.praxis.controllers.payments;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -48,9 +49,11 @@ import org.springframework.web.multipart.MultipartFile;
  *                        llaves contra lo que ya existe en MPF154). No escribe
  *                        nada en base de datos. Devuelve fila por fila el
  *                        resultado para pintar el check verde / x roja.
- *  3) processExcel    -> se vuelve a validar todo (nunca se confia en lo que
- *                        el cliente valido antes) y, solo si TODAS las filas
- *                        son validas, se inserta/actualiza cada una via
+ *  3) processRows      -> recibe en JSON las filas que devolvio validateExcel
+ *                        (no vuelve a subir el Excel), vuelve a chequear las
+ *                        llaves contra la base (nunca se confia en lo que el
+ *                        cliente valido antes) y, solo si TODAS las filas
+ *                        son validas, inserta/actualiza cada una via
  *                        PRAXISMP.MPS262.
  */
 @Controller
@@ -62,21 +65,26 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
     private TAXMerchantCatalogSubiArchivoLogic logic;
 
     // Orden y nombres de columna esperados en el Excel (fila 1 = cabecera).
-    // Debe coincidir exactamente con el layout que genera downloadLayout().
+    // Debe coincidir exactamente con el layout que genera downloadLayout() Y con
+    // las columnas que produce el boton "Exportar a Excel" de la grilla (mismo
+    // orden/nombres que el SELECT de MPS276) hasta REFKEY3. RN se lee pero no se
+    // valida ni se guarda (es solo el numero de fila de un export previo). No se
+    // incluyen los campos de auditoria (USCR/FECR/HOCR/USUP/FEUP/HOUP): son de
+    // solo lectura y los genera MPS262.
     private static final String[] EXPECTED_HEADERS = {
-        "PROCESO", "MERCHANT", "SALES_AGENT", "PROCESSOR", "CODE",
-        "SOCIETY", "CURRENCY", "SALE_PROFIT", "COUNTRY", "STATEMENT_PROFIT",
-        "COST_CENTER", "ACQUIRER", "CHANNEL", "COMPANY", "BANK_CURRENCY",
-        "BANK_PROFIT", "NIT_CODE", "NIT_DESCRIPTION", "ACCOUNT", "PROFIT_TYPE",
-        "TYPE_MEMOLINE", "MEMOLINE", "REFKEY1", "REFKEY3"
+        "RN", "PROCESO", "MERCHANT", "SALE_AGENT", "SOCIETY",
+        "CURRENCY", "SALE_PROFIT", "COUNTRY", "STATEMENT_PROFIT", "COST_CENTER",
+        "ACQUIRER", "PROCESSOR", "CHANNEL", "COMPANY", "BANK_CURRENCY",
+        "BANK_PROFIT", "NIT_CODE", "NIT_DESCRIPTION", "CODE", "ACCOUNT",
+        "TYPE_CB", "TYPE_MEMOLINE", "MEMOLINE", "REFKEY1", "REFKEY3"
     };
 
     private static final String[] EXAMPLE_ROW = {
-        "TC", "0464959", "56990113", "LK", "COMISI",
-        "2K01", "USD", "12KVVI17", "BO", "12KBO099",
-        "12KLPB1600", "LINKSER", "ATO", "2K01", "USD",
-        "12KBO099", "1020557029", "BANCO MERCANTIL SANT", "544109", "B",
-        "COM", "ATO-BO-LINKSER", "REFKEY1EX", "REFKEY3 EJEMPLO DESCRIPCION"
+        "1", "TC", "0464959", "56990113", "2K01",
+        "USD", "12KVVI17", "BO", "12KBO099", "12KLPB1600",
+        "LINKSER", "LK", "ATO", "2K01", "USD",
+        "12KBO099", "1020557029", "BANCO MERCANTIL SANT", "COMISI", "544109",
+        "B", "COM", "ATO-BO-LINKSER", "REFKEY1EX", "REFKEY3 EJEMPLO DESCRIPCION"
     };
 
     private static final String[] PROCESO_CODES = {"TC", "CA"};
@@ -146,15 +154,26 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
             return new Gson().toJson(result);
         } catch (Exception e) {
             logError.error("SQLException -> User:" + currentUser + " Message: " + e.getMessage(), e);
-            result.put("headerError", "Error al validar el archivo: " + e.getMessage());
+            result.put("headerError", "Error validating the file: " + e.getMessage());
             result.put("rows", new ArrayList<TAXMerchantCatalogRow>());
             return new Gson().toJson(result);
         }
     }
 
-    @RequestMapping(value = "processExcel", method = RequestMethod.POST)
+    /**
+     * A diferencia de validateExcel, este endpoint NO recibe el archivo Excel:
+     * recibe en JSON las filas que el propio /validateExcel ya devolvio al
+     * cliente. Volver a subir el mismo MultipartFile en una segunda peticion
+     * (form.submit) es fragil -- el filefield de Ext JS no siempre conserva
+     * el archivo seleccionado en un segundo submit, y eso rompia el parseo
+     * (InvalidFormatException). Como el cliente ya tiene las filas validadas,
+     * alcanza con reenviarlas y volver a chequear las llaves contra la base
+     * (defensa en profundidad ante condiciones de carrera entre Validar y
+     * Procesar) antes de insertar/actualizar.
+     */
+    @RequestMapping(value = "processRows", method = RequestMethod.POST)
     public @ResponseBody
-    String processExcel(@RequestParam("excelfile") MultipartFile excelfile, @RequestParam("mode") String mode, HttpServletRequest request) {
+    String processRows(@RequestParam("mode") String mode, @RequestParam("rowsJson") String rowsJson, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<String, Object>();
         // Ext.form.Basic.submit() exige "success" en el JSON de nivel superior;
         // sin este campo interpreta la respuesta como failure aunque el body sea valido.
@@ -163,20 +182,16 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
         try {
             currentUser = this.serverSession.getServerSession().getUserView().getUserInfo().USR;
             Functions.msjConsola("PRAXIS", currentUser, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
-            ParseResult parsed = parseExcel(excelfile);
-            if (parsed.headerError != null) {
-                result.put("headerError", parsed.headerError);
-                result.put("processed", false);
-                result.put("rows", new ArrayList<TAXMerchantCatalogRow>());
-                return new Gson().toJson(result);
-            }
+
+            TAXMerchantCatalogRow[] rowsArr = new Gson().fromJson(rowsJson, TAXMerchantCatalogRow[].class);
+            List<TAXMerchantCatalogRow> rows = new ArrayList<TAXMerchantCatalogRow>(Arrays.asList(rowsArr));
 
             logic = new TAXMerchantCatalogSubiArchivoLogic();
             logic.setSession(this.serverSession.getServerSession());
-            logic.resolveActionAgainstDatabase(parsed.rows, mode);
+            logic.resolveActionAgainstDatabase(rows, mode);
 
             boolean allValid = true;
-            for (TAXMerchantCatalogRow row : parsed.rows) {
+            for (TAXMerchantCatalogRow row : rows) {
                 if (!row.VALID) {
                     allValid = false;
                     break;
@@ -184,28 +199,28 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
             }
 
             result.put("headerError", null);
-            if (!allValid || parsed.rows.isEmpty()) {
+            if (!allValid || rows.isEmpty()) {
                 // Defensa en profundidad: no se confia en la validacion previa del
                 // cliente (pudo haber cambiado el catalogo entre Validar y Procesar).
                 result.put("processed", false);
-                result.put("rows", parsed.rows);
+                result.put("rows", rows);
                 return new Gson().toJson(result);
             }
 
-            logic.processRows(parsed.rows);
+            logic.processRows(rows);
 
             allValid = true;
-            for (TAXMerchantCatalogRow row : parsed.rows) {
+            for (TAXMerchantCatalogRow row : rows) {
                 if (!row.VALID) {
                     allValid = false;
                 }
             }
             result.put("processed", allValid);
-            result.put("rows", parsed.rows);
+            result.put("rows", rows);
             return new Gson().toJson(result);
         } catch (Exception e) {
             logError.error("SQLException -> User:" + currentUser + " Message: " + e.getMessage(), e);
-            result.put("headerError", "Error al procesar el archivo: " + e.getMessage());
+            result.put("headerError", "Error processing the rows: " + e.getMessage());
             result.put("processed", false);
             result.put("rows", new ArrayList<TAXMerchantCatalogRow>());
             return new Gson().toJson(result);
@@ -226,23 +241,23 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
         Iterator<Row> iterator = sheet.iterator();
 
         if (!iterator.hasNext()) {
-            result.headerError = "El archivo esta vacio.";
+            result.headerError = "The file is empty.";
             workbook.close();
             return result;
         }
 
         Row headerRow = iterator.next();
         if (headerRow.getLastCellNum() != EXPECTED_HEADERS.length) {
-            result.headerError = "El archivo tiene " + Math.max(headerRow.getLastCellNum(), 0)
-                    + " columna(s) y se esperaban " + EXPECTED_HEADERS.length + ". Descargue el layout de ejemplo.";
+            result.headerError = "The file has " + Math.max(headerRow.getLastCellNum(), 0)
+                    + " column(s) and " + EXPECTED_HEADERS.length + " were expected. Download the example layout.";
             workbook.close();
             return result;
         }
         for (int i = 0; i < EXPECTED_HEADERS.length; i++) {
             String header = getCellValue(headerRow.getCell(i)).trim().toUpperCase();
             if (!header.equals(EXPECTED_HEADERS[i])) {
-                result.headerError = "La columna " + (i + 1) + " deberia ser '" + EXPECTED_HEADERS[i]
-                        + "' y se encontro '" + header + "'. Descargue el layout de ejemplo.";
+                result.headerError = "Column " + (i + 1) + " should be '" + EXPECTED_HEADERS[i]
+                        + "' but '" + header + "' was found. Download the example layout.";
                 workbook.close();
                 return result;
             }
@@ -264,8 +279,11 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
         return result;
     }
 
+    // RN (0) no cuenta para decidir si una fila esta vacia: es de solo lectura
+    // y puede traer el numero de un export previo aunque el usuario haya
+    // borrado el resto de la fila.
     private boolean isRowEmpty(Row row) {
-        for (int i = 0; i < EXPECTED_HEADERS.length; i++) {
+        for (int i = 1; i <= 24; i++) {
             if (!getCellValue(row.getCell(i)).trim().isEmpty()) {
                 return false;
             }
@@ -277,30 +295,31 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
         TAXMerchantCatalogRow r = new TAXMerchantCatalogRow();
         r.ROW_NUM = rowNum;
 
-        r.PROCESO = normalizeEnum(cell(row, 0), PROCESO_CODES, PROCESO_NAMES, r, "Proceso");
-        r.MERCHANT = required(cell(row, 1), 19, r, "Merchant");
-        r.SALE_AGENT = required(cell(row, 2), 9, r, "Sales Agent");
-        r.PROCESSOR = required(cell(row, 3), 3, r, "Processor");
-        r.CODE = required(cell(row, 4), 10, r, "Code");
-        r.SOCIETY = required(cell(row, 5), 4, r, "Society");
-        r.CURRENCY = required(cell(row, 6), 3, r, "Currency");
-        r.SALE_PROFIT = required(cell(row, 7), 8, r, "Sale Profit");
-        r.COUNTRY = required(cell(row, 8), 2, r, "Country");
-        r.STATEMENT_PROFIT = required(cell(row, 9), 8, r, "Statement Profit");
-        r.COST_CENTER = required(cell(row, 10), 10, r, "Cost Center");
-        r.ACQUIRER = required(cell(row, 11), 40, r, "Acquirer");
+        // Columna 0 (RN) se ignora: es solo el numero de fila de un export previo.
+        r.PROCESO = normalizeEnum(cell(row, 1), PROCESO_CODES, PROCESO_NAMES, r, "Process");
+        r.MERCHANT = required(cell(row, 2), 19, r, "Merchant");
+        r.SALE_AGENT = required(cell(row, 3), 9, r, "Sales Agent");
+        r.SOCIETY = required(cell(row, 4), 4, r, "Society");
+        r.CURRENCY = required(cell(row, 5), 3, r, "Currency");
+        r.SALE_PROFIT = required(cell(row, 6), 8, r, "Sale Profit");
+        r.COUNTRY = required(cell(row, 7), 2, r, "Country");
+        r.STATEMENT_PROFIT = required(cell(row, 8), 8, r, "Statement Profit");
+        r.COST_CENTER = required(cell(row, 9), 10, r, "Cost Center");
+        r.ACQUIRER = required(cell(row, 10), 40, r, "Acquirer");
+        r.PROCESSOR = required(cell(row, 11), 3, r, "Processor");
         r.CHANNEL = required(cell(row, 12), 40, r, "Channel");
         r.COMPANY = required(cell(row, 13), 4, r, "Company");
         r.BANK_CURRENCY = required(cell(row, 14), 3, r, "Bank Currency");
         r.BANK_PROFIT = required(cell(row, 15), 8, r, "Bank Profit");
         r.NIT_CODE = required(cell(row, 16), 20, r, "NIT Code");
         r.NIT_DESCRIPTION = required(cell(row, 17), 40, r, "NIT Description");
-        r.ACCOUNT = required(cell(row, 18), 6, r, "Account");
-        r.TYPE_CB = normalizeEnum(cell(row, 19), PROFIT_TYPE_CODES, PROFIT_TYPE_NAMES, r, "Profit Type");
-        r.TYPE_MEMOLINE = normalizeEnum(cell(row, 20), MEMOLINE_TYPE_CODES, MEMOLINE_TYPE_NAMES, r, "Type Memoline");
-        r.MEMOLINE = required(cell(row, 21), 60, r, "Memoline");
-        r.REFKEY1 = optional(cell(row, 22), 20, r, "Ref Key 1");
-        r.REFKEY3 = optional(cell(row, 23), 40, r, "Ref Key 3");
+        r.CODE = required(cell(row, 18), 10, r, "Code");
+        r.ACCOUNT = required(cell(row, 19), 6, r, "Account");
+        r.TYPE_CB = normalizeEnum(cell(row, 20), PROFIT_TYPE_CODES, PROFIT_TYPE_NAMES, r, "Profit Type");
+        r.TYPE_MEMOLINE = normalizeEnum(cell(row, 21), MEMOLINE_TYPE_CODES, MEMOLINE_TYPE_NAMES, r, "Type Memoline");
+        r.MEMOLINE = required(cell(row, 22), 60, r, "Memoline");
+        r.REFKEY1 = optional(cell(row, 23), 20, r, "Ref Key 1");
+        r.REFKEY3 = optional(cell(row, 24), 40, r, "Ref Key 3");
 
         return r;
     }
@@ -311,7 +330,7 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
 
     private String required(String value, int maxLen, TAXMerchantCatalogRow row, String label) {
         if (value.isEmpty()) {
-            row.addError(label + " es obligatorio.");
+            row.addError(label + " is required.");
             return value;
         }
         return enforceLength(value, maxLen, row, label);
@@ -326,7 +345,7 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
 
     private String enforceLength(String value, int maxLen, TAXMerchantCatalogRow row, String label) {
         if (value.length() > maxLen) {
-            row.addError(label + " no puede tener mas de " + maxLen + " caracteres (tiene " + value.length() + ").");
+            row.addError(label + " cannot have more than " + maxLen + " characters (has " + value.length() + ").");
             return value.substring(0, maxLen);
         }
         return value;
@@ -334,7 +353,7 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
 
     private String normalizeEnum(String value, String[] codes, String[] names, TAXMerchantCatalogRow row, String label) {
         if (value.isEmpty()) {
-            row.addError(label + " es obligatorio.");
+            row.addError(label + " is required.");
             return value;
         }
         for (int i = 0; i < codes.length; i++) {
@@ -342,7 +361,7 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
                 return codes[i];
             }
         }
-        row.addError(label + " '" + value + "' no es un valor valido. Use uno de: " + String.join("/", codes) + ".");
+        row.addError(label + " '" + value + "' is not a valid value. Use one of: " + String.join("/", codes) + ".");
         return value;
     }
 
@@ -366,7 +385,7 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
                         otherRows.add(other.ROW_NUM);
                     }
                 }
-                row.addError("La llave (Proceso+Merchant+Agente+Procesador+Codigo) se repite en la(s) fila(s) " + otherRows + " de este mismo archivo.");
+                row.addError("The key (Process+Merchant+Agent+Processor+Code) is repeated in row(s) " + otherRows + " of this same file.");
             }
         }
     }

@@ -7,7 +7,7 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
         'Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalogSubiArchivoController'
     ],
     controller: 'TAXMerchantCatalogSubiArchivoController',
-    title: 'Carga Masiva - TAX Merchant Catalog',
+    title: 'Bulk Upload - TAX Merchant Catalog',
     header: true,
     id: prototype.idSA + '-win',
     width: 900,
@@ -45,15 +45,15 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                         {
                             xtype: 'combobox',
                             id: prototype.idSA + '-cmbMode',
-                            fieldLabel: 'Modo',
+                            fieldLabel: 'Mode',
                             labelWidth: 45,
                             width: 220,
                             name: 'IN_MODE',
                             store: Ext.create('Ext.data.SimpleStore', {
                                 fields: ['code', 'name'],
                                 data: [
-                                    ['C', 'Crear (Alta masiva)'],
-                                    ['U', 'Actualizar (masiva)']
+                                    ['C', 'Create (Bulk insert)'],
+                                    ['U', 'Update (Bulk)']
                                 ]
                             }),
                             displayField: 'name',
@@ -61,14 +61,14 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                             queryMode: 'local',
                             editable: false,
                             allowBlank: false,
-                            emptyText: 'Seleccione...',
+                            emptyText: 'Select...',
                             listeners: {
                                 change: 'onModeOrFileChange'
                             }
                         },
                         {
                             xtype: 'button',
-                            text: 'Descargar layout de ejemplo',
+                            text: 'Download example layout',
                             iconCls: 'prx-icon-excel',
                             listeners: {
                                 click: 'onDownloadLayout'
@@ -85,11 +85,11 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                             xtype: 'filefield',
                             id: prototype.idSA + '-File',
                             name: 'excelfile',
-                            fieldLabel: 'Archivo',
+                            fieldLabel: 'File',
                             labelWidth: 45,
                             width: 600,
                             allowBlank: true,
-                            buttonText: 'Seleccionar archivo...',
+                            buttonText: 'Select file...',
                             listeners: {
                                 change: 'onModeOrFileChange'
                             }
@@ -123,7 +123,7 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                                 xtype: 'button',
                                 iconCls: 'prx-icon-excel',
                                 scale: 'small',
-                                tooltip: 'Exportar resultados a Excel',
+                                tooltip: 'Export results to Excel',
                                 listeners: {
                                     click: 'onDownloadResultsExcel'
                                 }
@@ -131,35 +131,35 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                         ]
                     },
                     columns: [
-                        {text: 'Fila', dataIndex: 'ROW_NUM', width: 50, align: 'center'},
-                        {text: 'Proceso', dataIndex: 'PROCESO', width: 70},
+                        {text: 'Row', dataIndex: 'ROW_NUM', width: 50, align: 'center'},
+                        {text: 'Process', dataIndex: 'PROCESO', width: 70},
                         {text: 'Merchant', dataIndex: 'MERCHANT', width: 100},
-                        {text: 'Agente', dataIndex: 'SALE_AGENT', width: 90},
-                        {text: 'Procesador', dataIndex: 'PROCESSOR', width: 80},
-                        {text: 'Codigo', dataIndex: 'CODE', width: 90},
+                        {text: 'Agent', dataIndex: 'SALE_AGENT', width: 90},
+                        {text: 'Processor', dataIndex: 'PROCESSOR', width: 80},
+                        {text: 'Code', dataIndex: 'CODE', width: 90},
                         {
-                            text: 'Accion',
+                            text: 'Action',
                             dataIndex: 'ACTION',
                             width: 80,
                             renderer: function (v) {
-                                if (v === 'C') { return 'Crear'; }
-                                if (v === 'U') { return 'Actualizar'; }
+                                if (v === 'C') { return 'Create'; }
+                                if (v === 'U') { return 'Update'; }
                                 return '';
                             }
                         },
                         {
-                            text: 'Estado',
+                            text: 'Status',
                             dataIndex: 'VALID',
                             width: 60,
                             align: 'center',
                             renderer: function (valid) {
                                 return valid
-                                        ? '<span style="color:#3c763d;font-weight:bold;" title="Fila valida">&#10003;</span>'
-                                        : '<span style="color:#a94442;font-weight:bold;" title="Fila con errores">&#10007;</span>';
+                                        ? '<span style="color:#3c763d;font-weight:bold;" title="Valid row">&#10003;</span>'
+                                        : '<span style="color:#a94442;font-weight:bold;" title="Row with errors">&#10007;</span>';
                             }
                         },
                         {
-                            text: 'Mensaje',
+                            text: 'Message',
                             dataIndex: 'ERRORS',
                             width: 450,
                             renderer: function (errors) {
@@ -195,7 +195,7 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
             },
             items: [
                 {
-                    text: 'Validar',
+                    text: 'Validate',
                     id: prototype.idSA + '-btn-validate',
                     iconCls: 'prx-icon-search',
                     disabled: true,
@@ -204,7 +204,7 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                     }
                 },
                 {
-                    text: 'Procesar',
+                    text: 'Process',
                     id: prototype.idSA + '-btn-process',
                     iconCls: 'prx-icon-image-update',
                     disabled: true,
@@ -213,7 +213,7 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                     }
                 },
                 {
-                    text: 'Cerrar',
+                    text: 'Close',
                     id: prototype.idSA + '-btn-close',
                     iconCls: 'prx-icon-cancel',
                     listeners: {

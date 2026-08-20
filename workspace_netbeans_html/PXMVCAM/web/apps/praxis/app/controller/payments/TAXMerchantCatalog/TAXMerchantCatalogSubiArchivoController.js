@@ -27,11 +27,11 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
         var mode = Ext.getCmp(prototype.idSA + '-cmbMode').getValue();
         var file = Ext.getCmp(prototype.idSA + '-File').getValue();
         if (!mode) {
-            Ext.MessageBox.alert('PRAXIS', 'Seleccione el modo (Crear/Actualizar).');
+            Ext.MessageBox.alert('PRAXIS', 'Select the mode (Create/Update).');
             return;
         }
         if (!file) {
-            Ext.MessageBox.alert('PRAXIS', 'Seleccione el archivo Excel.');
+            Ext.MessageBox.alert('PRAXIS', 'Select the Excel file.');
             return;
         }
         var form = Ext.getCmp(prototype.idSA + '-form-file').getForm();
@@ -48,7 +48,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
             },
             failure: function () {
                 me.view.setLoading(false);
-                Ext.MessageBox.alert('PRAXIS', 'No se pudo validar el archivo.');
+                Ext.MessageBox.alert('PRAXIS', 'Could not validate the file.');
             }
         });
     },
@@ -56,7 +56,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
         var me = this;
         Ext.Msg.show({
             title: '.:PRAXIS:.',
-            msg: 'Se van a crear/actualizar todas las filas validadas. Desea continuar?',
+            msg: 'All validated rows will be created/updated. Do you want to continue?',
             buttons: Ext.MessageBox.YESNO,
             icon: Ext.MessageBox.QUESTION,
             modal: true,
@@ -70,19 +70,28 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
     doProcess: function () {
         var me = this;
         var mode = Ext.getCmp(prototype.idSA + '-cmbMode').getValue();
-        var form = Ext.getCmp(prototype.idSA + '-form-file').getForm();
+        var grid = Ext.getCmp(prototype.idSA + '-resultsGrid');
+        // No se vuelve a subir el Excel: el filefield de Ext JS no siempre
+        // conserva el archivo seleccionado en un segundo form.submit(), lo que
+        // hacia llegar un archivo vacio/corrupto al servidor. Como ya tenemos
+        // las filas validadas en el grid, se reenvian como JSON.
+        var rows = grid.getStore().getData().items.map(function (rec) {
+            return rec.data;
+        });
         me.view.setLoading(true);
-        form.submit({
-            url: me.urlSA + '/processExcel',
+        Ext.Ajax.request({
+            url: me.urlSA + '/processRows',
+            method: 'POST',
             params: {
-                mode: mode
+                mode: mode,
+                rowsJson: Ext.encode(rows)
             },
-            success: function (fp, o) {
+            success: function (response) {
                 me.view.setLoading(false);
-                var res = Ext.decode(o.response.responseText);
+                var res = Ext.decode(response.responseText);
                 if (res.processed) {
                     global.Msg({
-                        msg: 'Carga masiva procesada correctamente (' + res.rows.length + ' fila(s)).',
+                        msg: 'Bulk upload processed successfully (' + res.rows.length + ' row(s)).',
                         fn: function () {
                             if (me.view.reloadGrid) {
                                 me.view.reloadGrid();
@@ -92,12 +101,12 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
                     });
                 } else {
                     me.showResults(res, true);
-                    Ext.MessageBox.alert('PRAXIS', 'No se proceso el archivo: hay filas con error. Corrija y vuelva a validar.');
+                    Ext.MessageBox.alert('PRAXIS', 'The file was not processed: some rows have errors. Fix them and validate again.');
                 }
             },
             failure: function () {
                 me.view.setLoading(false);
-                Ext.MessageBox.alert('PRAXIS', 'No se pudo procesar el archivo.');
+                Ext.MessageBox.alert('PRAXIS', 'Could not process the file.');
             }
         });
     },
@@ -133,7 +142,7 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
             }
         });
 
-        summaryLbl.setText(rows.length + ' fila(s) leidas — ' + validCount + ' valida(s), ' + errorCount + ' con error.', false);
+        summaryLbl.setText(rows.length + ' row(s) read — ' + validCount + ' valid, ' + errorCount + ' with error(s).', false);
         summaryLbl.show();
 
         me.lastValidatedOk = (rows.length > 0 && errorCount === 0);
@@ -143,26 +152,32 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
         var grid = Ext.getCmp(prototype.idSA + '-resultsGrid');
         var records = grid.getStore().getData().items;
         if (!records || records.length === 0) {
-            Ext.MessageBox.alert('PRAXIS', 'No hay resultados para exportar. Valide un archivo primero.');
+            Ext.MessageBox.alert('PRAXIS', 'There are no results to export. Validate a file first.');
             return;
         }
         var data = records.map(function (rec) {
             var r = rec.data;
+            var action = '';
+            if (r.ACTION === 'C') {
+                action = 'Create';
+            } else if (r.ACTION === 'U') {
+                action = 'Update';
+            }
             return {
-                Fila: r.ROW_NUM,
-                Proceso: r.PROCESO,
+                Row: r.ROW_NUM,
+                Process: r.PROCESO,
                 Merchant: r.MERCHANT,
-                Agente: r.SALE_AGENT,
-                Procesador: r.PROCESSOR,
-                Codigo: r.CODE,
-                Accion: r.ACTION === 'C' ? 'Crear' : (r.ACTION === 'U' ? 'Actualizar' : ''),
-                Estado: r.VALID ? 'Valida' : 'Con error',
-                Mensaje: (r.ERRORS || []).join(' | ')
+                Agent: r.SALE_AGENT,
+                Processor: r.PROCESSOR,
+                Code: r.CODE,
+                Action: action,
+                Status: r.VALID ? 'Valid' : 'With error',
+                Message: (r.ERRORS || []).join(' | ')
             };
         });
         var date = new Date();
         var formattedDate = String(date.getDate()).padStart(2, '0') + String(date.getMonth() + 1).padStart(2, '0') + date.getFullYear();
-        global.writeExcelFromJson(data, 'Tax_Merchant_Catalog_Carga_Masiva_Resultados_' + formattedDate);
+        global.writeExcelFromJson(data, 'Tax_Merchant_Catalog_Bulk_Upload_Results_' + formattedDate);
     },
     onCloseClick: function () {
         this.view.close();

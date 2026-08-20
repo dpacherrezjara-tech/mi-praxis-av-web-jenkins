@@ -40,7 +40,7 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.Options', {
                             xtype: 'button',
                             id: prototype.id + '-btnBulkUpload',
                             iconCls: 'prx-icon-image-file',
-                            tooltip: 'Carga masiva (Excel)',
+                            tooltip: 'Bulk upload (Excel)',
                             listeners: {
                                 click: 'onOpenBulkUpload'
                             }
