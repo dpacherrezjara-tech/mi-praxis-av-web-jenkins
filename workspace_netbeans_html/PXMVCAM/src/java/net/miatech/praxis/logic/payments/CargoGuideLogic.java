@@ -102,7 +102,11 @@ public class CargoGuideLogic {
     public Map<String, Object> runConciliacionSV(String baseUrl, String fecr) throws Exception {
         return CargoGuideDAO.runConciliacionSV(baseUrl, fecr);
     }
-    
+
+    public Map<String, Object> runExtraccionBancosEC(String baseUrl) throws Exception {
+        return CargoGuideDAO.runExtraccionBancosEC(baseUrl);
+    }
+
     public List<MPF295> loadMPS603(MPF295Filter filter) throws SQLException, Exception {
         return CargoGuideDAO.loadMPS603(filter);
     }

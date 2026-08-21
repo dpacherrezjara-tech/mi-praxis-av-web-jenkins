@@ -60,7 +60,8 @@ Ext.define('Ext.Praxis.view.payments.CargoGuideForm.RunProcessForm', {
                                         data: [
                                             {code: 'CO', name: 'Colombia (CO)'},
                                             {code: 'HN', name: 'Honduras (HN)'},
-                                            {code: 'SV', name: 'El Salvador (SV)'}
+                                            {code: 'SV', name: 'El Salvador (SV)'},
+                                            {code: 'EC', name: 'Ecuador (EC)'}
                                         ]
                                     },
                                     listeners: {
