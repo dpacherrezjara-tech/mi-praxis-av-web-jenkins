@@ -117,9 +117,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
-import net.miatech.praxis.payment.filter.MPF101Filter;
-import net.miatech.praxis.utils.SpringWS;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -133,10 +130,6 @@ public class BankReconciliationController extends BaseController {
     private static final Logger logError = Logger.getLogger("errorLog");
     private BankReconciliationLogic logic;
     private MasterDAO masterDAO;
-    
-    @Autowired
-    private SpringWS ws;
-    
 
     @RequestMapping(method = RequestMethod.POST)
     public String index(ModelMap map) {
@@ -8707,62 +8700,30 @@ public class BankReconciliationController extends BaseController {
         return new Gson().toJson(map);
     }
     
-    
-    // 
-    
-    
-    @RequestMapping(value = "getContador")
-    @ResponseBody
-    public String getContador(ModelMap map,HttpServletRequest request) {
-        
-        System.out.println("-------------- Bank Reconci : getContador -------------");
+    @RequestMapping(value = "onCallProgramBySummary", method = RequestMethod.POST)
+    public @ResponseBody
+    String onCallProgramBySummary(ModelMap map, HttpServletRequest request) {
+        System.out.println("-------------- BankReconciliationLogic : onCallProgramBySummary-------------");
+
+        Gson gson = new Gson();
+        A2290Filter filter = new A2290Filter();
+        A2290Filter result = new A2290Filter();
+        String beanString;
         try {
-            // Crear instancia de la lógica
-            BankReconciliationLogic logic = new BankReconciliationLogic();
-            logic.setSession(this.serverSession.getServerSession()); // si necesitas pasar sesión
+            Functions.msjConsola("PRAXIS", this.serverSession.getServerSession().getUserView().getUserInfo().USR, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
-            MPF101Filter filter = new MPF101Filter();
-            filter = new Gson().fromJson(request.getParameter("beanString"), filter.getClass());
-    
-            String contador = logic.loadContador(filter);
+            logic = new BankReconciliationLogic();
+            logic.setSession(this.serverSession.getServerSession());
+            UserView user = this.serverSession.getServerSession().getUserView();
 
+            result = logic.SQPMPP117_MPF107(user);
+            map.put("result", result);
             map.put("success", true);
-            map.put("cantidad", contador);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+
             map.put("success", false);
-            map.put("mensaje", "Error al obtener el contador");
         }
         return new Gson().toJson(map);
     }
-    
-    
-     
-
-    @RequestMapping(value = "downloadAccountingAgency", method = RequestMethod.POST)
-    public ResponseEntity<?> downloadAccountingAgency(@RequestBody MPF101Filter filter) throws Exception {
-       
-        System.out.println("***** DownloadAccountingAgency *****");
-        String zipName = "AccountingAgency_" + Functions.getFechaActual() + Functions.getHoraActual();
-        Gson gson = new Gson();
-        Map<String, Object> map = new HashMap();
-        map.put("IN_AGENT", filter.IN_AGENT.trim());
-        map.put("IN_DATEF", filter.IN_DATEF.trim());
-        map.put("IN_DATET", filter.IN_DATET.trim());
-      
-    
-        byte[] file = ws.getFile(gson.toJson(map), "AccountingAgencyReport/downloadReportExcel");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-        headers.setContentDispositionFormData("attachment", zipName + ".zip");
-        return new ResponseEntity<>(file, headers, HttpStatus.OK);
-
-    }
-    
-    
-    
-    
-    
-    
 
 }
