@@ -3678,11 +3678,19 @@ public class StatementReconciliationsDAO {
                 beanTkt.CBATCH = rst.getString("CBATCH");
                 beanTkt.FECR = rst.getString("FECR");
                 beanTkt.DPERIOD = rst.getString("DPERIOD");
-                beanTkt.SFILE = rst.getString("SFILE") != null ? rst.getString("SFILE").trim() : "";
-                beanTkt.NPAG = rst.getString("NPAG");
-                // SDATE solo existe en el branch CCUSTPRO='03' (MPF190) -- BSP/ICCS/ARC
-                // (MPF191/MPF199) no tienen esta columna, por eso el try/catch: no debe
+                // SFILE, NPAG y SDATE solo existen en el branch CCUSTPRO='03' (MPF190) -- BSP/ICCS/ARC
+                // (MPF191/MPF199) no tienen estas columnas, por eso el try/catch: no debe
                 // romper esos otros flujos si la columna no viene en el resultset.
+                try {
+                    beanTkt.SFILE = rst.getString("SFILE") != null ? rst.getString("SFILE").trim() : "";
+                } catch (SQLException e) {
+                    beanTkt.SFILE = "";
+                }
+                try {
+                    beanTkt.NPAG = rst.getString("NPAG");
+                } catch (SQLException e) {
+                    beanTkt.NPAG = "";
+                }
                 try {
                     beanTkt.SDATE = rst.getString("SDATE") != null ? rst.getString("SDATE").trim() : "";
                 } catch (SQLException e) {

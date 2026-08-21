@@ -308,32 +308,82 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
 
                     var panelScanArc = Ext.getCmp(prototype.id + '-panelDataInfoScanARC');
                     var panelScan = Ext.getCmp(prototype.id + '-panelDataInfoScan');
+                    var panelScanBSP = Ext.getCmp(prototype.id + '-panelDataInfoScanBSP');
+                    var panelScanArcDetail = Ext.getCmp(prototype.id + '-panelDataInfoScanArcDetail');
                     var gridScanArc = Ext.getCmp(prototype.id + '-gridDataInfoScanArc');
                     var gridScan = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+                    var gridScanBSP = Ext.getCmp(prototype.id + '-gridDataInfoScanBSP');
+                    var gridScanArcDetail = Ext.getCmp(prototype.id + '-gridDataInfoScanArcDetail');
 
-                    if (gridScan) {
-                        gridScan.bindStore(storeData);
+                    // CCUSTPRO='03' -> Venta Directa (MPF190): Reference/Filename/Npag (gridDataInfoScan).
+                    // CCUSTPRO='02' -> ARC (MPF191 TREG='A'): Concept/Sconsol/Neto Sales/Neto EECC/Settlement Day/
+                    // Billing From-To (gridDataInfoScanArcDetail), + bloque "Header Settlement"/toggle USD-EUR.
+                    // CCUSTPRO 00/01 -> BSP/ICCS (MPF191/MPF199): Concept/Sconsol/Star-End Date (gridDataInfoScanBSP).
+                    // meDE.bean es la fila de la grilla de afuera que abrió este Data Entry (this.bean = this.p.rec
+                    // en init()) -- esa grilla ya trae CCUSTPRO (columna "Source"), no hace falta pedírselo
+                    // de nuevo a MPS344.
+                    var ccustpro = (meDE.bean.data.CCUSTPRO || '').trim();
+                    var esVentaDirecta = data.length === 0 || ccustpro === '03';
+                    var esArc = !esVentaDirecta && ccustpro === '02';
+
+                    if (esVentaDirecta) {
+                        if (gridScan) gridScan.bindStore(storeData);
+                        if (panelScanBSP) panelScanBSP.hide();
+                        if (panelScanArcDetail) panelScanArcDetail.hide();
+                    } else if (esArc) {
+                        if (gridScanArcDetail) gridScanArcDetail.bindStore(storeData);
+                        if (panelScan) panelScan.hide();
+                        if (panelScanBSP) panelScanBSP.hide();
+                    } else {
+                        if (gridScanBSP) gridScanBSP.bindStore(storeData);
+                        if (panelScan) panelScan.hide();
+                        if (panelScanArcDetail) panelScanArcDetail.hide();
                     }
                     // gridDataInfoScanArc ya no se llena con el mismo store de "Detail Settlement 2" (pendiente definir su propia fuente de datos).
+
+                    // "Header Settlement" (Society/Merchant/Id.Bank/Currency/Bank Account/Value Date/
+                    // Fuente/Negocio) y el toggle USD/EUR no deben mostrarse para ningún caso.
+                    var titleDetail = Ext.getCmp(prototype.id + '-titleDetail');
+                    var mainDetail = Ext.getCmp(prototype.id + '-mainDetail');
+                    var mainDetail2 = Ext.getCmp(prototype.id + '-mainDetail2');
+                    var lblUSD = Ext.getCmp(prototype.id + '-lblUSD');
+                    var btnTS_HEADER = Ext.getCmp(prototype.id + '-btnTS_HEADER');
+                    var lblEUR = Ext.getCmp(prototype.id + '-lblEUR');
+                    [titleDetail, mainDetail, mainDetail2, lblUSD, btnTS_HEADER, lblEUR].forEach(function (cmp) {
+                        if (cmp) {
+                            cmp.hide();
+                        }
+                    });
 
                     // ... resto de tu lógica de visualización de paneles ...
                     var panelScanCard = Ext.getCmp(prototype.id + '-panelScanCard');
                     var panelScanCard2 = Ext.getCmp(prototype.id + '-panelScanCard2');
 
                     var panelSumAmountQty = Ext.getCmp(prototype.id + '-panelSumAmountQty');
+                    var btnExcelDetail = Ext.getCmp(prototype.id + '-btnExcelDetail');
 
                     // Si "Detail Settlement 2" ya trae registros, no hace falta el scan (ni su grilla ni los filtros de búsqueda).
                     // Si no trae registros, se oculta la grilla y se muestran los filtros para buscar manualmente.
                     if (data.length > 0) {
-                        if (panelScan) panelScan.show();
+                        if (esVentaDirecta) {
+                            if (panelScan) panelScan.show();
+                        } else if (esArc) {
+                            if (panelScanArcDetail) panelScanArcDetail.show();
+                        } else {
+                            if (panelScanBSP) panelScanBSP.show();
+                        }
                         if (panelScanCard) panelScanCard.hide();
                         if (panelScanCard2) panelScanCard2.hide();
                         if (panelSumAmountQty) panelSumAmountQty.show(); // es de "Detail Settlement 2", solo aplica cuando esa grilla se ve
+                        if (btnExcelDetail) btnExcelDetail.show();
                     } else {
                         if (panelScan) panelScan.hide();
+                        if (panelScanBSP) panelScanBSP.hide();
+                        if (panelScanArcDetail) panelScanArcDetail.hide();
                         if (panelScanCard) panelScanCard.show();
                         if (panelScanCard2) panelScanCard2.show();
                         if (panelSumAmountQty) panelSumAmountQty.hide(); // con el scan activo no aplica (siempre mostraba 0.00 / 0)
+                        if (btnExcelDetail) btnExcelDetail.hide();
                     }
 
                     // Si ya está Match o Match Manual (1 o 5), no tiene sentido mostrar la grilla ARC de abajo.
@@ -398,7 +448,16 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
     },
     calcularMontos: function () {
         console.log('calcularMontos');
-        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        // La grilla activa de "Detail Settlement" depende del origen del registro (mismo criterio
+        // que onSearchCompleteDetail/getExcelDetail): Venta Directa usa gridDataInfoScan, ARC usa
+        // gridDataInfoScanArcDetail, BSP/ICCS usan gridDataInfoScanBSP. Antes esto estaba fijo a
+        // gridDataInfoScan, por lo que "Neto Settlement"/"Difference" siempre daban 0 para
+        // BSP/ICCS/ARC cuando el status no era Match (la única razón por la que se veían bien en
+        // Match es que ese caso usa beanResult.NETO directo, sin sumar la grilla).
+        var ccustpro = (meDE.bean.data.CCUSTPRO || '').trim();
+        var gridId = ccustpro === '03' ? '-gridDataInfoScan' : (ccustpro === '02' ? '-gridDataInfoScanArcDetail' : '-gridDataInfoScanBSP');
+
+        var grid = Ext.getCmp(prototype.id + gridId);
         var store = grid.getStore();
         var calculateButton = this.lookupReference('calculateButton');
         if (store.getCount() > 0 && store.getCount() < 22) {
@@ -408,8 +467,9 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         }
 
         this.sumAmount = 0;
+        var sumNeto = 0;
         this.lstSendManual = [];
-        var store_gridInfoScan = Ext.getCmp(prototype.id + '-gridDataInfoScan').getStore();
+        var store_gridInfoScan = store;
 
         for (var i = 0; i < store_gridInfoScan.data.length; i++) {
             var dataRow1 = store_gridInfoScan.data.items[i];
@@ -424,24 +484,40 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
                 } else {
                     this.sumAmount += neto;
                 }
+
+                sumNeto += parseFloat(dataRow1.data.NETO) || 0;
             }
         }
 
+        // "Neto Settlement" = suma de la columna Neto de la grilla, "Difference" = Neto (header) - Neto Settlement.
+        // Si ya está Match (STVAL '1') se mantiene Difference en 0 para no bloquear el botón Update
+        // por pequeñas discrepancias de redondeo en registros ya conciliados.
         if (this.beanResult.STVAL === '1') {
             this.setValue('de-txtNETOL', Ext.util.Format.number(this.beanResult.NETO, '0,000.00'));
             this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.beanResult.NETO, '0,000.00'));
         } else {
-            this.setValue('de-txtNETOL', Ext.util.Format.number(this.sumAmount, '0,000.00'));
-            this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - this.sumAmount, '0,000.00'));
+            this.setValue('de-txtNETOL', Ext.util.Format.number(sumNeto, '0,000.00'));
+            this.setValue('de-txtDIFF', Ext.util.Format.number(this.beanResult.NETO - sumNeto, '0,000.00'));
         }
         this.setValue('de-txtSumAmount', Ext.util.Format.number(this.sumAmount, '0,000.00'));
         this.setValue('de-txtQty', store_gridInfoScan.data.length);
 
-        Ext.getCmp(prototype.id + '-gridDataInfoScan').getView().refresh();
+        // Si Merchant vino vacío, se completa con el Agent de la primera fila de la grilla.
+        var txtMerchand = Ext.getCmp(prototype.id + '-de-txtMERCHAND');
+        if (txtMerchand && !txtMerchand.getValue() && store_gridInfoScan.data.length > 0) {
+            var firstRow = store_gridInfoScan.data.items[0].data;
+            txtMerchand.setValue((firstRow.SAGENT || '').trim());
+        }
+
+        grid.getView().refresh();
     },
     calcularDiferencias: function () {
         console.log('calcularDiferencias');
-        var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
+        // Misma grilla activa que calcularMontos (gridDataInfoScan para Venta Directa,
+        // gridDataInfoScanArcDetail para ARC, gridDataInfoScanBSP para BSP/ICCS).
+        var ccustpro = (meDE.bean.data.CCUSTPRO || '').trim();
+        var gridId = ccustpro === '03' ? '-gridDataInfoScan' : (ccustpro === '02' ? '-gridDataInfoScanArcDetail' : '-gridDataInfoScanBSP');
+        var grid = Ext.getCmp(prototype.id + gridId);
 
         var store = grid.getStore();
         var calculateButton = this.lookupReference('calculateButton');
@@ -473,8 +549,6 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
             });
             var diff = Math.abs(Ext.getCmp(prototype.id + '-de-txtDIFF').getValue().replace(/,/g, '').replace('.00', ''));
 
-            var grid = Ext.getCmp(prototype.id + '-gridDataInfoScan');
-            var store = grid.getStore();
             var records = store.getRange();
             this.desmarcarRegistros(records);
             if (diff !== 0) {
@@ -545,6 +619,39 @@ Ext.define('Ext.Praxis.controller.payments.StatementReconciliations.DataEntryCas
         }
 
         global.openWindowWithPost(prototype.url + '/getXLSXScanCart', 'beanString', JSON.stringify(cart));
+    },
+    // Excel de "Detail Settlement" (btnExcelDetail, junto a btnToggleVoucher): exporta la
+    // grilla que esté visible -- gridDataInfoScan (Venta Directa, /getXLSXScanCart, mismas
+    // columnas Reference/Filename/Npag), gridDataInfoScanArcDetail (ARC, /getXLSXScanCartArc)
+    // o gridDataInfoScanBSP (BSP/ICCS, /getXLSXScanCartBSP).
+    getExcelDetail: function () {
+        var panelScanBSP = Ext.getCmp(prototype.id + '-panelDataInfoScanBSP');
+        var panelScanArcDetail = Ext.getCmp(prototype.id + '-panelDataInfoScanArcDetail');
+        var esBSP = panelScanBSP && !panelScanBSP.isHidden();
+        var esArc = panelScanArcDetail && !panelScanArcDetail.isHidden();
+
+        var gridId = esArc ? '-gridDataInfoScanArcDetail' : (esBSP ? '-gridDataInfoScanBSP' : '-gridDataInfoScan');
+        var url = esArc ? '/getXLSXScanCartArc' : (esBSP ? '/getXLSXScanCartBSP' : '/getXLSXScanCart');
+        var grid = Ext.getCmp(prototype.id + gridId);
+
+        var cart = [];
+        grid.getStore().each(function (record) {
+            var rowData = record.data;
+            if (esArc) {
+                // "Neto EECC" es el Neto de MPF102 (beanResult.NETO, el mismo que "Neto Statement"),
+                // no el NETO por fila de MPF191 -- se pisa acá para que el Excel coincida con lo que
+                // se ve en pantalla (ver renderer de esa columna en gridDataInfoScanArcDetail).
+                rowData = Ext.apply({}, rowData, {NETO: meDE.beanResult.NETO});
+            }
+            cart.push(rowData);
+        });
+
+        if (cart.length === 0) {
+            global.Msg({msg: 'No hay registros en la lista para exportar.'});
+            return;
+        }
+
+        global.openWindowWithPost(prototype.url + url, 'beanString', JSON.stringify(cart));
     },
     mostrarCombinacionValida: function (combination, diff) {
         console.log('Se encontró una combinación válida:');

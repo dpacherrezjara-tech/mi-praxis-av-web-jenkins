@@ -19,7 +19,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
     controller: 'DataEntryCashStatementReconciliationsController',
     title: 'Statement Reconciliation - Agency Sales - Data Entry Form',
     header: true,
-    height: 750,
+    height: 810,
     width: 1200,
     resizable: false,
     layout: {
@@ -81,25 +81,17 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             margin: '4 200 4 8'
                                         },
                                         {
-                                            // Fila 1 + Fila 2 apiladas a la izquierda, y "Texto Largo" a la derecha
-                                            // ocupando la altura de ambas (antes quedaba espacio en blanco arriba
-                                            // de "Texto Largo" donde estaba el toggle USD/EUR, ya oculto).
-                                            // align:'stretch' es lo que hace que "Texto Largo" (a la derecha) tome
-                                            // la misma altura que las 2 filas apiladas de la izquierda.
+                                            // Fila 1 (arriba) y Fila 2 (abajo) apiladas. "Texto Largo" va al final
+                                            // de la Fila 1 y "Texto" al final de la Fila 2, alineados en la misma
+                                            // columna (misma altura de inicio para label e input en ambas filas).
                                             xtype: 'panel',
-                                            layout: {type: 'hbox', align: 'stretch'},
+                                            layout: 'vbox',
                                             border: false,
+                                            defaults: {
+                                                anchor: '100%'
+                                            },
                                             items: [
                                                 {
-                                                    xtype: 'panel',
-                                                    layout: 'vbox',
-                                                    border: false,
-                                                    width: 830,
-                                                    defaults: {
-                                                        anchor: '100%'
-                                                    },
-                                                    items: [
-                                                        {
                                                             xtype: 'panel',
                                                             layout: 'hbox',
                                                             border: false,
@@ -124,7 +116,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     fieldStyle: 'text-align:center',
                                                                     enforceMaxLength: true,
                                                                     readOnly: true,
-                                                                    width: 110
+                                                                    width: 80
                                                                 },
                                                                 {
                                                                     xtype: 'textfield',
@@ -135,12 +127,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     hidden: true,
                                                                     width: 90
                                                                 },
-                                                                {xtype: 'tbspacer', width: 50},
+                                                                {xtype: 'tbspacer', width: 40},
                                                                 {
                                                                     xtype: 'label',
                                                                     text: 'Bank',
                                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                                    width: 50
+                                                                    width: 40
                                                                 },
                                                                 {xtype: 'tbspacer', width: 20},
                                                                 {
@@ -161,7 +153,7 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
 //                                                                    fieldStyle: 'text-align:center',
                                                                     enforceMaxLength: true,
                                                                     readOnly: true,
-                                                                    width: 160
+                                                                    width: 75
                                                                 },
                                                                 {xtype: 'tbspacer', width: 50},
 
@@ -173,14 +165,14 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     style: 'font-weight:bold;color:#0B333C;',
                                                                     width: 60
                                                                 },
-
+                                                                {xtype: 'tbspacer', width: 10},
                                                                 {
                                                                     xtype: 'textfield',
                                                                     id: prototype.id + '-de-txtACCOUNTCASH',
                                                                     enforceMaxLength: true,
-                                                                    width: 160
+                                                                    width: 50
                                                                 },
-                                                                {xtype: 'tbspacer', width: 50},
+                                                                {xtype: 'tbspacer', width: 30},
                                                                 {
                                                                     xtype: 'label',
                                                                     text: 'USD',
@@ -222,7 +214,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     width: 120,
                                                                     hidden: true
                                                                 },
-                                                                {xtype: 'tbspacer', width: 130},
                                                                 {
                                                                     xtype: 'textfield',
                                                                     id: prototype.id + '-de-txtCountryBank',
@@ -246,6 +237,22 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     readOnly: true,
                                                                     hidden: true,
                                                                     width: 160
+                                                                },
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Texto Largo',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtTEXTOLAR',
+                                                                    maxLength: 400,
+                                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: false,
+                                                                    width: 400
                                                                 }
                                                             ]
                                                         },
@@ -276,16 +283,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     fieldStyle: 'text-align:center',
                                                                     enforceMaxLength: true,
                                                                     readOnly: true,
-                                                                    width: 110
+                                                                    width: 90
                                                                 },
-                                                                {xtype: 'tbspacer', width: 50},
+                                                                {xtype: 'tbspacer', width: 30},
                                                                 {
                                                                     xtype: 'label',
                                                                     text: 'Country',
                                                                     style: 'font-weight:bold;color:#0B333C;',
                                                                     width: 40
                                                                 },
-                                                                {xtype: 'tbspacer', width: 30},
+                                                                {xtype: 'tbspacer', width: 20},
                                                                 {
                                                                     xtype: 'textfield',
                                                                     id: prototype.id + '-de-txtSCOUNTRY_COD',
@@ -303,16 +310,33 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
 //                                                                    fieldStyle: 'text-align:center',
                                                                     enforceMaxLength: true,
                                                                     readOnly: true,
-                                                                    width: 160
+                                                                    width: 75
                                                                 },
-                                                                {xtype: 'tbspacer', width: 49, height: 24},
+                                                                {xtype: 'tbspacer', width: 50},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Qty Sett.',
+                                                                    textAlign: 'center',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 60
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtQTYTRAN1',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    fieldStyle: 'text-align:center;',
+                                                                    readOnly: true,
+                                                                    width: 50
+                                                                },
+                                                                {xtype: 'tbspacer', width: 30},
                                                                 {
                                                                     xtype: 'label',
                                                                     text: 'Texto',
                                                                     style: 'font-weight:bold;color:#0B333C;',
-                                                                    width: 30
+                                                                    width: 80
                                                                 },
-                                                                {xtype: 'tbspacer', width: 30},
+                                                                {xtype: 'tbspacer', width: 10},
                                                                 {
                                                                     xtype: 'textfield',
                                                                     id: prototype.id + '-de-txtTEXTO',
@@ -320,41 +344,12 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                     enforceMaxLength: true,
                                                                     readOnly: false,
                                                                     maxLength: 60,
-                                                                    width: 160
+                                                                    width: 400
                                                                 }
                                                             ]
                                                         }
                                                     ]
                                                 },
-                                                {xtype: 'tbspacer', width: 20},
-                                                {
-                                                    xtype: 'panel',
-                                                    layout: {type: 'hbox', align: 'stretch'},
-                                                    border: false,
-                                                    margin: '0 10 0 0',
-                                                    flex: 1,
-                                                    items: [
-                                                        {
-                                                            xtype: 'label',
-                                                            text: 'Texto Largo',
-                                                            style: 'font-weight:bold;color:#0B333C;',
-                                                            margin: '4 0 0 0',
-                                                            width: 80
-                                                        },
-                                                        {xtype: 'tbspacer', width: 10},
-                                                        {
-                                                            xtype: 'textfield',
-                                                            id: prototype.id + '-de-txtTEXTOLAR',
-                                                            maxLength: 400,
-                                                            style: 'font-weight:bold;color:#d5f4d5',
-                                                            enforceMaxLength: true,
-                                                            readOnly: false,
-                                                            flex: 1
-                                                        }
-                                                    ]
-                                                }
-                                            ]
-                                        },
                                         //<editor-fold defaultstate="collapsed" desc="Stattement Information">
                                         {
                                             xtype: 'label',
@@ -368,192 +363,255 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                         },
                                         {
                                             xtype: 'panel',
-                                            layout: 'hbox',
+                                            layout: {type: 'hbox', align: 'stretch'},
                                             border: false,
                                             bodyStyle: 'background:#efe5e5;',
-                                            margin: '0 2 0 20',
                                             items: [
-                                                {xtype: 'tbspacer', width: 7, height: 24},
                                                 {
-                                                    xtype: 'label',
-                                                    text: 'Status',
-                                                    textAlign: 'center',
-                                                    paddingLeft: 3,
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
+                                                    xtype: 'panel',
+                                                    layout: 'vbox',
+                                                    border: false,
+                                                    bodyStyle: 'background:#efe5e5;',
+                                                    margin: '0 2 0 20',
+                                                    items: [
+                                                        {
+                                                            xtype: 'panel',
+                                                            layout: 'hbox',
+                                                            border: false,
+                                                            bodyStyle: 'background:#efe5e5;',
+                                                            items: [
+                                                                {xtype: 'tbspacer', width: 7, height: 24},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Status',
+                                                                    textAlign: 'center',
+                                                                    paddingLeft: 3,
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 100
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtSTVAL',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    readOnly: true,
+                                                                    fieldStyle: 'text-align:center;',
+                                                                    width: 90
+                                                                },
+                                                                {xtype: 'tbspacer', width: 30},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Value Date',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtVALDATE',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 90
+                                                                },
+                                                                {xtype: 'tbspacer', width: 50},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Date Conci.',
+                                                                    textAlign: 'center',
+                                                                    paddingLeft: 3,
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtDATECI',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    fieldStyle: 'text-align:center;',
+                                                                    readOnly: true,
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 50},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Tranc Numb.',
+                                                                    textAlign: 'center',
+                                                                    paddingLeft: 3,
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtTRANCI',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    fieldStyle: 'text-align:center;',
+                                                                    readOnly: true,
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 5}
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'panel',
+                                                            layout: 'hbox',
+                                                            border: false,
+                                                            bodyStyle: 'background:#efe5e5;',
+                                                            items: [
+                                                                {xtype: 'tbspacer', width: 7, height: 24},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Society',
+                                                                    textAlign: 'center',
+                                                                    paddingLeft: 3,
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 100
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtSOCIETY',
+                                                                    fieldCls: 'detalle-society-textfield',
+                                                                    style: 'font-weight:bold;color:#d5f4d5',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    readOnly: true,
+                                                                    width: 90
+                                                                },
+                                                                {xtype: 'tbspacer', width: 30},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Merchant',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtMERCHAND',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 90
+                                                                },
+                                                                {xtype: 'tbspacer', width: 50},
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Id.Bank',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtBANDOC',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 80
+                                                                },
+                                                                {xtype: 'tbspacer', width: 5}
+                                                            ]
+                                                        }
+                                                    ]
                                                 },
-                                                {xtype: 'tbspacer', width: 10},
+                                                {xtype: 'tbspacer', width: 20},
                                                 {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSTVAL',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    readOnly: true,
-                                                    fieldStyle: 'text-align:center;',
-                                                    width: 110
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Value Date',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtVALDATE',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 90
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Date Conci.',
-                                                    textAlign: 'center',
-                                                    paddingLeft: 3,
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtDATECI',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:center;',
-                                                    readOnly: true,
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Tranc Numb.',
-                                                    textAlign: 'center',
-                                                    paddingLeft: 3,
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtTRANCI',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:center;',
-                                                    readOnly: true,
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Qty Sett.',
-                                                    textAlign: 'center',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtQTYTRAN1',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    fieldStyle: 'text-align:center;',
-                                                    readOnly: true,
-                                                    width: 100
-                                                },
-                                                {xtype: 'tbspacer', width: 5}
-                                            ]
-                                        },
-                                        {
-                                            xtype: 'panel',
-                                            layout: 'hbox',
-                                            border: false,
-                                            margin: '0 2 0 20',
-                                            bodyStyle: 'background:#efe5e5;',
-                                            items: [
-                                                {xtype: 'tbspacer', width: 7, height: 24},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Society',
-                                                    textAlign: 'center',
-                                                    paddingLeft: 3,
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 100
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSOCIETY',
-                                                    fieldCls: 'detalle-society-textfield',
-                                                    style: 'font-weight:bold;color:#d5f4d5',
-                                                    fieldStyle: 'text-align:center',
-                                                    readOnly: true,
-                                                    width: 110
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Merchant',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtMERCHAND',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 90
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Id.Bank',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtBANDOC',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Currency',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtSCURRENCY',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 80
-                                                },
-                                                {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Neto',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtNETO',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 100
-                                                },
-                                                {xtype: 'tbspacer', width: 5}
+                                                    xtype: 'panel',
+                                                    layout: 'vbox',
+                                                    border: false,
+                                                    bodyStyle: 'background:#efe5e5;',
+                                                    width: 220,
+                                                    items: [
+                                                        {
+                                                            xtype: 'container',
+                                                            layout: 'hbox',
+                                                            items: [
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Currency',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 110
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtSCURRENCY',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 100
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'container',
+                                                            layout: 'hbox',
+                                                            margin: '4 0 0 0',
+                                                            items: [
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Neto Settlement',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 110
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtNETOL',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 100
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'container',
+                                                            layout: 'hbox',
+                                                            margin: '4 0 0 0',
+                                                            items: [
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Neto Statement',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 110
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtNETO',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 100
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            xtype: 'container',
+                                                            layout: 'hbox',
+                                                            margin: '4 0 0 0',
+                                                            items: [
+                                                                {
+                                                                    xtype: 'label',
+                                                                    text: 'Difference',
+                                                                    style: 'font-weight:bold;color:#0B333C;',
+                                                                    width: 110
+                                                                },
+                                                                {xtype: 'tbspacer', width: 10},
+                                                                {
+                                                                    xtype: 'textfield',
+                                                                    id: prototype.id + '-de-txtDIFF',
+                                                                    fieldStyle: 'text-align:center',
+                                                                    enforceMaxLength: true,
+                                                                    readOnly: true,
+                                                                    width: 100
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
                                             ]
                                         },
                                         //</editor-fold>
@@ -647,21 +705,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     width: 80
                                                 },
                                                 {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Neto',
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtNETOL',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 100
-                                                },
                                                 {xtype: 'tbspacer', width: 5}
                                             ]
                                         },
@@ -741,23 +784,6 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                     width: 80
                                                 },
                                                 {xtype: 'tbspacer', width: 50},
-                                                {
-                                                    xtype: 'label',
-                                                    text: 'Diff',
-                                                    textAlign: 'center',
-                                                    paddingLeft: 3,
-                                                    style: 'font-weight:bold;color:#0B333C;',
-                                                    width: 60
-                                                },
-                                                {xtype: 'tbspacer', width: 10},
-                                                {
-                                                    xtype: 'textfield',
-                                                    id: prototype.id + '-de-txtDIFF',
-                                                    fieldStyle: 'text-align:center',
-                                                    enforceMaxLength: true,
-                                                    readOnly: true,
-                                                    width: 100
-                                                },
                                                 {xtype: 'tbspacer', width: 5}
                                             ]
                                         },
@@ -782,13 +808,16 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                             },
                                             // margin: '10 0', // Descomenta esto si necesitas separarlos de los elementos de arriba o abajo
                                             items: [
-//                                                {
-//                                                    xtype: 'button',
-//                                                    id: prototype.id + '-btnExcelCash',
-//                                                    iconCls: 'prx-icon-excel',
-//                                                    tooltip: 'Export to csv',
-//                                                    handler: 'ExportCSV'
-//                                                },
+                                                {
+                                                    xtype: 'button',
+                                                    id: prototype.id + '-btnExcelDetail',
+                                                    iconCls: 'prx-icon-excel',
+                                                    tooltip: 'Download excel',
+                                                    hidden: true, // el controlador lo muestra solo si "Detail Settlement" trae registros (onSearchCompleteDetail)
+                                                    listeners: {
+                                                        click: 'getExcelDetail'
+                                                    }
+                                                },
                                                 {
                                                     xtype: 'tbspacer',
                                                     width: 10 // Tu espacio de 10px entre los botones
@@ -1262,6 +1291,318 @@ Ext.define('Ext.Praxis.view.payments.StatementReconciliationsForm.DataEntryCash'
                                                                             return value;
                                                                         }
                                                                     },
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    // "Detail Settlement" para registros BSP/ICCS/ARC (CCUSTPRO 00/01/02), en vez
+                                                    // de Reference/Filename/Npag (que solo existen para Venta Directa, CCUSTPRO='03').
+                                                    // El controlador decide cual de las dos (esta o panelDataInfoScan) mostrar
+                                                    // según meDE.bean.data.CCUSTPRO (onSearchCompleteDetail). El botón de Excel
+                                                    // (btnExcelDetail, arriba junto a btnToggleVoucher) exporta la que esté visible.
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-panelDataInfoScanBSP',
+                                                    layout: 'vbox',
+                                                    border: false,
+                                                    hidden: true,
+                                                    width: 1150,
+                                                    height: 280,
+                                                    autoScroll: true,
+                                                    items: [
+                                                        {
+                                                            xtype: 'grid',
+                                                            id: prototype.id + '-gridDataInfoScanBSP',
+                                                            width: 1100,
+                                                            height: 250,
+                                                            columnLines: true,
+                                                            forceFit: true,
+                                                            features: [{
+                                                                    ftype: 'summary'
+                                                                }],
+                                                            columns: {
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: true,
+                                                                    align: 'center'
+                                                                },
+                                                                items: [
+                                                                    {
+                                                                        text: 'Value Date',
+                                                                        dataIndex: 'VALDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Concept',
+                                                                        dataIndex: 'CONCEPT',
+                                                                        width: 110,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            var map = {
+                                                                                P: 'Positive Billing',
+                                                                                N: 'Negative Billing',
+                                                                                A: 'Adjustment',
+                                                                                C: 'Compensation',
+                                                                                M: 'Automatic',
+                                                                                X: 'No Billing'
+                                                                            };
+                                                                            return map[value] || value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Country',
+                                                                        dataIndex: 'SCOUNTRY',
+                                                                        width: 70,
+                                                                        renderer: function (value, metaData, record) {
+                                                                            var data = record.data;
+                                                                            metaData.style = "text-align:center;";
+                                                                            metaData.tdAttr = 'data-qtip="' + (data.DESC_SCOUNTRY || '') + '"';
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Agent',
+                                                                        dataIndex: 'SAGENT',
+                                                                        width: 80,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Sconsol',
+                                                                        dataIndex: 'SCONSOL',
+                                                                        width: 80,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Currency',
+                                                                        dataIndex: 'SCURRENCY',
+                                                                        width: 75,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Neto',
+                                                                        dataIndex: 'NETO',
+                                                                        width: 100,
+                                                                        xtype: 'numbercolumn',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Issued Payment',
+                                                                        dataIndex: 'PAYAMOU',
+                                                                        width: 105,
+                                                                        xtype: 'numbercolumn',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Amount USD',
+                                                                        dataIndex: 'USDEQUI',
+                                                                        width: 100,
+                                                                        xtype: 'numbercolumn',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Star Date',
+                                                                        dataIndex: 'STRDATE',
+                                                                        width: 80,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'End Date',
+                                                                        dataIndex: 'ENDDATE',
+                                                                        width: 80,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    }
+                                                                ]
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    // "Detail Settlement" para registros ARC (CCUSTPRO='02'): columnas y mapeo
+                                                    // distintos a BSP/ICCS. Neto EECC = beanResult.NETO (el Neto de MPF102,
+                                                    // el mismo que "Neto Statement" en Statement Information -- no es una suma
+                                                    // por fila de MPF191), Neto Sales = PAYAMOU por fila. Country muestra el
+                                                    // nombre completo (DESC_SCOUNTRY) en vez del código.
+                                                    // OJO: "Settlement Day" usa DPERIOD como mejor suposición (no confirmado
+                                                    // con el usuario) y el código 'D' de Concept como 'Disbursement advice'
+                                                    // también es una suposición -- verificar y corregir si no calza.
+                                                    xtype: 'panel',
+                                                    id: prototype.id + '-panelDataInfoScanArcDetail',
+                                                    layout: 'vbox',
+                                                    border: false,
+                                                    hidden: true,
+                                                    width: 1150,
+                                                    height: 280,
+                                                    autoScroll: true,
+                                                    items: [
+                                                        {
+                                                            xtype: 'grid',
+                                                            id: prototype.id + '-gridDataInfoScanArcDetail',
+                                                            width: 1100,
+                                                            height: 250,
+                                                            columnLines: true,
+                                                            forceFit: true,
+                                                            features: [{
+                                                                    ftype: 'summary'
+                                                                }],
+                                                            columns: {
+                                                                defaults: {
+                                                                    menuDisabled: true,
+                                                                    sortable: true,
+                                                                    align: 'center'
+                                                                },
+                                                                items: [
+                                                                    {
+                                                                        text: 'Value Date',
+                                                                        dataIndex: 'VALDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Concept',
+                                                                        dataIndex: 'CONCEPT',
+                                                                        width: 130,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            var map = {
+                                                                                P: 'Positive Billing',
+                                                                                N: 'Negative Billing',
+                                                                                A: 'Adjustment',
+                                                                                C: 'Compensation',
+                                                                                M: 'Automatic',
+                                                                                X: 'No Billing',
+                                                                                D: 'Disbursement advice'
+                                                                            };
+                                                                            return map[value] || value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Country',
+                                                                        dataIndex: 'DESC_SCOUNTRY',
+                                                                        width: 130,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Sconsol',
+                                                                        dataIndex: 'SCONSOL',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Currency',
+                                                                        dataIndex: 'SCURRENCY',
+                                                                        width: 80,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Neto Sales',
+                                                                        dataIndex: 'PAYAMOU',
+                                                                        width: 110,
+                                                                        xtype: 'numbercolumn',
+                                                                        summaryType: 'sum',
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(value, '0,000.00');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(value, '0,000.00') + '</b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Neto EECC',
+                                                                        width: 110,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:right;";
+                                                                            return Ext.util.Format.number(meDE.beanResult.NETO, '0,000.00');
+                                                                        },
+                                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData) {
+                                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                                            return '<b>' + Ext.util.Format.number(meDE.beanResult.NETO, '0,000.00') + '</b>';
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Settlement Day',
+                                                                        dataIndex: 'DPERIOD',
+                                                                        width: 100,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Billing From',
+                                                                        dataIndex: 'STRDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    },
+                                                                    {
+                                                                        text: 'Billing To',
+                                                                        dataIndex: 'ENDDATE',
+                                                                        width: 90,
+                                                                        renderer: function (value, metaData) {
+                                                                            metaData.style = "text-align:center;";
+                                                                            return value;
+                                                                        }
+                                                                    }
                                                                 ]
                                                             }
                                                         }

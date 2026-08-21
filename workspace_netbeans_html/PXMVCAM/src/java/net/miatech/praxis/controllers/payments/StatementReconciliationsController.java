@@ -6364,6 +6364,184 @@ public class StatementReconciliationsController extends BaseController {
         }
     }
 
+    // Excel de "Detail Settlement" cuando el registro es BSP/ICCS (CCUSTPRO 00/01),
+    // grilla gridDataInfoScanBSP en DataEntryCash.js. Mismo patrón que getXLSXScanCart:
+    // el cliente manda por POST el JSON de las filas ya cargadas en la grilla.
+    @RequestMapping(value = "getXLSXScanCartBSP", method = RequestMethod.POST)
+    public @ResponseBody
+    void getXLSXScanCartBSP(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- StatementReconciliations : getXLSXScanCartBSP -------------");
+
+        String fileNameDownload = "Scan BSP-ICCS-ARC - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Type listType = new TypeToken<List<A2290Filter>>() {
+            }.getType();
+            List<A2290Filter> listaData = new Gson().fromJson(beanString, listType);
+            if (listaData == null) {
+                listaData = new ArrayList<>();
+            }
+
+            HashMap<String, String> hmDescConcept = new HashMap<String, String>();
+            hmDescConcept.put("P", "Positive Billing");
+            hmDescConcept.put("N", "Negative Billing");
+            hmDescConcept.put("A", "Adjustment");
+            hmDescConcept.put("C", "Compensation");
+            hmDescConcept.put("M", "Automatic");
+            hmDescConcept.put("X", "No Billing");
+
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Scan");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            CellStyle amountStyle = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            amountStyle.setDataFormat(format.getFormat("#,##0.00"));
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Value Date", "Concept", "Country", "Agent", "Sconsol",
+                "Currency", "Neto", "Issued Payment", "Amount USD", "Star Date", "End Date"
+            };
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500);
+            }
+
+            int rowIdx = 1;
+            for (A2290Filter item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.VALDATE);
+                String concept = hmDescConcept.containsKey(item.CONCEPT) ? hmDescConcept.get(item.CONCEPT) : item.CONCEPT;
+                row.createCell(1).setCellValue(concept);
+                row.createCell(2).setCellValue(item.SCOUNTRY);
+                row.createCell(3).setCellValue(item.SAGENT);
+                row.createCell(4).setCellValue(item.SCONSOL);
+                row.createCell(5).setCellValue(item.SCURRENCY);
+                Cell netoCell = row.createCell(6);
+                netoCell.setCellValue(item.NETO);
+                netoCell.setCellStyle(amountStyle);
+                Cell payCell = row.createCell(7);
+                payCell.setCellValue(item.PAYAMOU);
+                payCell.setCellStyle(amountStyle);
+                Cell usdCell = row.createCell(8);
+                usdCell.setCellValue(item.USDEQUI);
+                usdCell.setCellStyle(amountStyle);
+                row.createCell(9).setCellValue(item.STRDATE);
+                row.createCell(10).setCellValue(item.ENDDATE);
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.close();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
+    // Excel de "Detail Settlement" cuando el registro es ARC (CCUSTPRO='02'), grilla
+    // gridDataInfoScanArcDetail en DataEntryCash.js. "Neto EECC" (item.NETO) ya viene pisado
+    // desde el cliente con beanResult.NETO (el Neto de MPF102) antes de mandar el POST.
+    @RequestMapping(value = "getXLSXScanCartArc", method = RequestMethod.POST)
+    public @ResponseBody
+    void getXLSXScanCartArc(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("-------------- StatementReconciliations : getXLSXScanCartArc -------------");
+
+        String fileNameDownload = "Scan ARC - " + Functions.getFechaActual() + ".xlsx";
+
+        try {
+            String beanString = request.getParameter("beanString");
+            Type listType = new TypeToken<List<A2290Filter>>() {
+            }.getType();
+            List<A2290Filter> listaData = new Gson().fromJson(beanString, listType);
+            if (listaData == null) {
+                listaData = new ArrayList<>();
+            }
+
+            HashMap<String, String> hmDescConcept = new HashMap<String, String>();
+            hmDescConcept.put("P", "Positive Billing");
+            hmDescConcept.put("N", "Negative Billing");
+            hmDescConcept.put("A", "Adjustment");
+            hmDescConcept.put("C", "Compensation");
+            hmDescConcept.put("M", "Automatic");
+            hmDescConcept.put("X", "No Billing");
+            hmDescConcept.put("D", "Disbursement advice");
+
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Scan");
+
+            CellStyle headerStyle = workbook.createCellStyle();
+            Font headerFont = workbook.createFont();
+            headerFont.setBoldweight(Font.BOLDWEIGHT_BOLD);
+            headerFont.setColor(IndexedColors.WHITE.getIndex());
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(CellStyle.ALIGN_CENTER);
+            headerStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+            headerStyle.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            headerStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+
+            CellStyle amountStyle = workbook.createCellStyle();
+            DataFormat format = workbook.createDataFormat();
+            amountStyle.setDataFormat(format.getFormat("#,##0.00"));
+
+            Row header = sheet.createRow(0);
+            String[] columns = {
+                "Value Date", "Concept", "Country", "Sconsol", "Currency",
+                "Neto Sales", "Neto EECC", "Settlement Day", "Billing From", "Billing To"
+            };
+            for (int i = 0; i < columns.length; i++) {
+                Cell cell = header.createCell(i);
+                cell.setCellValue(columns[i]);
+                cell.setCellStyle(headerStyle);
+                sheet.setColumnWidth(i, 4500);
+            }
+
+            int rowIdx = 1;
+            for (A2290Filter item : listaData) {
+                Row row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(item.VALDATE);
+                String concept = hmDescConcept.containsKey(item.CONCEPT) ? hmDescConcept.get(item.CONCEPT) : item.CONCEPT;
+                row.createCell(1).setCellValue(concept);
+                row.createCell(2).setCellValue(item.DESC_SCOUNTRY);
+                row.createCell(3).setCellValue(item.SCONSOL);
+                row.createCell(4).setCellValue(item.SCURRENCY);
+                Cell salesCell = row.createCell(5);
+                salesCell.setCellValue(item.PAYAMOU);
+                salesCell.setCellStyle(amountStyle);
+                Cell eeccCell = row.createCell(6);
+                eeccCell.setCellValue(item.NETO);
+                eeccCell.setCellStyle(amountStyle);
+                row.createCell(7).setCellValue(item.DPERIOD);
+                row.createCell(8).setCellValue(item.STRDATE);
+                row.createCell(9).setCellValue(item.ENDDATE);
+            }
+
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileNameDownload + "\"");
+
+            workbook.write(response.getOutputStream());
+            workbook.close();
+
+        } catch (Exception e) {
+            throw new SpringException(e);
+        }
+    }
+
     @RequestMapping(value = "downloadPdfVentaDirecta", method = RequestMethod.GET)
     public void downloadPdfVentaDirecta(HttpServletRequest request, HttpServletResponse response) {
         String sfile = request.getParameter("sfile");
