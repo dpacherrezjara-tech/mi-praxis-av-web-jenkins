@@ -2642,6 +2642,12 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalle();
                 },
+                
+                
+                
+                
+                
+                
                 onGridDetalleCargo: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalle';
@@ -2656,6 +2662,8 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalle();
                 },
+                
+                
                 onGridDetalleCorreo: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalle';
@@ -2670,6 +2678,10 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalle();
                 },
+                
+                
+                
+                
                 onGridSett: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalle';
@@ -2681,6 +2693,9 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetSett);
                         this.setGridDataDetalle();
                 },
+                
+                
+                
                 setGridDataDetalle: function (data) {
                 win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
@@ -2729,6 +2744,10 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
                 },
+                
+                
+                
+                
                 setGridDataDetalle2: function (data) {
                 win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
@@ -4953,6 +4972,9 @@ Ext.util.CSS.createStyleSheet(`
 
 
                 },
+                
+                
+                
                 setGridDataCountryCash: function (data) {
                 win.lblUser_toolTip("Estructura: MPF193 ");
 //        me.setWidthPie();
@@ -4989,6 +5011,9 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataCountryCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin19').bindStore(storeGridDatas);
                 },
+                
+                
+                
                 /////////AGREGAMOS CONSLTA PARA LISTA MPF199
                 ///////////////////////////////////////////////////
 
@@ -5299,6 +5324,10 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDayCash();
                 },
+                
+                
+                
+                
                 setGridDataDayCash: function (data) {
                 win.lblUser_toolTip("Estructura: MPF191");
 //        me.setWidthPie();
@@ -5322,7 +5351,16 @@ Ext.util.CSS.createStyleSheet(`
                                 } else {
                                 var bean = obj.data.items[0].data;
                                         var title = '';
-                                        title = " Sales Date : " + bean.IN_SDATE + " - Country : " + bean.IN_COUNTRY;
+                                        var countryName = bean.IN_COUNTRY;
+
+                                Ext.Array.each(me.lstCountry, function(item) {
+                                    if (item.A006PAIS === bean.IN_COUNTRY) {
+                                        countryName = item.A006NOMBRE;
+                                        return false;
+                                    }
+                                });
+
+                                title = " Sales Date : " + bean.IN_SDATE + " - Country : " + countryName;
                                         console.log(title);
                                         Ext.getCmp(prototype.id + '-labelTitleCash2').setText(title);
                                         Ext.getCmp(prototype.id + '-labelTitleCash2').setVisible(true);
@@ -5335,6 +5373,8 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
                 },
+                
+                
                 setGridDataDayCashIccs: function (data) {
                 win.lblUser_toolTip("Estructura: MPF191");
 //        me.setWidthPie();
@@ -5371,6 +5411,8 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
                 },
+                
+                
                 onGridDetalleCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalleCash';
@@ -5421,11 +5463,16 @@ Ext.util.CSS.createStyleSheet(`
 //                            Ext.getCmp(prototype.id + '-ColumnDateDetalle').setText('Sales<br>Date');
 //                        }
 
-                                        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || me.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
-                                title = " ";
-                                } else {
-                                title = " Sales Date : " + bean.ADATE + " - Country : " + bean.IN_COUNTRY;
-                                }
+                               var countryName = bean.IN_COUNTRY;
+
+                                Ext.Array.each(me.lstCountry, function(item) {
+                                    if (item.A006PAIS === bean.IN_COUNTRY) {
+                                        countryName = item.A006NOMBRE.replace(item.A006PAIS + " - ", "");
+                                        return false;
+                                    }
+                                });
+
+                                title = " Sales Date : " + bean.ADATE + " - Country : " + countryName;
 
                                 console.log(title);
                                         Ext.getCmp(prototype.id + '-labelTitleCash3').setText(title);
@@ -5440,6 +5487,10 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDetalleCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin21').bindStore(storeGridDatas);
                 },
+                
+                
+                
+                
                 onEditClickCash: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
                 console.log('EDITO EL CASH WAAA')
                         item.disable();
