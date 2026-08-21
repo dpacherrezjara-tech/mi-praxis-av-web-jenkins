@@ -8249,7 +8249,7 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 id: prototype.id + '-adghFechaDayCash', text: 'Sales',
                                                 columns: [
                                                     {
-                                                        text: 'Day', dataIndex: 'SDATE', width: 90, align: 'center', menuDisabled: true,
+                                                        text: 'Date', dataIndex: 'SDATE', width: 90, align: 'center', menuDisabled: true,
                                                         listeners: {
                                                             click: 'onGridDetalleCash'
                                                         },
@@ -8593,17 +8593,17 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                 text: 'Qty',
                                                 columns: [
                                                     {
-                                                        text: 'Settl.', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true,
-                                                        listeners: {
-                                                            click: 'onGridSett'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "color:#057ECB;text-align:right;";
-                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
-                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                        },
+                                                        text: 'Settl.', dataIndex: 'lngQTYDOC', width: 50, align: 'center', menuDisabled: true
+//                                                        listeners: {
+//                                                            click: 'onGridSett'
+//                                                        },
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "color:#057ECB;text-align:right;";
+//                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+//                                                            var data = record.data;
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
+//                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                        },
 //                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
 //                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalle').getStore().getData().items[0].data;
 //                                                            metaData.style = 'text-align:right; margin-right:3px ';
@@ -8612,27 +8612,29 @@ Ext.define('Ext.Praxis.view.payments.BankReconciliationForm.Info', {
                                                     }
                                                 ]
                                             },
+                                            
+                                            //LAS BAJADAS A LOS TKS Y STEEL QUEDA EN STANDBY YA QUE SE ACCEDE POR OTRO MODULO
                                             {
                                                 text: 'Qty',
                                                 columns: [
                                                     {
-                                                        text: 'Tkts', dataIndex: 'lngQTYTKT', width: 50, align: 'center', menuDisabled: true,
-                                                        listeners: {
-                                                            click: 'onGridTicket'
-                                                        },
-                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                                                            metaData.style = "color:#057ECB;text-align:right;";
-                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
-                                                            var data = record.data;
-                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
-                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
-                                                        },
-                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
-                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalleCash').getStore().getData().items[0].data;
-                                                            metaData.style = 'text-align:right; margin-right:3px ';
-                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYTKT, '0,000') + '<b>';
+                                                        text: 'Tkts', dataIndex: 'lngQTYTKT', width: 50, align: 'center', menuDisabled: true
+//                                                        listeners: {
+//                                                            click: 'onGridTicket'
+//                                                        },
+//                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+//                                                            metaData.style = "color:#057ECB;text-align:right;";
+//                                                            value = '<b>' + Ext.util.Format.number(value, '0,000') + '</b>';
+//                                                            var data = record.data;
+//                                                            metaData.tdAttr = 'data-qtip="' + data.strCERROR + '"';
+//                                                            return '<a href="#payments-bank-reconciliation-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+//                                                        },
+//                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+//                                                            var data = Ext.getCmp(prototype.id + '-gridDataDetalleCash').getStore().getData().items[0].data;
+//                                                            metaData.style = 'text-align:right; margin-right:3px ';
+//                                                            return '<b>' + Ext.util.Format.number(data.lngTotQTYTKT, '0,000') + '<b>';
                                                         }
-                                                    }
+                                                    
                                                 ]
                                             },
 
