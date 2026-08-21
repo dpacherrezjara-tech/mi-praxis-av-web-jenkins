@@ -72,6 +72,10 @@ Ext.util.CSS.createStyleSheet(`
         Ext.define('Ext.Praxis.controller.payments.BankReconciliation.BankReconciliationController', {
         extend: 'Ext.app.ViewController',
                 alias: 'controller.BankReconciliationController',
+                    request: axios.create({
+        baseURL: CONTEXTPATH + '/BankReconciliation',
+        timeout: 0
+    }),
                 fecha: new Date(),
                 childs: '',
                 stack: [],
@@ -5932,6 +5936,14 @@ onAddAddAdmBKP: function () {
             console.error("No se encontró la grilla '-gridDataTeleworking'");
         }
     },
+    
+    
+    
+    
+    
+    
+    
+    
     onAddAddAdm: function () {
         var me = this; 
         var grid = Ext.getCmp(prototype.id + '-gridDataTeleworking');
@@ -6420,8 +6432,9 @@ onAddAddAdmBKP: function () {
             }
         });
     },
-
-    onCallSummaryMPF107: function () {
+    
+    //////
+     onCallSummaryMPF107: function () {
 
         Ext.Ajax.request({
         url: prototype.url + '/onCallProgramBySummary',
@@ -6446,5 +6459,294 @@ onAddAddAdmBKP: function () {
             }
         });
     },
+    
 
-        });
+    agenciasReport_clickHandler: function (obj, e) {
+
+    var agentsStore = Ext.create('Ext.data.Store', {
+    fields: ['agent'],
+            data: []
+    });
+            var win = Ext.create('Ext.window.Window', {
+            title: 'Report by accounting agencies',
+                    modal: true,
+                    header: {
+                    style: `
+        background: #1976D2;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+    `
+                    },
+                    width: 300,
+                    height: 370,
+                    bodyPadding: 15,
+                    resizable: false,
+                    closable: true,
+                    layout: {
+                    type: 'vbox',
+                            align: 'center'
+                    },
+                    bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
+                    defaults: {
+                    labelAlign: 'right',
+                            labelWidth: 60,
+                            width: 250,
+                            margin: '12 0 12 20',
+                            style: 'background-color:white; border-radius:3px;'
+                    },
+                    items: [
+
+                    {
+                    xtype: 'datefield',
+                            fieldLabel: 'From Date',
+                            itemId: 'dtFrom',
+                            format: 'Y/m/d',
+                            submitFormat: 'Ymd',
+                            editable: false,
+                            allowBlank: false,
+                            value: new Date()
+                    },
+                    {
+                    xtype: 'datefield',
+                            fieldLabel: 'To Date',
+                            itemId: 'dtTo',
+                            format: 'Y/m/d',
+                            submitFormat: 'Ymd',
+                            editable: false,
+                            allowBlank: false,
+                            value: new Date()
+                    },
+                    {
+                    xtype: 'container',
+                            layout: 'hbox',
+                            width: 250,
+                            items: [
+
+                            {
+                            xtype: 'textfield',
+                                    fieldLabel: 'Agents',
+                                    itemId: 'txtAgent',
+                                    flex: 1,
+                                    labelWidth: 60,
+                                    maxLength: 1000
+                            },
+                            {
+                            xtype: 'button',
+                                    text: 'Add',
+                                    margin: '0 0 0 5',
+                                    handler: function () {
+
+                                    var txt = win.down('#txtAgent');
+                                            var agent = Ext.String.trim(txt.getValue());
+                                            if (!agent) { Ext.Msg.alert('Error', 'Enter an agent.');
+                                            return;
+                                    }
+                                    if (!/^\d{8}$/.test(agent)) {
+                                    Ext.Msg.alert(
+                                            'Error',
+                                            'Agent must contain exactly 8 digits.'
+                                            );
+                                            return;
+                                            }
+
+                                    var existe = agentsStore.findExact('agent', agent);
+                                            if (existe !== - 1) {
+                                    Ext.Msg.alert('Error', 'Agent already exists.');
+                                            return;
+                                    }
+
+
+
+
+
+                                    agentsStore.add({
+                                    agent: agent
+                                    });
+                                            txt.setValue('');
+                                    }
+                            }
+
+                            ]
+                    },
+                    {
+                    xtype: 'grid',
+                            title: 'Selected Agents',
+                            store: agentsStore,
+                            height: 100,
+                            width: 250,
+                            columns: [
+
+                            {
+                            text: 'Agent',
+                                    dataIndex: 'agent',
+                                    flex: 1
+                            },
+                            {
+                            xtype: 'actioncolumn',
+                                    width: 30,
+                                    align: 'center',
+                                    items: [{
+                                    icon: 'resources/img/icon/cancel.png',
+                                            tooltip: 'Remove',
+                                            handler: function (grid, rowIndex) {
+                                            agentsStore.removeAt(rowIndex);
+                                            }
+                                    }]
+                            }
+
+                            ]
+                    }
+
+                    ],
+                    buttonAlign: 'center',
+                    fbar: {
+                    style: `
+                            background: #BFD7EE;
+                            border-top: 1px solid #B7C9DC;
+                            padding: 10px;
+                        `,
+                            layout: {
+                            pack: 'center'
+                            },
+                            items: [
+
+                            {
+                            text: 'Generate',
+                                    scale: 'medium',
+                                    minWidth: 90,
+                                    style: `
+                                    background: #5B9BD5;
+                                    color: white;
+                                    font-weight: bold;
+                                    font-size: 13px;
+                                    border-radius: 7px;
+                                    border: 1px solid #4A89C2;
+                                `,
+                                    handler: function () {
+
+                                    var from = win.down('#dtFrom').getSubmitValue();
+                                            var to = win.down('#dtTo').getSubmitValue();
+                                            var agents = [];
+                                            agentsStore.each(function (r) {
+                                            agents.push(r.get('agent'));
+                                            });
+                                            var agent = agents.join(',');
+                                            if (agents.length === 0) {
+                                    Ext.Msg.alert(
+                                            'Error',
+                                            'Please add at least one agent.'
+                                            );
+                                            return;
+                                    }
+
+                                    if (from > to) {
+                                    Ext.Msg.alert('Error', 'From Date cannot be greater than To Date.');
+                                            return;
+                                    }
+
+                                    this.obtenerCantidad(from, to, agent);
+                                     win.close();
+                                    },
+                                    scope: this
+                            },
+                            {
+                            text: 'Cancel',
+                                    scale: 'medium',
+                                    minWidth: 90,
+                                    style: `
+                                            background: #ECEFF1;
+                                            color: #37474F;
+                                            font-weight: bold;
+                                            font-size: 12px;
+                                            border-radius: 6px;
+                                            border: 1px solid #B0BEC5;
+                                            padding: 4px 10px;
+                                            margin-left: 8px;
+                                        `,
+                                    handler: function () {
+                                    win.close();
+                                    }
+                            }
+
+                            ]
+                    }
+
+
+            });
+            win.show();
+    },
+
+
+
+
+    obtenerCantidad: function (from, to, agent) {
+
+    let params = {
+      IN_AGENT: agent,
+      IN_DATEF: from,
+      IN_DATET: to
+    };
+            Ext.Ajax.request({
+            url: prototype.url + '/getContador',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: JSON.stringify(params)},
+                    success: function (response, options) {
+                    var res = Ext.JSON.decode(response.responseText);
+                            var cantidad = parseInt(res.cantidad, 10);
+                            if (cantidad === 0) {
+
+                    Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                            msg: 'No records found to export.',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.INFO,
+                            modal: true
+                    });
+                            return;
+                    }
+
+                    if (cantidad > 1000000) {
+
+                    Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                            msg:
+                            'More than 1,000,000 records were found.<br><br>' +
+                            'Please reduce the number of selected agents or narrow the date range.',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING,
+                            modal: true
+                    });
+                            return;
+                            }
+
+                    Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                            msg: 'Records to export: ' + cantidad + ' - ' + 'Download File?',
+                            buttons: Ext.MessageBox.OKCANCEL,
+                            scope: me,
+                            icon: Ext.MessageBox.QUESTION,
+                            modal: true,
+                            fn: function (btn) {
+                            if (btn === 'ok') {
+                            me.exportExcelAPI(from, to, agent);
+                            }
+                            }
+                    });
+                    }
+            });
+    },
+    exportExcelAPI: function (from, to, agent) {
+
+
+        let params = {
+            IN_AGENT: agent,
+            IN_DATEF: from,
+            IN_DATET: to
+        };
+        console.log(params);
+        global.downloadFile(me.request, 'downloadAccountingAgency', params, 'zip');
+    },
+ 
+});

@@ -1091,6 +1091,11 @@ Ext.define('Ext.Praxis.controller.payments.BankReconciliation.DataEntryAMDPBankR
                 let miGrilla = Ext.getCmp(prototype.id + '-gridDataInfoScan');
                 let miGrillaAdj = Ext.getCmp(prototype.id + '-gridDataAdjustment');
                 let comentVisible = miGrillaAdj.isVisible();
+                let tipoDeAjuste = Ext.getCmp(prototype.id + '-cmbADJTYPE').getValue()
+                if (comentVisible === true && (tipoDeAjuste === '' || tipoDeAjuste === null) ){
+                   global.Msg({msg: 'Select an adjustment type.'});
+                   return false;
+                }
                 let datos = {};
                 datos = await this.procesarRegistros(miGrilla, miGrillaAdj);
                 if (datos == false) {

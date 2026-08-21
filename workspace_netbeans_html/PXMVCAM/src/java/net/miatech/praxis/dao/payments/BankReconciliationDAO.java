@@ -24,6 +24,7 @@ import static net.miatech.praxis.dao.payments.StatementReconciliationsDAO.pasarG
 import net.miatech.praxis.payment.filter.A2290Filter;
 import net.miatech.praxis.payment.filter.A2309AFilter;
 import net.miatech.praxis.payment.filter.MPF100Filter;
+import net.miatech.praxis.payment.filter.MPF101Filter;
 import net.miatech.praxis.spring.INF020;
 import net.miatech.utils.Functions;
 import org.apache.log4j.Logger;
@@ -10821,5 +10822,54 @@ public class BankReconciliationDAO {
         }
 //        objRtn.MESSAGE = strMsj;
         return objRtn;
+    }
+   
+    
+     ///AGREGAMOS METODO PARA CONTADOR
+    public String loadContador(MPF101Filter filter) throws SQLException, Exception {
+
+        CallableStatement cstmt = null;
+        ResultSet rst = null;
+        String contador = "";
+
+        String SQLCLL01 = "{CALL PRAXISMP.MPS618(?,?,?)}";
+
+        Connection cnx = null;
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cstmt = cnx.prepareCall(SQLCLL01);
+
+            
+            cstmt.setString(1, filter.IN_AGENT);
+            cstmt.setString(2, filter.IN_DATEF);
+            cstmt.setString(3, filter.IN_DATET);
+          
+            cstmt.execute();
+
+            rst = cstmt.getResultSet();
+
+            if (rst.next()) {
+                contador = rst.getString("QTY");
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (rst != null) try {
+                rst.close();
+            } catch (SQLException e) {
+            }
+            if (cstmt != null) try {
+                cstmt.close();
+            } catch (SQLException e) {
+            }
+            if (cnx != null) {
+                session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            }
+        }
+
+        return contador;
+
     }
 }
