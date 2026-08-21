@@ -433,7 +433,9 @@ public class BankReconciliationLogic {
         return bankReconciliationDAO.loadPX269SQPMPS653(filter);
     }
     
-    //
+    public A2290Filter SQPMPP117_MPF107(UserView user) throws SQLException, Exception {
+        return bankReconciliationDAO.SQPMPP117_MPF107(user);
+    }
     
     
       public String loadContador(MPF101Filter filter) throws Exception {
