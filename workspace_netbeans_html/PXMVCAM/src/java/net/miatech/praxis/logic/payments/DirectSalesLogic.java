@@ -16,6 +16,9 @@ import net.miatech.praxis.payment.MPF190ExchangePending;
 import net.miatech.praxis.payment.MPF190Update;
 import net.miatech.praxis.payment.MPF190Create;
 import net.miatech.praxis.MPF300;
+import net.miatech.praxis.MPF300Filter;
+import net.miatech.praxis.MPF300Generate;
+import net.miatech.praxis.MPF300GenerateBatch;
 
 /**
  *
@@ -59,6 +62,26 @@ public class DirectSalesLogic {
 
     public List<MPF300> loadMPS783(MPF190Filter filter) throws SQLException, Exception {
         return DirectSalesDAO.loadMPS783(filter);
+    }
+
+    public List<MPF300> loadMPS738(MPF300Filter filter) throws SQLException, Exception {
+        return DirectSalesDAO.loadMPS738(filter);
+    }
+
+    public Map<String, Object> executeMPS739(MPF300Generate bean) throws SQLException, Exception {
+        return DirectSalesDAO.executeMPS739(bean);
+    }
+
+    public Map<String, Object> executeMPS740(MPF300Generate bean) throws SQLException, Exception {
+        return DirectSalesDAO.executeMPS740(bean);
+    }
+
+    public Map<String, Object> executeMPS741(MPF300GenerateBatch batch) throws SQLException, Exception {
+        return DirectSalesDAO.executeMPS741(batch);
+    }
+
+    public Map<String, Object> executeMPS742(MPF300GenerateBatch batch) throws SQLException, Exception {
+        return DirectSalesDAO.executeMPS742(batch);
     }
 
 }

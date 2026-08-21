@@ -45,6 +45,14 @@ public class MPF300 {
     public String strTicket = "";
     public String strDATECTRANC = "";
 
+    // ── MPS738 (Direct Sales - Generar / Reversa): consulta agrupada por
+    // INVOICE/SCOUNTRY/SAGENT/SUBFTE/SDATE/SCURRENCY/CCUST con
+    // SUM(SVFOPNETR) < 0. MONTO es ese acumulado (no confundir con SVFOPNETR,
+    // que es el valor de una sola fila). ──────────────────────────────────────
+    public String INVOICE = "";
+    public String SUBFTE = "";
+    public double MONTO = 0;
+
     public int QSALES = 0;
     public int QMATCH = 0;
     public int QMANUAL = 0;

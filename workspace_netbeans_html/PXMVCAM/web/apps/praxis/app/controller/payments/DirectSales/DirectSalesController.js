@@ -45,6 +45,9 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
             '#DirectSalesForm-btnAdd': {
                 click: this.btnAdd_click
             },
+            '#DirectSalesForm-btnSalesNegative': {
+                click: this.btnGenerateReverse_click
+            },
             '#DirectSalesForm-btnBack': {
                 click: this.btnBack_click
             },
@@ -825,6 +828,14 @@ Ext.define('Ext.Praxis.controller.payments.DirectSales.DirectSalesController', {
                 action: 'C',
                 rec: null
             }
+        }).show();
+    },
+    btnGenerateReverse_click: function () {
+        if (Ext.getCmp(prototype.id + '-genReverseWin')) {
+            Ext.getCmp(prototype.id + '-genReverseWin').close();
+        }
+        Ext.create('Ext.Praxis.view.payments.DirectSalesForm.GenerateReverseForm', {
+            id: prototype.id + '-genReverseWin'
         }).show();
     },
     btnExcel_click: function (obj, e) {
