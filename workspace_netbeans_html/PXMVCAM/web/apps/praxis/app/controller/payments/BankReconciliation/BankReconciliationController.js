@@ -2642,6 +2642,12 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalle();
                 },
+                
+                
+                
+                
+                
+                
                 onGridDetalleCargo: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalle';
@@ -2656,6 +2662,8 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalle();
                 },
+                
+                
                 onGridDetalleCorreo: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalle';
@@ -2670,6 +2678,10 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDetalle();
                 },
+                
+                
+                
+                
                 onGridSett: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalle';
@@ -2681,6 +2693,9 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetSett);
                         this.setGridDataDetalle();
                 },
+                
+                
+                
                 setGridDataDetalle: function (data) {
                 win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
@@ -2729,6 +2744,10 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDetalle').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin4').bindStore(storeGridDatas);
                 },
+                
+                
+                
+                
                 setGridDataDetalle2: function (data) {
                 win.lblUser_toolTip("Estructura: MPF101");
 //        me.setWidthPie();
@@ -4953,6 +4972,9 @@ Ext.util.CSS.createStyleSheet(`
 
 
                 },
+                
+                
+                
                 setGridDataCountryCash: function (data) {
                 win.lblUser_toolTip("Estructura: MPF193 ");
 //        me.setWidthPie();
@@ -4989,6 +5011,9 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataCountryCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin19').bindStore(storeGridDatas);
                 },
+                
+                
+                
                 /////////AGREGAMOS CONSLTA PARA LISTA MPF199
                 ///////////////////////////////////////////////////
 
@@ -5299,6 +5324,10 @@ Ext.util.CSS.createStyleSheet(`
                         me.paramsDetail.beanString = JSON.stringify(this.beanDetDay);
                         this.setGridDataDayCash();
                 },
+                
+                
+                
+                
                 setGridDataDayCash: function (data) {
                 win.lblUser_toolTip("Estructura: MPF191");
 //        me.setWidthPie();
@@ -5322,7 +5351,16 @@ Ext.util.CSS.createStyleSheet(`
                                 } else {
                                 var bean = obj.data.items[0].data;
                                         var title = '';
-                                        title = " Sales Date : " + bean.IN_SDATE + " - Country : " + bean.IN_COUNTRY;
+                                        var countryName = bean.IN_COUNTRY;
+
+                                Ext.Array.each(me.lstCountry, function(item) {
+                                    if (item.A006PAIS === bean.IN_COUNTRY) {
+                                        countryName = item.A006NOMBRE;
+                                        return false;
+                                    }
+                                });
+
+                                title = " Sales Date : " + bean.IN_SDATE + " - Country : " + countryName;
                                         console.log(title);
                                         Ext.getCmp(prototype.id + '-labelTitleCash2').setText(title);
                                         Ext.getCmp(prototype.id + '-labelTitleCash2').setVisible(true);
@@ -5335,6 +5373,8 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
                 },
+                
+                
                 setGridDataDayCashIccs: function (data) {
                 win.lblUser_toolTip("Estructura: MPF191");
 //        me.setWidthPie();
@@ -5371,6 +5411,8 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDayCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin20').bindStore(storeGridDatas);
                 },
+                
+                
                 onGridDetalleCash: function (obj, metaData, rowNum, columnNum, obj2, rowData) {
                 me.drillDown.push(me.panelActual);
                         me.panelActual = '-panelGridDataDetalleCash';
@@ -5421,11 +5463,16 @@ Ext.util.CSS.createStyleSheet(`
 //                            Ext.getCmp(prototype.id + '-ColumnDateDetalle').setText('Sales<br>Date');
 //                        }
 
-                                        if (Ext.getCmp(prototype.id + '-txtCard1').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtCard2').getValue().trim() !== '' || Ext.getCmp(prototype.id + '-txtAUTHOC').getValue().trim() !== '' || me.joinMultiSelect(Ext.getCmp(prototype.id + '-cmbNEGOC')) !== '' || Ext.getCmp(prototype.id + '-cmbCOMENTF').getValue() !== '' || Ext.getCmp(prototype.id + '-txtAGENCY').getValue() !== '') {
-                                title = " ";
-                                } else {
-                                title = " Sales Date : " + bean.ADATE + " - Country : " + bean.IN_COUNTRY;
-                                }
+                               var countryName = bean.IN_COUNTRY;
+
+                                Ext.Array.each(me.lstCountry, function(item) {
+                                    if (item.A006PAIS === bean.IN_COUNTRY) {
+                                        countryName = item.A006NOMBRE.replace(item.A006PAIS + " - ", "");
+                                        return false;
+                                    }
+                                });
+
+                                title = " Sales Date : " + bean.ADATE + " - Country : " + countryName;
 
                                 console.log(title);
                                         Ext.getCmp(prototype.id + '-labelTitleCash3').setText(title);
@@ -5440,6 +5487,10 @@ Ext.util.CSS.createStyleSheet(`
                         Ext.getCmp(prototype.id + '-gridDataDetalleCash').bindStore(storeGridDatas);
                         Ext.getCmp(prototype.id + '-paggin21').bindStore(storeGridDatas);
                 },
+                
+                
+                
+                
                 onEditClickCash: function (grid, rowIndex, colIndex, item, e, record, actionItem) {
                 console.log('EDITO EL CASH WAAA')
                         item.disable();
@@ -6434,105 +6485,7 @@ onAddAddAdmBKP: function () {
     },
     
     //////
-
-    
-
-                agenciasReport_clickHandler: function (obj, e) {
-
-                var agentsStore = Ext.create('Ext.data.Store', {
-                fields: ['agent'],
-                        data: []
-                });
-                        var win = Ext.create('Ext.window.Window', {
-                        title: 'Report by accounting agencies',
-                                modal: true,
-                                header: {
-                                style: `
-                    background: #1976D2;
-                    color: white;
-                    font-size: 14px;
-                    font-weight: bold;
-                `
-                                },
-                                width: 300,
-                                height: 370,
-                                bodyPadding: 15,
-                                resizable: false,
-                                closable: true,
-                                layout: {
-                                type: 'vbox',
-                                        align: 'center'
-                                },
-                                bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
-                                defaults: {
-                                labelAlign: 'right',
-                                        labelWidth: 60,
-                                        width: 250,
-                                        margin: '12 0 12 20',
-                                        style: 'background-color:white; border-radius:3px;'
-                                },
-                                items: [
-
-                                {
-                                xtype: 'datefield',
-                                        fieldLabel: 'From Date',
-                                        itemId: 'dtFrom',
-                                        format: 'Y/m/d',
-                                        submitFormat: 'Ymd',
-                                        editable: false,
-                                        allowBlank: false,
-                                        value: new Date()
-                                },
-                                {
-                                xtype: 'datefield',
-                                        fieldLabel: 'To Date',
-                                        itemId: 'dtTo',
-                                        format: 'Y/m/d',
-                                        submitFormat: 'Ymd',
-                                        editable: false,
-                                        allowBlank: false,
-                                        value: new Date()
-                                },
-                                {
-                                xtype: 'container',
-                                        layout: 'hbox',
-                                        width: 250,
-                                        items: [
-
-                                        {
-                                        xtype: 'textfield',
-                                                fieldLabel: 'Agents',
-                                                itemId: 'txtAgent',
-                                                flex: 1,
-                                                labelWidth: 60,
-                                                maxLength: 1000
-                                        },
-                                        {
-                                        xtype: 'button',
-                                                text: 'Add',
-                                                margin: '0 0 0 5',
-                                                handler: function () {
-
-                                                var txt = win.down('#txtAgent');
-                                                        var agent = Ext.String.trim(txt.getValue());
-                                                        if (!agent) { Ext.Msg.alert('Error', 'Enter an agent.');
-                                                        return;
-                                                }
-                                                if (!/^\d{8}$/.test(agent)) {
-                                                Ext.Msg.alert(
-                                                        'Error',
-                                                        'Agent must contain exactly 8 digits.'
-                                                        );
-                                                        return;
-                                                        }
-
-                                                var existe = agentsStore.findExact('agent', agent);
-                                                        if (existe !== - 1) {
-                                                Ext.Msg.alert('Error', 'Agent already exists.');
-                                                        return;
-                                                }
-
-    onCallSummaryMPF107: function () {
+     onCallSummaryMPF107: function () {
 
         Ext.Ajax.request({
         url: prototype.url + '/onCallProgramBySummary',
@@ -6557,196 +6510,294 @@ onAddAddAdmBKP: function () {
             }
         });
     },
+    
 
+    agenciasReport_clickHandler: function (obj, e) {
 
+    var agentsStore = Ext.create('Ext.data.Store', {
+    fields: ['agent'],
+            data: []
+    });
+            var win = Ext.create('Ext.window.Window', {
+            title: 'Report by accounting agencies',
+                    modal: true,
+                    header: {
+                    style: `
+        background: #1976D2;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+    `
+                    },
+                    width: 300,
+                    height: 370,
+                    bodyPadding: 15,
+                    resizable: false,
+                    closable: true,
+                    layout: {
+                    type: 'vbox',
+                            align: 'center'
+                    },
+                    bodyStyle: 'background-color: #F9FAFB; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);',
+                    defaults: {
+                    labelAlign: 'right',
+                            labelWidth: 60,
+                            width: 250,
+                            margin: '12 0 12 20',
+                            style: 'background-color:white; border-radius:3px;'
+                    },
+                    items: [
 
-                                                agentsStore.add({
-                                                agent: agent
-                                                });
-                                                        txt.setValue('');
-                                                }
-                                        }
+                    {
+                    xtype: 'datefield',
+                            fieldLabel: 'From Date',
+                            itemId: 'dtFrom',
+                            format: 'Y/m/d',
+                            submitFormat: 'Ymd',
+                            editable: false,
+                            allowBlank: false,
+                            value: new Date()
+                    },
+                    {
+                    xtype: 'datefield',
+                            fieldLabel: 'To Date',
+                            itemId: 'dtTo',
+                            format: 'Y/m/d',
+                            submitFormat: 'Ymd',
+                            editable: false,
+                            allowBlank: false,
+                            value: new Date()
+                    },
+                    {
+                    xtype: 'container',
+                            layout: 'hbox',
+                            width: 250,
+                            items: [
 
-                                        ]
-                                },
-                                {
-                                xtype: 'grid',
-                                        title: 'Selected Agents',
-                                        store: agentsStore,
-                                        height: 100,
-                                        width: 250,
-                                        columns: [
+                            {
+                            xtype: 'textfield',
+                                    fieldLabel: 'Agents',
+                                    itemId: 'txtAgent',
+                                    flex: 1,
+                                    labelWidth: 60,
+                                    maxLength: 1000
+                            },
+                            {
+                            xtype: 'button',
+                                    text: 'Add',
+                                    margin: '0 0 0 5',
+                                    handler: function () {
 
-                                        {
-                                        text: 'Agent',
-                                                dataIndex: 'agent',
-                                                flex: 1
-                                        },
-                                        {
-                                        xtype: 'actioncolumn',
-                                                width: 30,
-                                                align: 'center',
-                                                items: [{
-                                                icon: 'resources/img/icon/cancel.png',
-                                                        tooltip: 'Remove',
-                                                        handler: function (grid, rowIndex) {
-                                                        agentsStore.removeAt(rowIndex);
-                                                        }
-                                                }]
-                                        }
+                                    var txt = win.down('#txtAgent');
+                                            var agent = Ext.String.trim(txt.getValue());
+                                            if (!agent) { Ext.Msg.alert('Error', 'Enter an agent.');
+                                            return;
+                                    }
+                                    if (!/^\d{8}$/.test(agent)) {
+                                    Ext.Msg.alert(
+                                            'Error',
+                                            'Agent must contain exactly 8 digits.'
+                                            );
+                                            return;
+                                            }
 
-                                        ]
-                                }
-
-                                ],
-                                buttonAlign: 'center',
-                                fbar: {
-                                style: `
-                                        background: #BFD7EE;
-                                        border-top: 1px solid #B7C9DC;
-                                        padding: 10px;
-                                    `,
-                                        layout: {
-                                        pack: 'center'
-                                        },
-                                        items: [
-
-                                        {
-                                        text: 'Generate',
-                                                scale: 'medium',
-                                                minWidth: 90,
-                                                style: `
-                                                background: #5B9BD5;
-                                                color: white;
-                                                font-weight: bold;
-                                                font-size: 13px;
-                                                border-radius: 7px;
-                                                border: 1px solid #4A89C2;
-                                            `,
-                                                handler: function () {
-
-                                                var from = win.down('#dtFrom').getSubmitValue();
-                                                        var to = win.down('#dtTo').getSubmitValue();
-                                                        var agents = [];
-                                                        agentsStore.each(function (r) {
-                                                        agents.push(r.get('agent'));
-                                                        });
-                                                        var agent = agents.join(',');
-                                                        if (agents.length === 0) {
-                                                Ext.Msg.alert(
-                                                        'Error',
-                                                        'Please add at least one agent.'
-                                                        );
-                                                        return;
-                                                }
-
-                                                if (from > to) {
-                                                Ext.Msg.alert('Error', 'From Date cannot be greater than To Date.');
-                                                        return;
-                                                }
-
-                                                this.obtenerCantidad(from, to, agent);
-                                                 win.close();
-                                                },
-                                                scope: this
-                                        },
-                                        {
-                                        text: 'Cancel',
-                                                scale: 'medium',
-                                                minWidth: 90,
-                                                style: `
-                                                        background: #ECEFF1;
-                                                        color: #37474F;
-                                                        font-weight: bold;
-                                                        font-size: 12px;
-                                                        border-radius: 6px;
-                                                        border: 1px solid #B0BEC5;
-                                                        padding: 4px 10px;
-                                                        margin-left: 8px;
-                                                    `,
-                                                handler: function () {
-                                                win.close();
-                                                }
-                                        }
-
-                                        ]
-                                }
-
-
-                        });
-                        win.show();
-                },
+                                    var existe = agentsStore.findExact('agent', agent);
+                                            if (existe !== - 1) {
+                                    Ext.Msg.alert('Error', 'Agent already exists.');
+                                            return;
+                                    }
 
 
 
 
-                obtenerCantidad: function (from, to, agent) {
 
-                let params = {
-                  IN_AGENT: agent,
-                  IN_DATEF: from,
-                  IN_DATET: to
-                };
-                        Ext.Ajax.request({
-                        url: prototype.url + '/getContador',
-                                method: 'POST',
-                                timeout: 60000000,
-                                params: {beanString: JSON.stringify(params)},
-                                success: function (response, options) {
-                                var res = Ext.JSON.decode(response.responseText);
-                                        var cantidad = parseInt(res.cantidad, 10);
-                                        if (cantidad === 0) {
+                                    agentsStore.add({
+                                    agent: agent
+                                    });
+                                            txt.setValue('');
+                                    }
+                            }
 
-                                Ext.Msg.show({
-                                title: '.:PRAXIS:.',
-                                        msg: 'No records found to export.',
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.INFO,
-                                        modal: true
-                                });
-                                        return;
-                                }
+                            ]
+                    },
+                    {
+                    xtype: 'grid',
+                            title: 'Selected Agents',
+                            store: agentsStore,
+                            height: 100,
+                            width: 250,
+                            columns: [
 
-                                if (cantidad > 1000000) {
+                            {
+                            text: 'Agent',
+                                    dataIndex: 'agent',
+                                    flex: 1
+                            },
+                            {
+                            xtype: 'actioncolumn',
+                                    width: 30,
+                                    align: 'center',
+                                    items: [{
+                                    icon: 'resources/img/icon/cancel.png',
+                                            tooltip: 'Remove',
+                                            handler: function (grid, rowIndex) {
+                                            agentsStore.removeAt(rowIndex);
+                                            }
+                                    }]
+                            }
 
-                                Ext.Msg.show({
-                                title: '.:PRAXIS:.',
-                                        msg:
-                                        'More than 1,000,000 records were found.<br><br>' +
-                                        'Please reduce the number of selected agents or narrow the date range.',
-                                        buttons: Ext.MessageBox.OK,
-                                        icon: Ext.MessageBox.WARNING,
-                                        modal: true
-                                });
-                                        return;
-                                        }
+                            ]
+                    }
 
-                                Ext.Msg.show({
-                                title: '.:PRAXIS:.',
-                                        msg: 'Records to export: ' + cantidad + ' - ' + 'Download File?',
-                                        buttons: Ext.MessageBox.OKCANCEL,
-                                        scope: me,
-                                        icon: Ext.MessageBox.QUESTION,
-                                        modal: true,
-                                        fn: function (btn) {
-                                        if (btn === 'ok') {
-                                        me.exportExcelAPI(from, to, agent);
-                                        }
-                                        }
-                                });
-                                }
-                        });
-                },
-                exportExcelAPI: function (from, to, agent) {
+                    ],
+                    buttonAlign: 'center',
+                    fbar: {
+                    style: `
+                            background: #BFD7EE;
+                            border-top: 1px solid #B7C9DC;
+                            padding: 10px;
+                        `,
+                            layout: {
+                            pack: 'center'
+                            },
+                            items: [
+
+                            {
+                            text: 'Generate',
+                                    scale: 'medium',
+                                    minWidth: 90,
+                                    style: `
+                                    background: #5B9BD5;
+                                    color: white;
+                                    font-weight: bold;
+                                    font-size: 13px;
+                                    border-radius: 7px;
+                                    border: 1px solid #4A89C2;
+                                `,
+                                    handler: function () {
+
+                                    var from = win.down('#dtFrom').getSubmitValue();
+                                            var to = win.down('#dtTo').getSubmitValue();
+                                            var agents = [];
+                                            agentsStore.each(function (r) {
+                                            agents.push(r.get('agent'));
+                                            });
+                                            var agent = agents.join(',');
+                                            if (agents.length === 0) {
+                                    Ext.Msg.alert(
+                                            'Error',
+                                            'Please add at least one agent.'
+                                            );
+                                            return;
+                                    }
+
+                                    if (from > to) {
+                                    Ext.Msg.alert('Error', 'From Date cannot be greater than To Date.');
+                                            return;
+                                    }
+
+                                    this.obtenerCantidad(from, to, agent);
+                                     win.close();
+                                    },
+                                    scope: this
+                            },
+                            {
+                            text: 'Cancel',
+                                    scale: 'medium',
+                                    minWidth: 90,
+                                    style: `
+                                            background: #ECEFF1;
+                                            color: #37474F;
+                                            font-weight: bold;
+                                            font-size: 12px;
+                                            border-radius: 6px;
+                                            border: 1px solid #B0BEC5;
+                                            padding: 4px 10px;
+                                            margin-left: 8px;
+                                        `,
+                                    handler: function () {
+                                    win.close();
+                                    }
+                            }
+
+                            ]
+                    }
 
 
-                let params = {
-                    IN_AGENT: agent,
-                    IN_DATEF: from,
-                    IN_DATET: to
-                };
-                        console.log(params);
-                        global.downloadFile(me.request, 'downloadAccountingAgency', params, 'zip');
-                },
+            });
+            win.show();
+    },
+
+
+
+
+    obtenerCantidad: function (from, to, agent) {
+
+    let params = {
+      IN_AGENT: agent,
+      IN_DATEF: from,
+      IN_DATET: to
+    };
+            Ext.Ajax.request({
+            url: prototype.url + '/getContador',
+                    method: 'POST',
+                    timeout: 60000000,
+                    params: {beanString: JSON.stringify(params)},
+                    success: function (response, options) {
+                    var res = Ext.JSON.decode(response.responseText);
+                            var cantidad = parseInt(res.cantidad, 10);
+                            if (cantidad === 0) {
+
+                    Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                            msg: 'No records found to export.',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.INFO,
+                            modal: true
+                    });
+                            return;
+                    }
+
+                    if (cantidad > 1000000) {
+
+                    Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                            msg:
+                            'More than 1,000,000 records were found.<br><br>' +
+                            'Please reduce the number of selected agents or narrow the date range.',
+                            buttons: Ext.MessageBox.OK,
+                            icon: Ext.MessageBox.WARNING,
+                            modal: true
+                    });
+                            return;
+                            }
+
+                    Ext.Msg.show({
+                    title: '.:PRAXIS:.',
+                            msg: 'Records to export: ' + cantidad + ' - ' + 'Download File?',
+                            buttons: Ext.MessageBox.OKCANCEL,
+                            scope: me,
+                            icon: Ext.MessageBox.QUESTION,
+                            modal: true,
+                            fn: function (btn) {
+                            if (btn === 'ok') {
+                            me.exportExcelAPI(from, to, agent);
+                            }
+                            }
+                    });
+                    }
+            });
+    },
+    exportExcelAPI: function (from, to, agent) {
+
+
+        let params = {
+            IN_AGENT: agent,
+            IN_DATEF: from,
+            IN_DATET: to
+        };
+        console.log(params);
+        global.downloadFile(me.request, 'downloadAccountingAgency', params, 'zip');
+    },
  
-        });
+});

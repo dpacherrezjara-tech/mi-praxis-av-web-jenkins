@@ -52,6 +52,8 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
             IN_TIPOCB: '',
             IN_TIPOML: '',
             IN_TEXTML: '',
+            IN_REFKEY1: '',
+            IN_REFKEY3: '',
             IN_IATAVTA_OLD: '',
             IN_MERCHANT_OLD: ''
                 }

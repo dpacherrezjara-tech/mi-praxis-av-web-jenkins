@@ -44,6 +44,15 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
         });
         dataEntry.show();
     },
+    onOpenBulkUpload: function () {
+        const me = this;
+        const subiArchivo = Ext.create('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerchantCatalogSubiArchivo', {
+            reloadGrid: () => {
+                me.loadGrid();
+            }
+        });
+        subiArchivo.show();
+    },
     onDisplayFilterBtn: function () {
         const filters = Ext.getCmp(prototype.id + '-contentFilter');
         if (filters.isVisible()) {
