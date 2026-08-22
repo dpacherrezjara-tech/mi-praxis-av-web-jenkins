@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import net.miatech.praxis.controllers.BaseController;
 import net.miatech.praxis.logic.payments.TAXMerchantCatalogSubiArchivoLogic;
 import net.miatech.praxis.payment.TAXMerchantCatalogRow;
@@ -49,12 +50,17 @@ import org.springframework.web.multipart.MultipartFile;
  *                        llaves contra lo que ya existe en MPF154). No escribe
  *                        nada en base de datos. Devuelve fila por fila el
  *                        resultado para pintar el check verde / x roja.
- *  3) processRows      -> recibe en JSON las filas que devolvio validateExcel
- *                        (no vuelve a subir el Excel), vuelve a chequear las
+ *  3) processRowsChunk  -> el cliente manda las filas ya validadas en lotes
+ *                        chicos (para no chocar con limites de tamano de
+ *                        body de proxies/WAF en produccion); cada llamado
+ *                        solo acumula el lote en la sesion HTTP, sin escribir
+ *                        nada en la base todavia.
+ *  4) processRowsCommit -> cuando termino de mandar todos los lotes, el
+ *                        cliente llama a este endpoint: vuelve a chequear las
  *                        llaves contra la base (nunca se confia en lo que el
  *                        cliente valido antes) y, solo si TODAS las filas
- *                        son validas, inserta/actualiza cada una via
- *                        PRAXISMP.MPS262.
+ *                        son validas, inserta/actualiza TODAS en una unica
+ *                        transaccion (todo o nada) via PRAXISMP.MPS262.
  */
 @Controller
 @Scope("request")
@@ -160,31 +166,76 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
         }
     }
 
+    // Clave de sesion HTTP donde se van acumulando los lotes de filas hasta
+    // que el cliente llama a processRowsCommit. Un buffer por sesion de
+    // usuario: alcanza para una carga masiva a la vez, que es el caso de uso.
+    private static final String SESSION_BUFFER_KEY = "TAX_MERCHANT_CATALOG_BULK_UPLOAD_BUFFER";
+
     /**
-     * A diferencia de validateExcel, este endpoint NO recibe el archivo Excel:
-     * recibe en JSON las filas que el propio /validateExcel ya devolvio al
-     * cliente. Volver a subir el mismo MultipartFile en una segunda peticion
-     * (form.submit) es fragil -- el filefield de Ext JS no siempre conserva
-     * el archivo seleccionado en un segundo submit, y eso rompia el parseo
-     * (InvalidFormatException). Como el cliente ya tiene las filas validadas,
-     * alcanza con reenviarlas y volver a chequear las llaves contra la base
-     * (defensa en profundidad ante condiciones de carrera entre Validar y
-     * Procesar) antes de insertar/actualizar.
+     * El cliente NO vuelve a subir el archivo Excel ni manda todas las filas
+     * juntas: manda en varios llamados chunks de ~25 filas (para no superar
+     * limites de tamano de body de proxies/WAF en produccion). Este endpoint
+     * solo acumula cada chunk en la sesion HTTP -- todavia no escribe nada en
+     * la base. chunkIndex = 0 reinicia el buffer (por si quedo uno viejo de
+     * una carga anterior incompleta).
      */
-    @RequestMapping(value = "processRows", method = RequestMethod.POST)
+    @RequestMapping(value = "processRowsChunk", method = RequestMethod.POST)
     public @ResponseBody
-    String processRows(@RequestParam("mode") String mode, @RequestParam("rowsJson") String rowsJson, HttpServletRequest request) {
+    String processRowsChunk(@RequestParam("chunkIndex") int chunkIndex, @RequestParam("chunkRowsJson") String chunkRowsJson, HttpServletRequest request) {
+        Map<String, Object> result = new HashMap<String, Object>();
+        result.put("success", true);
+        try {
+            HttpSession httpSession = request.getSession();
+            List<TAXMerchantCatalogRow> buffer;
+            if (chunkIndex == 0) {
+                buffer = new ArrayList<TAXMerchantCatalogRow>();
+                httpSession.setAttribute(SESSION_BUFFER_KEY, buffer);
+            } else {
+                buffer = getSessionBuffer(httpSession);
+                if (buffer == null) {
+                    result.put("error", "The upload session expired or was not started. Start again from the first batch.");
+                    return new Gson().toJson(result);
+                }
+            }
+            TAXMerchantCatalogRow[] chunkArr = new Gson().fromJson(chunkRowsJson, TAXMerchantCatalogRow[].class);
+            buffer.addAll(Arrays.asList(chunkArr));
+            result.put("error", null);
+            result.put("received", buffer.size());
+            return new Gson().toJson(result);
+        } catch (Exception e) {
+            logError.error("Message: " + e.getMessage(), e);
+            result.put("error", "Error receiving batch: " + e.getMessage());
+            return new Gson().toJson(result);
+        }
+    }
+
+    /**
+     * Toma TODAS las filas acumuladas via processRowsChunk, vuelve a chequear
+     * las llaves contra la base (defensa en profundidad ante condiciones de
+     * carrera) y, solo si el 100% son validas, las inserta/actualiza en una
+     * unica transaccion (todo o nada -- ver DAO.processAllRows). El buffer de
+     * sesion se limpia siempre al terminar, con o sin exito.
+     */
+    @RequestMapping(value = "processRowsCommit", method = RequestMethod.POST)
+    public @ResponseBody
+    String processRowsCommit(@RequestParam("mode") String mode, HttpServletRequest request) {
         Map<String, Object> result = new HashMap<String, Object>();
         // Ext.form.Basic.submit() exige "success" en el JSON de nivel superior;
         // sin este campo interpreta la respuesta como failure aunque el body sea valido.
         result.put("success", true);
         String currentUser = "";
+        HttpSession httpSession = request.getSession();
         try {
             currentUser = this.serverSession.getServerSession().getUserView().getUserInfo().USR;
             Functions.msjConsola("PRAXIS", currentUser, getClass().getSimpleName() + " : " + Thread.currentThread().getStackTrace()[1].getMethodName());
 
-            TAXMerchantCatalogRow[] rowsArr = new Gson().fromJson(rowsJson, TAXMerchantCatalogRow[].class);
-            List<TAXMerchantCatalogRow> rows = new ArrayList<TAXMerchantCatalogRow>(Arrays.asList(rowsArr));
+            List<TAXMerchantCatalogRow> rows = getSessionBuffer(httpSession);
+            if (rows == null || rows.isEmpty()) {
+                result.put("headerError", "There is nothing to process. Upload the batches again.");
+                result.put("processed", false);
+                result.put("rows", new ArrayList<TAXMerchantCatalogRow>());
+                return new Gson().toJson(result);
+            }
 
             logic = new TAXMerchantCatalogSubiArchivoLogic();
             logic.setSession(this.serverSession.getServerSession());
@@ -199,23 +250,15 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
             }
 
             result.put("headerError", null);
-            if (!allValid || rows.isEmpty()) {
-                // Defensa en profundidad: no se confia en la validacion previa del
-                // cliente (pudo haber cambiado el catalogo entre Validar y Procesar).
+            if (!allValid) {
+                // Todo o nada: si una sola fila no es valida, no se escribe nada en la base.
                 result.put("processed", false);
                 result.put("rows", rows);
                 return new Gson().toJson(result);
             }
 
-            logic.processRows(rows);
-
-            allValid = true;
-            for (TAXMerchantCatalogRow row : rows) {
-                if (!row.VALID) {
-                    allValid = false;
-                }
-            }
-            result.put("processed", allValid);
+            logic.commitAll(rows);
+            result.put("processed", true);
             result.put("rows", rows);
             return new Gson().toJson(result);
         } catch (Exception e) {
@@ -224,7 +267,14 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
             result.put("processed", false);
             result.put("rows", new ArrayList<TAXMerchantCatalogRow>());
             return new Gson().toJson(result);
+        } finally {
+            httpSession.removeAttribute(SESSION_BUFFER_KEY);
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<TAXMerchantCatalogRow> getSessionBuffer(HttpSession httpSession) {
+        return (List<TAXMerchantCatalogRow>) httpSession.getAttribute(SESSION_BUFFER_KEY);
     }
 
     // <editor-fold defaultstate="collapsed" desc="Parseo y validacion del Excel">
