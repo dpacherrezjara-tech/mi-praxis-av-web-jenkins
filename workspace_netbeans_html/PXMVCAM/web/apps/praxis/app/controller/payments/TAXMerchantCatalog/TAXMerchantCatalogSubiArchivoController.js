@@ -140,6 +140,10 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
         Ext.Ajax.request({
             url: me.urlSA + '/processRowsCommit',
             method: 'POST',
+            // processRowsCommit calls MPS262 once per row within a single
+            // HTTP request/transaction, so it can take a while for a large
+            // file. The Ext.Ajax default is 30s; give it more room here.
+            timeout: 120000,
             params: {
                 mode: mode
             },
@@ -167,7 +171,12 @@ Ext.define('Ext.Praxis.controller.payments.TAXMerchantCatalog.TAXMerchantCatalog
             failure: function () {
                 me.view.setLoading(false);
                 progressBar.hide();
-                Ext.MessageBox.alert('PRAXIS', 'Could not process the file.');
+                // No response reached the browser in time -- this can be a
+                // client-side timeout or a network/proxy issue in between.
+                // Either way, the server may still be finishing the commit
+                // in the background, so this is not necessarily a real
+                // failure: tell the user to check before retrying.
+                Ext.MessageBox.alert('PRAXIS', 'No response was received in time. The server may still be finishing the process in the background. Wait a moment, then check the catalog before trying again to avoid processing the same rows twice.');
             }
         });
     },

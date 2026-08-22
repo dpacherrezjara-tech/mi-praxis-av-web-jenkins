@@ -277,6 +277,14 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
         return (List<TAXMerchantCatalogRow>) httpSession.getAttribute(SESSION_BUFFER_KEY);
     }
 
+    // processRowsCommit hace una llamada a MPS262 por fila, todas dentro de
+    // UNA sola peticion HTTP (para que quede en una sola transaccion). Un
+    // archivo demasiado grande puede tardar mas de lo que tolera el cliente
+    // o algun proxy intermedio antes de recibir respuesta. Este limite es un
+    // freno conservador, no un calculo exacto -- ajustar segun lo que se mida
+    // en produccion.
+    private static final int MAX_ROWS = 300;
+
     // <editor-fold defaultstate="collapsed" desc="Parseo y validacion del Excel">
     private static class ParseResult {
 
@@ -323,6 +331,13 @@ public class TAXMerchantCatalogSubiArchivoController extends BaseController {
             result.rows.add(parseRow(currentRow, rowNum));
         }
         workbook.close();
+
+        if (result.rows.size() > MAX_ROWS) {
+            result.headerError = "The file has " + result.rows.size() + " row(s) and the maximum allowed is "
+                    + MAX_ROWS + ". Split it into smaller files.";
+            result.rows = new ArrayList<TAXMerchantCatalogRow>();
+            return result;
+        }
 
         checkDuplicateKeysInFile(result.rows);
 
