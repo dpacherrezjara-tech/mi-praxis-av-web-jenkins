@@ -324,7 +324,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                         {
                             xtype: 'panel',
                             border: false,
-                            width: 2182,
+                            width: 2602,
                             id: prototype.id + '-panelGridSumaryMain',
                             bodyStyle: 'background-color: #F4F7FD;',
                             padding: '1',
@@ -337,7 +337,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                 {
                                     xtype: 'treepanel',
                                     id: prototype.id + '-gridSumaryMain',
-                                    width: 2182,
+                                    width: 2602,
 //                                                    height: 370,
 //                                                    reserveScrollbar: true,
                                     useArrows: true,
@@ -809,6 +809,99 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                 ]
                                             },
                                             {
+                                                text: '<span style="color:black;font-weight:bold;">Double Debits</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+                                                columns: [
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Qty</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+                                                        dataIndex: 'QTY_DOBLES', width: 60, align: 'center',
+                                                        listeners: {
+                                                            click: 'onGridDataDetail'
+                                                        },
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "color:#057ECB;text-align:right;";
+                                                            value = '<b>' + Ext.util.Format.number(value, ',0,000') + '</b>';
+                                                            return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totQAMATCH, ',0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Amount</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+                                                        dataIndex: 'AMOUNT_DOBLES_USD', width: 90, align: 'center',
+
+                                                        renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                            metaData.style = "color:#2B2B2B;text-align:right;";
+                                                            value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                            return value;
+                                                        },
+                                                        summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                            var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                            metaData.style = 'text-align:right; margin-right:3px ';
+                                                            return '<b>' + Ext.util.Format.number(data.totAAMATCH, ',0,000.00') + '<b>';
+                                                        }
+                                                    },
+                                                    {
+                                                        text: '<span style="color:black;font-weight:bold;">Accounting Amount</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+                                                        columns: [
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">Pending <br> To Sent</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+                                                                dataIndex: 'AMOUNT_DOBLES_PENDING_SAP', width: 90, align: 'center',
+                                                                listeners: {
+                                                                    click: 'onGridDataDetail'
+                                                                },
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;";
+                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                    return '<a href="#payments-reports-form" style="color:#057ECB;text-decoration:underline;">' + value + '</a>';
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totQAMATCH, ',0,000.00') + '<b>';
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">SENT</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+                                                                dataIndex: 'AMOUNT_DOBLES_SEND', width: 90, align: 'center',
+
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;text-decoration:underline;cursor: pointer";
+                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                    return value;
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totAAMATCH, ',0,000.00') + '<b>';
+                                                                }, listeners: {
+                                                                    click: 'onGridDataDetail'
+                                                                }
+                                                            },
+                                                            {
+                                                                text: '<span style="color:black;font-weight:bold;">SAP</span>', menuDisabled: true, style: 'background:#FFE0B2;color:black !important',
+
+                                                                dataIndex: 'AMOUNT_DOBLES_SAP', width: 90, align: 'center',
+
+                                                                renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                                                                    metaData.style = "color:#057ECB;text-align:right;text-decoration:underline;cursor: pointer";
+                                                                    value = '<b>' + Ext.util.Format.number(value, ',0,000.00') + '</b>';
+                                                                    return value;
+                                                                },
+                                                                summaryRenderer: function (value, summaryData, dataIndex, metaData, record) {
+                                                                    var data = Ext.getCmp(prototype.id + '-gridSumaryMain').getStore().getData().items[0].data;
+                                                                    metaData.style = 'text-align:right; margin-right:3px ';
+                                                                    return '<b>' + Ext.util.Format.number(data.totAAMATCH, ',0,000.00') + '<b>';
+                                                                }, listeners: {
+                                                                    click: 'onGridDataDetail'
+                                                                }
+                                                            },
+                                                        ]},
+                                                ]
+                                            },
+                                            {
                                                 text: '<span style="color:whitefont-weight:bold;">Pending</span>', menuDisabled: true, style: 'background:#E64B3C;color:white !important',
                                                 columns: [
                                                     {
@@ -897,6 +990,12 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                         {width: 90, id: prototype.id + '-AMOUNT_TOTAL_ACRED_PENDING_USD', style: 'background: #D1FBD2;text-align:right;border-right:1px solid white'},
                                         {width: 90, id: prototype.id + '-AMOUNT_TOTAL_ACRED_SEND', style: 'background: #D1FBD2;text-align:right;border-right:1px solid white'},
                                         {width: 90, id: prototype.id + '-AMOUNT_TOTAL_ACRED_SAP', style: 'background: #D1FBD2;text-align:right;border-right:1px solid white'},
+
+                                        {width: 60, id: prototype.id + '-QTY_TOTAL_DOBLES', style: 'background: #FFE0B2;text-align:right;border-right:1px solid white'},
+                                        {width: 90, id: prototype.id + '-AMOUNT_TOTAL_DOBLES_USD', style: 'background: #FFE0B2;text-align:right;border-right:1px solid white'},
+                                        {width: 90, id: prototype.id + '-AMOUNT_TOTAL_DOBLES_PENDING_USD', style: 'background: #FFE0B2;text-align:right;border-right:1px solid white'},
+                                        {width: 90, id: prototype.id + '-AMOUNT_TOTAL_DOBLES_SEND', style: 'background: #FFE0B2;text-align:right;border-right:1px solid white'},
+                                        {width: 90, id: prototype.id + '-AMOUNT_TOTAL_DOBLES_SAP', style: 'background: #FFE0B2;text-align:right;border-right:1px solid white'},
 
                                         {width: 60, id: prototype.id + '-QTY_TOTAL_PENDING', style: 'background: #E64B3C;text-align:right;border-right:1px solid white'},
                                         {width: 90, id: prototype.id + '-AMOUNT_TOTAL_PENDING_USD', style: 'color:white;background: #E64B3C;text-align:right;border-right:1px solid white'},
@@ -1025,7 +1124,7 @@ Ext.define('Ext.Praxis.view.payments.ReportsForm.Info', {
                                                             angleField: 'Perc2',
                                                             legendField: 'LABEL',
                                                             distortion: 0.7,
-                                                            colors: ['#FBD2D1', '#E64B3C', '#CFE9F6', '#D1FBD2', '#D6D6D6'],
+                                                            colors: ['#FBD2D1', '#E64B3C', '#CFE9F6', '#D1FBD2', '#D6D6D6', '#FFE0B2'],
                                                             label: {
                                                                 field: 'VENDOR',
                                                                 display: 'outside',
