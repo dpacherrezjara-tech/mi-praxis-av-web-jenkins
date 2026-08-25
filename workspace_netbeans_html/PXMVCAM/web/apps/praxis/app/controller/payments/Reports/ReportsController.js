@@ -652,6 +652,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             let AMOUNT_TOTAL_PENDING_SAP = lastRecord.AMOUNT_TOTAL_PENDING_SAP;
                             let AMOUNT_TOTAL_PENDING_PENDING_USD = lastRecord.AMOUNT_TOTAL_PENDING_PENDING_USD;
 
+                            let QTY_TOTAL_DOBLES = lastRecord.QTY_TOTAL_DOBLES;
+                            let AMOUNT_TOTAL_DOBLES_USD = lastRecord.AMOUNT_TOTAL_DOBLES_USD;
+                            let AMOUNT_TOTAL_DOBLES_SEND = lastRecord.AMOUNT_TOTAL_DOBLES_SEND;
+                            let AMOUNT_TOTAL_DOBLES_SAP = lastRecord.AMOUNT_TOTAL_DOBLES_SAP;
+                            let AMOUNT_TOTAL_DOBLES_PENDING_USD = lastRecord.AMOUNT_TOTAL_DOBLES_PENDING_USD;
+
                             let QTY_TOTAL_GRANT = lastRecord.QTY_TOTAL_GRANT;
                             let AMOUNT_TOTAL_GRANT_USD = lastRecord.AMOUNT_TOTAL_GRANT_USD;
 
@@ -692,6 +698,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     let V_AMOUNT_PENDING_SEND = 0;
                                     let V_AMOUNT_PENDING_SAP = 0;
 
+                                    let V_QTY_DOBLES = 0;
+                                    let V_AMOUNT_DOBLES_USD = 0;
+                                    let V_AMOUNT_DOBLES_SEND = 0;
+                                    let V_AMOUNT_DOBLES_SAP = 0;
+                                    let V_AMOUNT_DOBLES_PENDING_SAP = 0;
+
                                     let V_QTY_GRANT = 0;
                                     let V_AMOUNT_GRANT = 0;
 
@@ -727,6 +739,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                             V_AMOUNT_PENDING_USD += valuex.AMOUNT_PENDING_USD;
                                             V_AMOUNT_PENDING_SEND += valuex.AMOUNT_PENDING_SEND;
                                             V_AMOUNT_PENDING_SAP += valuex.AMOUNT_PENDING_SAP;
+
+                                            V_QTY_DOBLES += valuex.QTY_DOBLES;
+                                            V_AMOUNT_DOBLES_USD += valuex.AMOUNT_DOBLES_USD;
+                                            V_AMOUNT_DOBLES_SEND += valuex.AMOUNT_DOBLES_SEND;
+                                            V_AMOUNT_DOBLES_SAP += valuex.AMOUNT_DOBLES_SAP;
+                                            V_AMOUNT_DOBLES_PENDING_SAP += valuex.AMOUNT_DOBLES_PENDING_SAP;
 
                                             V_QTY_GRANT += valuex.QTY_GRANT;
                                             V_AMOUNT_GRANT += valuex.AMOUNT_GRANT;
@@ -769,6 +787,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                         AMOUNT_PENDING_USD: V_AMOUNT_PENDING_USD,
                                         AMOUNT_PENDING_SEND: V_AMOUNT_PENDING_SEND,
                                         AMOUNT_PENDING_SAP: V_AMOUNT_PENDING_SAP,
+
+                                        QTY_DOBLES: V_QTY_DOBLES,
+                                        AMOUNT_DOBLES_USD: V_AMOUNT_DOBLES_USD,
+                                        AMOUNT_DOBLES_SEND: V_AMOUNT_DOBLES_SEND,
+                                        AMOUNT_DOBLES_SAP: V_AMOUNT_DOBLES_SAP,
+                                        AMOUNT_DOBLES_PENDING_SAP: V_AMOUNT_DOBLES_PENDING_SAP,
 
                                         QTY_GRANT: V_QTY_GRANT,
                                         AMOUNT_GRANT: V_AMOUNT_GRANT,
@@ -813,6 +837,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                                 AMOUNT_PENDING_USD: value01.AMOUNT_PENDING_USD,
                                                 AMOUNT_PENDING_SEND: value01.AMOUNT_PENDING_SEND,
                                                 AMOUNT_PENDING_SAP: value01.AMOUNT_PENDING_SAP,
+
+                                                QTY_DOBLES: value01.QTY_DOBLES,
+                                                AMOUNT_DOBLES_USD: value01.AMOUNT_DOBLES_USD,
+                                                AMOUNT_DOBLES_SEND: value01.AMOUNT_DOBLES_SEND,
+                                                AMOUNT_DOBLES_SAP: value01.AMOUNT_DOBLES_SAP,
+                                                AMOUNT_DOBLES_PENDING_SAP: value01.AMOUNT_DOBLES_PENDING_SAP,
 
                                                 QTY_GRANT: value01.QTY_GRANT,
                                                 AMOUNT_GRANT: value01.AMOUNT_GRANT,
@@ -866,6 +896,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_SEND, '0,000.00'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_PENDING_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_PENDING_SAP, '0,000.00'));
 
+                            Ext.getCmp(prototype.id + '-QTY_TOTAL_DOBLES').setText(Ext.util.Format.number(QTY_TOTAL_DOBLES, '0,000'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_DOBLES_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_DOBLES_USD, '0,000.00'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_DOBLES_PENDING_USD').setText(Ext.util.Format.number(AMOUNT_TOTAL_DOBLES_PENDING_USD, '0,000.00'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_DOBLES_SEND').setText(Ext.util.Format.number(AMOUNT_TOTAL_DOBLES_SEND, '0,000.00'));
+                            Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_DOBLES_SAP').setText(Ext.util.Format.number(AMOUNT_TOTAL_DOBLES_SAP, '0,000.00'));
+
                             Ext.getCmp(prototype.id + '-QTY_TOTAL_GRANT').setText(Ext.util.Format.number(QTY_TOTAL_GRANT, '0,000'));
                             Ext.getCmp(prototype.id + '-AMOUNT_TOTAL_GRANT').setText(Ext.util.Format.number(AMOUNT_TOTAL_GRANT_USD, '0,000.00'));
 
@@ -884,13 +920,15 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     lastRecord.QTY_TOTAL_CHGBACK +
                                     lastRecord.QTY_TOTAL_REVERSE_CHGBACK +
                                     lastRecord.QTY_TOTAL_ACRED +
-                                    lastRecord.QTY_TOTAL_PENDING;
+                                    lastRecord.QTY_TOTAL_PENDING +
+                                    lastRecord.QTY_TOTAL_DOBLES;
 
                             let refundMatch = (lastRecord.QTY_TOTAL_REFUND / totalCantidad) * 100;
                             let chgbkMatch = (lastRecord.QTY_TOTAL_CHGBACK / totalCantidad) * 100;
                             let reverseChgbkMatch = (lastRecord.QTY_TOTAL_REVERSE_CHGBACK / totalCantidad) * 100;
                             let acreditMatch = (lastRecord.QTY_TOTAL_ACRED / totalCantidad) * 100;
                             let othersPend = (lastRecord.QTY_TOTAL_PENDING / totalCantidad) * 100;
+                            let doblesMatch = (lastRecord.QTY_TOTAL_DOBLES / totalCantidad) * 100;
 
                             if (obj.data.items.length > 0) {
                                 totals.push({
@@ -919,6 +957,11 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     Perc2: lastRecord.QTY_TOTAL_REVERSE_CHGBACK,
                                     VENDOR: 'Chgback Reverse:\n' + Ext.util.Format.number(reverseChgbkMatch, '0.00%')
                                 });
+                                totals.push({
+                                    LABEL: 'Double Debits',
+                                    Perc2: lastRecord.QTY_TOTAL_DOBLES,
+                                    VENDOR: 'Double Debits:\n' + Ext.util.Format.number(doblesMatch, '0.00%')
+                                });
                             }
 
                             var storeData1er = Ext.create('Ext.data.Store', {
@@ -934,21 +977,24 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     AMOUNT_TOTAL_CHGBACK_PENDING_USD +
                                     AMOUNT_TOTAL_REVERSE_CHGBACK_PENDING_USD +
                                     AMOUNT_TOTAL_ACRED_PENDING_USD +
-                                    AMOUNT_TOTAL_PENDING_PENDING_USD;
+                                    AMOUNT_TOTAL_PENDING_PENDING_USD +
+                                    AMOUNT_TOTAL_DOBLES_PENDING_USD;
 
                             let AMOUNT_SENT_GLOBAL =
                                     AMOUNT_TOTAL_REFUND_SEND +
                                     AMOUNT_TOTAL_CHGBACK_SEND +
                                     AMOUNT_TOTAL_REVERSE_CHGBACK_SEND +
                                     AMOUNT_TOTAL_ACRED_SEND +
-                                    AMOUNT_TOTAL_PENDING_SEND;
+                                    AMOUNT_TOTAL_PENDING_SEND +
+                                    AMOUNT_TOTAL_DOBLES_SEND;
 
                             let AMOUNT_SAP_GLOBAL =
                                     AMOUNT_TOTAL_REFUND_SAP +
                                     AMOUNT_TOTAL_CHGBACK_SAP +
                                     AMOUNT_TOTAL_REVERSE_CHGBACK_SAP +
                                     AMOUNT_TOTAL_ACRED_SAP +
-                                    AMOUNT_TOTAL_PENDING_SAP;
+                                    AMOUNT_TOTAL_PENDING_SAP +
+                                    AMOUNT_TOTAL_DOBLES_SAP;
 
                             let AMOUNT_SENT_NETO = AMOUNT_SENT_GLOBAL - AMOUNT_SAP_GLOBAL;
 
@@ -1035,6 +1081,12 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                                     USD: lastRecord.AMOUNT_TOTAL_PENDING_USD,
                                     SEND: 0,
                                     SAP: 0
+                                },
+                                {
+                                    category: 'Double Debits',
+                                    USD: lastRecord.AMOUNT_TOTAL_DOBLES_USD,
+                                    SEND: lastRecord.AMOUNT_TOTAL_DOBLES_SEND,
+                                    SAP: lastRecord.AMOUNT_TOTAL_DOBLES_SAP
                                 }
                             ];
 
@@ -1247,6 +1299,26 @@ Ext.define('Ext.Praxis.controller.payments.Reports.ReportsController', {
                 me.bean.IN_TDOC = "A";
                 break;
             case 24:
+//                DOUBLE DEBITS QTY
+                me.bean.IN_CONT = "";
+                me.bean.IN_TDOC = "D";
+                break;
+            case 26:
+//                DOUBLE DEBITS PENDING TO SENT
+                me.bean.IN_CONT = "DPEN";
+                me.bean.IN_TDOC = "D";
+                break;
+            case 27:
+//                DOUBLE DEBITS SENT
+                me.bean.IN_CONT = "DSEND";
+                me.bean.IN_TDOC = "D";
+                break;
+            case 28:
+//                DOUBLE DEBITS SAP
+                me.bean.IN_CONT = "DSAP";
+                me.bean.IN_TDOC = "D";
+                break;
+            case 29:
 //                PENDIENTE
                 me.bean.IN_CONT = "";
                 me.bean.IN_TDOC = "P";

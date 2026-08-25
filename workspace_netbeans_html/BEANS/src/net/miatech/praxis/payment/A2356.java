@@ -241,13 +241,19 @@ public class A2356 {
         public double AMOUNT_ACRED_SEND  = 0;  
         public double AMOUNT_ACRED_SAP  = 0;  
         
-        public int QTY_PENDING  = 0;  
-        public double AMOUNT_PENDING_USD  = 0;  
-        public double AMOUNT_PENDING_SEND  = 0;  
-        public double AMOUNT_PENDING_SAP  = 0;  
-        public double AMOUNT_PENDING_PENDING_SAP  = 0;  
-        
-        public int QTY_TOTAL_REFUND  = 0;  
+        public int QTY_PENDING  = 0;
+        public double AMOUNT_PENDING_USD  = 0;
+        public double AMOUNT_PENDING_SEND  = 0;
+        public double AMOUNT_PENDING_SAP  = 0;
+        public double AMOUNT_PENDING_PENDING_SAP  = 0;
+
+        public int QTY_DOBLES  = 0;
+        public double AMOUNT_DOBLES_USD  = 0;
+        public double AMOUNT_DOBLES_PENDING_SAP  = 0;
+        public double AMOUNT_DOBLES_SEND  = 0;
+        public double AMOUNT_DOBLES_SAP  = 0;
+
+        public int QTY_TOTAL_REFUND  = 0;
         public double AMOUNT_TOTAL_REFUND_USD  = 0;  
         public double AMOUNT_TOTAL_REFUND_PENDING_USD  = 0;  
         public double AMOUNT_TOTAL_REFUND_SEND  = 0;  
@@ -271,13 +277,19 @@ public class A2356 {
         public double AMOUNT_TOTAL_ACRED_SEND  = 0;  
         public double AMOUNT_TOTAL_ACRED_SAP  = 0;  
         
-        public int QTY_TOTAL_PENDING  = 0;  
-        public double AMOUNT_TOTAL_PENDING_USD  = 0;  
-        public double AMOUNT_TOTAL_PENDING_SEND  = 0;  
-        public double AMOUNT_TOTAL_PENDING_SAP  = 0;  
-        public double AMOUNT_TOTAL_PENDING_PENDING_USD  = 0;  
-        
-        public int QTY_GRANT  = 0;  
+        public int QTY_TOTAL_PENDING  = 0;
+        public double AMOUNT_TOTAL_PENDING_USD  = 0;
+        public double AMOUNT_TOTAL_PENDING_SEND  = 0;
+        public double AMOUNT_TOTAL_PENDING_SAP  = 0;
+        public double AMOUNT_TOTAL_PENDING_PENDING_USD  = 0;
+
+        public int QTY_TOTAL_DOBLES  = 0;
+        public double AMOUNT_TOTAL_DOBLES_USD  = 0;
+        public double AMOUNT_TOTAL_DOBLES_PENDING_USD  = 0;
+        public double AMOUNT_TOTAL_DOBLES_SEND  = 0;
+        public double AMOUNT_TOTAL_DOBLES_SAP  = 0;
+
+        public int QTY_GRANT  = 0;
         public double AMOUNT_GRANT  = 0;  
         
         public int QTY_TOTAL_GRANT  = 0;  
