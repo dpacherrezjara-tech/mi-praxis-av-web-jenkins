@@ -66,6 +66,10 @@ public class TAXMerchantCatalogSubiArchivoLogic {
      * que todo lo que llegue aqui marcado VALID=true deberia procesar sin
      * error; si alguna fila falla (p.ej. carrera con otro usuario) se detiene
      * la fila afectada y se reporta, sin abortar el resto del archivo.
+     *
+     * @deprecated reemplazado por commitAll (transaccion unica, todo o
+     * nada) usado por /processRowsCommit. Se mantiene por si algun llamador
+     * viejo lo sigue usando.
      */
     public void processRows(List<TAXMerchantCatalogRow> rows) throws SQLException, Exception {
         for (TAXMerchantCatalogRow row : rows) {
@@ -82,5 +86,15 @@ public class TAXMerchantCatalogSubiArchivoLogic {
                 row.addError("Error processing in database: " + e.getMessage());
             }
         }
+    }
+
+    /**
+     * Inserta/actualiza TODAS las filas en una unica transaccion (todo o
+     * nada). Solo se debe llamar cuando el 100% de las filas quedaron
+     * VALID=true tras resolveActionAgainstDatabase -- si alguna fila no es
+     * valida, el llamador no debe invocar este metodo.
+     */
+    public void commitAll(List<TAXMerchantCatalogRow> rows) throws SQLException, Exception {
+        dao.processAllRows(rows);
     }
 }

@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.miatech.beans.spring.implement.IServerSession;
@@ -138,6 +139,60 @@ public class TAXMerchantCatalogSubiArchivoDAO {
             pasarGarbageCollector();
         }
         return strMsj;
+    }
+
+    /**
+     * Inserta/actualiza TODAS las filas en una unica conexion/transaccion:
+     * autocommit en false, un solo commit() al final si todo sale bien, o
+     * rollback() completo si cualquier fila falla. El navegador puede haber
+     * mandado estas filas en varios lotes (para no chocar con limites de
+     * tamano de body en el proxy/WAF), pero la escritura en base es atomica
+     * de todas formas porque ocurre en una sola llamada a este metodo.
+     */
+    public void processAllRows(List<TAXMerchantCatalogRow> rows) throws SQLException, Exception {
+        Connection cnx = null;
+        CallableStatement cstmt = null;
+        String SQLCLL01 = "{CALL PRAXISMP.MPS262(" + placeholders() + ")}";
+        try {
+            cnx = session.getCNXIBMDB2().getIBMDB2Connection();
+            cnx.setAutoCommit(false);
+            cstmt = cnx.prepareCall(SQLCLL01);
+            for (TAXMerchantCatalogRow row : rows) {
+                bindRow(cstmt, row, row.ACTION);
+                cstmt.execute();
+                ResultSet rst = cstmt.getResultSet();
+                if (rst != null) {
+                    rst.close();
+                }
+            }
+            cnx.commit();
+        } catch (Exception e) {
+            if (cnx != null) {
+                try {
+                    cnx.rollback();
+                } catch (SQLException re) {
+                    logError.error("SQLException on rollback -> User:" + session.getUserView().getUserInfo().USR + " Message: " + re.getMessage(), re);
+                }
+            }
+            throw e;
+        } finally {
+            if (cstmt != null) {
+                try {
+                    cstmt.close();
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            if (cnx != null) {
+                try {
+                    cnx.setAutoCommit(true);
+                } catch (SQLException e) {
+                    logError.error("SQLException -> User:" + session.getUserView().getUserInfo().USR + " Message: " + e.getMessage(), e);
+                }
+            }
+            session.getCNXIBMDB2().closeIBMDB2Connection(cnx);
+            pasarGarbageCollector();
+        }
     }
 
     private static String placeholders() {
