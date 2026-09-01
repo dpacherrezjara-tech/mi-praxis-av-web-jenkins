@@ -13,11 +13,14 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
@@ -68,6 +71,28 @@ public class DuplicateSettlementsController extends BaseController {
     private static final Logger logError = Logger.getLogger("errorLog");
     private DuplicateSettlementsLogic logic;
     private MasterDAO masterDAO;
+
+    /**
+     * Image formats a browser can render natively inside an <img> tag, which is
+     * what the Justification Images viewer uses. Upload and listing are both
+     * validated against this set so nothing gets saved that can't be shown.
+     */
+    private static final Set<String> ALLOWED_IMAGE_EXTS = new HashSet<>(Arrays.asList(
+            "png", "jpg", "jpeg", "jfif", "gif", "webp", "bmp", "avif"
+    ));
+
+    public static final String ALLOWED_IMAGE_LABEL = "PNG, JPG, JPEG, GIF, WEBP, BMP, AVIF";
+
+    private static boolean isSupportedImage(String filename) {
+        if (filename == null) {
+            return false;
+        }
+        int dot = filename.lastIndexOf('.');
+        if (dot < 0 || dot == filename.length() - 1) {
+            return false;
+        }
+        return ALLOWED_IMAGE_EXTS.contains(filename.substring(dot + 1).toLowerCase());
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public String index(ModelMap map) {
@@ -578,7 +603,9 @@ public class DuplicateSettlementsController extends BaseController {
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString(); // TEST / PROD
 
-
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
 
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
@@ -602,6 +629,16 @@ public class DuplicateSettlementsController extends BaseController {
         String originalFilename = Paths.get(file.getOriginalFilename())
                 .getFileName().toString();
 
+        if (!isSupportedImage(originalFilename)) {
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(
+                    "{\"success\": false, \"message\": \"Unsupported file type. "
+                    + "Allowed formats: " + ALLOWED_IMAGE_LABEL + "\"}"
+            );
+            return;
+        }
+
         Path filePath = folderPath.resolve(originalFilename);
 
         Files.copy(
@@ -624,12 +661,15 @@ public class DuplicateSettlementsController extends BaseController {
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString(); // TEST / PROD
 
-        String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
-       String rutaBase = this.serverSession
-        .getPropertySession()
-        .get("RUTA_BASE")
-        .toString();
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
 
+        String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
+        String rutaBase = this.serverSession
+                .getPropertySession()
+                .get(rutaBaseKey)
+                .toString();
 
         String folder = request.getParameter("folder");
         String filename = request.getParameter("filename");
@@ -675,6 +715,10 @@ public class DuplicateSettlementsController extends BaseController {
                 .get("DB_SERVER_DEFAULT_TYPE")
                 .toString();
 
+        if ("PRO".equals(environment)) {
+            environment = "PROD";
+        }
+
         String rutaBaseKey = "RUTA_LIQUIDATION_" + environment + "_JUSTIFICATION";
         String rutaBase = this.serverSession
                 .getPropertySession()
@@ -689,10 +733,7 @@ public class DuplicateSettlementsController extends BaseController {
 
         try (Stream<Path> files = Files.list(folder)) {
             return files
-                    .filter(p -> {
-                        String f = p.getFileName().toString().toLowerCase();
-                        return f.endsWith(".png") || f.endsWith(".jpg") || f.endsWith(".jpeg");
-                    })
+                    .filter(p -> isSupportedImage(p.getFileName().toString()))
                     .map(p -> p.getFileName().toString())
                     .collect(Collectors.toList());
         }

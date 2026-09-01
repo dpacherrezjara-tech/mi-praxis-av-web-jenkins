@@ -825,6 +825,8 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
         let me = this;
         let record = rowData.data;
 
+        let allowedFormatsText = 'Allowed formats: PNG, JPG, JPEG, GIF, WEBP, BMP, AVIF';
+
         let win = Ext.create('Ext.window.Window', {
             title: 'Upload Justification Image',
             modal: true,
@@ -842,7 +844,12 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
                             labelWidth: 60,
                             allowBlank: false,
                             buttonText: 'Browse...',
-                            accept: 'image/*'
+                            accept: 'image/png,image/jpeg,image/gif,image/webp,image/bmp,image/avif'
+                        }, {
+                            xtype: 'component',
+                            padding: '4 0 0 66',
+                            style: 'color:#888;font-size:11px;',
+                            html: allowedFormatsText + '.<br>You can upload and view any of these image types.'
                         }],
                     buttons: [{
                             text: 'Upload',
@@ -850,6 +857,14 @@ Ext.define('Ext.Praxis.controller.payments.DuplicateSettlements.DuplicateSettlem
                                 let form = btn.up('form').getForm();
                                 if (!form.isValid())
                                     return;
+
+                                let fileName = form.findField('file').getValue() || '';
+                                let ext = fileName.split('.').pop().toLowerCase();
+                                let allowedExt = ['png', 'jpg', 'jpeg', 'jfif', 'gif', 'webp', 'bmp', 'avif'];
+                                if (allowedExt.indexOf(ext) === -1) {
+                                    Ext.Msg.alert('Invalid file', allowedFormatsText + '.');
+                                    return;
+                                }
 
                                 form.submit({
                                     url: prototype.url + '/addFileJustification',
