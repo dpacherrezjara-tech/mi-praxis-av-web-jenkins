@@ -97,6 +97,13 @@ Ext.define('Ext.Praxis.view.payments.TAXMerchantCatalogForm.SubiArchivo.TAXMerch
                     ]
                 },
                 {
+                    xtype: 'progressbar',
+                    id: prototype.idSA + '-progressBar',
+                    hidden: true,
+                    width: '100%',
+                    margin: '0 0 5 0'
+                },
+                {
                     xtype: 'label',
                     id: prototype.idSA + '-headerError',
                     hidden: true,
