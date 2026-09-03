@@ -1046,7 +1046,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.LibraryUnirest.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.LibraryCommons.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.LibraryJNA.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
-        <!--copyfiles files="${libs.LibraryTomcat.classpath}" todir="${build.web.dir}/WEB-INF/lib"/-->
+        <copyfiles files="${libs.LibraryTomcat.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>
